@@ -17,8 +17,12 @@ module.exports = {
   darkMode: ["class"],
   // content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
   // content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  // content: ["src/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
-  content: ["src/**/*.{ts,tsx}"],
+  // content: ["src/**/*.{ts,tsx}"],
+  content: [
+    "src/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
+  ],
   theme: {
     container: {
       center: true,
