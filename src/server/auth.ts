@@ -5,8 +5,9 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import { env } from "(~/)/env.mjs";
 import { prisma } from "(~/)/server/db";
+import Credentials from "next-auth/providers/credentials";
+// import { env } from "(~/)/env.mjs";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,9 +16,10 @@ import { prisma } from "(~/)/server/db";
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module "next-auth" {
+  // This is the type i think for the session
   interface Session extends DefaultSession {
     user: {
-      id: string;
+      // id: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -29,11 +31,7 @@ declare module "next-auth" {
   // }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
+/* -------------------------------------------------------------------------- */
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
@@ -46,16 +44,48 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
+    Credentials({
+      name: "Sign In With Email & Password",
+      // This below is used to create the pre generated login page
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "smith" },
+        password: { label: "Password", type: "password" },
+      },
+
+      async authorize(credentials) {
+        // const password = credentials?.password;
+        const username = credentials?.username;
+
+        // return credentials;
+        // Add logic here to look up the user from the credentials supplied
+        const userDb = await prisma.user_main.findFirst({
+          where: {
+            email_id: username,
+          },
+        });
+
+        // If no user
+        if (!userDb) {
+        return null;
+        }
+
+        if (userDb && true) {
+        console.log(`User from db: ${JSON.stringify(userDb, null, " ")}`);
+        }
+        // return user;
+        return null;
+      },
+    }),
   ],
+
+  /* --------------------------- Session strategy --------------------------- */
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/v1/auth/signin",
+    
+  }
 };
 
 /**
