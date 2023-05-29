@@ -7,8 +7,10 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    MY_ENV: z.enum(["dev", "test", "prod", "stag"]).default("dev"),
+    DATABASE_URL: z.string().url().min(1),
+    JWT_SECRET: z.string().min(1),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   },
 
@@ -27,7 +29,9 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    MY_ENV: process.env.MY_ENV,
     NODE_ENV: process.env.NODE_ENV,
+    JWT_SECRET: process.env.JWT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
