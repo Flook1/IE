@@ -7,7 +7,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
+    NODE_ENV: z.enum(["development", "test", "production", "staging"]),
     MY_ENV: z.enum(["dev", "test", "prod", "stag"]).default("dev"),
     DATABASE_URL: z.string().url().min(1),
     JWT_SECRET: z.string().min(1),

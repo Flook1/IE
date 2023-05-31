@@ -17,6 +17,11 @@ const V1Testing: NextPage = () => {
         <Separator />
         <DebugView
           visible={true}
+          header="TestEnvLog"
+          content={testEnvLog}
+        ></DebugView>
+        <DebugView
+          visible={true}
           header="Basic Db"
           content={testError}
         ></DebugView>

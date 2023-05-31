@@ -1,26 +1,28 @@
 import { env } from "@/src/env.mjs";
-import { isTest, isDev, isProduction } from "@/src/utils/test/isDev";
+import {  isDev, isProd } from "@/src/utils/auth/isEnv";
 import { getUserAuthFull } from "@/src/utils/user/getUserAuthFull";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const testGenRouter = createTRPCRouter({
   envLog: publicProcedure.query(() => {
+    isDev(`my`)
     console.log(`NODE Env: ${env.NODE_ENV}`);
     console.log(`My Env: ${env.MY_ENV}`);
     return {
       NodeEnv: env.NODE_ENV,
       MyEnv: env.MY_ENV,
+      WorkflowRun: true,
     };
   }),
   basic: publicProcedure.query(() => {
-    isTest();
+    isDev("my");
 
     return {
       something: "everything",
     };
   }),
   basicDb: publicProcedure.query(async ({ ctx }) => {
-    isTest();
+    isDev("my");
 
     const userTest = await ctx.prisma.user_main.findFirst({});
 
@@ -36,7 +38,7 @@ export const testGenRouter = createTRPCRouter({
     };
   }),
   errorStopTest: publicProcedure.query(() => {
-    isProduction();
+    isProd("my");
     // the test user id:
     console.log("running after error test");
     console.log("running after error test");
@@ -49,7 +51,7 @@ export const testGenRouter = createTRPCRouter({
     return "nothing";
   }),
   getUserFullAuth: publicProcedure.query(async () => {
-    isTest();
+    isDev("my");
 
     // the test user id:
     console.log("running after error test");
