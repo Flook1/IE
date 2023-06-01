@@ -1,6 +1,8 @@
 import { env } from "@/src/env.mjs";
+import { ruleAccess } from "@/src/utils/auth/access";
 import {  isDev, isProd } from "@/src/utils/auth/isEnv";
 import { getUserAuthFull } from "@/src/utils/user/getUserAuthFull";
+import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const testGenRouter = createTRPCRouter({
@@ -12,6 +14,15 @@ export const testGenRouter = createTRPCRouter({
       NodeEnv: env.NODE_ENV,
       MyEnv: env.MY_ENV,
       WorkflowRun: true,
+    };
+  }),
+  basicRuleCheck: publicProcedure.query(async () => {
+    isDev("my");
+    const ruleAccessData = await ruleAccess("dashboard", "c")
+
+    return {
+      ruleAccessData,
+      something: "everything",
     };
   }),
   basic: publicProcedure.query(() => {
@@ -41,6 +52,21 @@ export const testGenRouter = createTRPCRouter({
     isProd("my");
     // the test user id:
     console.log("running after error test");
+    console.log("running after error test");
+    console.log("running after error test");
+    console.log("running after error test");
+    console.log("running after error test");
+    console.log("running after error test");
+    console.log("running after error test");
+
+    return "nothing";
+  }),
+  errorStopTest2: publicProcedure.query(() => {
+    console.log("running BEFORE error test");
+    console.log("running BEFORE  error test");
+
+    throw new TRPCError({code: "INTERNAL_SERVER_ERROR"});
+
     console.log("running after error test");
     console.log("running after error test");
     console.log("running after error test");

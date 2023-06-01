@@ -6,10 +6,12 @@ import { Card } from "@/components/ui/card";
 
 
 const V1Testing: NextPage = () => {
-  const testEnvLog = api.testData.envLog.useQuery(undefined, {enabled: true});
+  const testBasicRuleCheck = api.testData.basicRuleCheck.useQuery(undefined, {enabled: false});
+  const testEnvLog = api.testData.envLog.useQuery(undefined, {enabled: false});
   const testError = api.testData.basicDb.useQuery(undefined, {enabled: false});
   const testUserFullAuth = api.testData.getUserFullAuth.useQuery(undefined, {enabled: false});
   const testErrorStop = api.testData.errorStopTest.useQuery(undefined, {enabled: false});
+  const testErrorStop2 = api.testData.errorStopTest2.useQuery(undefined, {enabled: true});
 
   return (
     <>
@@ -22,6 +24,11 @@ const V1Testing: NextPage = () => {
         ></DebugView>
         <DebugView
           visible={true}
+          header="BasicRuleCheck"
+          content={testBasicRuleCheck}
+        ></DebugView>
+        <DebugView
+          visible={true}
           header="Basic Db"
           content={testError}
         ></DebugView>
@@ -30,6 +37,11 @@ const V1Testing: NextPage = () => {
           visible={true}
           header="ErrorFlowTest"
           content={testErrorStop}
+        ></DebugView>
+        <DebugView
+          visible={true}
+          header="2ErrorFlowTest2"
+          content={testErrorStop2}
         ></DebugView>
         <DebugView
           visible={true}
