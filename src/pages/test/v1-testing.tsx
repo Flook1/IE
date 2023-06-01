@@ -52,11 +52,11 @@ const V1Testing: NextPage = () => {
         {/* Example sadhcn card */}
         <div className="hidden">
           <Card>
-            soemthing
+            something
             <br />
             <br />
             <br />
-            soemthing soemthing soemthing soemthing
+            something something something something
           </Card>
         </div>
         {/* Exmaple daisy card */}
