@@ -11,6 +11,9 @@ const V1TestCookie: NextPage = () => {
     enabled: false,
   });
   const csrfVerify = api.testCookie.csrfVerify.useQuery(undefined, {
+    enabled: false,
+  });
+  const limitTest = api.testLimit.limitTest.useQuery(undefined, {
     enabled: true,
   });
 
@@ -36,6 +39,12 @@ const V1TestCookie: NextPage = () => {
           header="csrfVerify"
           content={csrfVerify}
         ></DebugView>
+        <DebugView
+          visible={true}
+          header="testLimit"
+          content={limitTest}
+        ></DebugView>
+        <button className="d-btn">Trigger Limit Call</button>
       </div>
     </>
   );

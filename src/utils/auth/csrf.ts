@@ -10,10 +10,6 @@ import { TRPCError } from "@trpc/server";
 export const csrfCreate = async (opts: ctxMain) => {
   const allCookies: IeCookie = opts.req.cookies;
 
-    // console.log(allCookies.ieCsrfToken)
-    // console.log(!allCookies.ieCsrfToken)
-
-
   const token = allCookies.ieCsrfToken;
   const hashed = allCookies.ieCsrfHashed;
 
@@ -37,7 +33,6 @@ export const csrfVerify = async (opts: ctxMain) => {
 
   const token = allCookies.ieCsrfToken;
   const hashed = allCookies.ieCsrfHashed;
-// const hashed = await argon.hash("wrong value")
 
   if (!token || !hashed) {
     // Means missing a token/hashed
