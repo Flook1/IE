@@ -12,6 +12,14 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------- My stuff -------------------------------- */
+// get the main res and req context, but not prisma, but i can just import prisma
+export type ctxMain =  CreateNextContextOptions
+
+
+/* -------------------------------------------------------------------------- */
+
 /**
  * 1. CONTEXT
  *
@@ -44,9 +52,16 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext =  (_opts: CreateNextContextOptions) => {
+  const innerContext = createInnerTRPCContext({});
+
+  return({
+    ...innerContext,
+    req: _opts.req,
+    res: _opts.res,
+  });
 };
+
 
 /**
  * 2. INITIALIZATION

@@ -2,7 +2,6 @@ import { env } from "@/src/env.mjs";
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import * as argon2id from "argon2";
-import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -20,7 +19,6 @@ export const authLoginRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       // check if email exists
       const userData = await getUserAuthBasic(input.email);
-
       // check if password exists
       if (userData?.pass == null) {
         throw new TRPCError({
@@ -44,12 +42,12 @@ export const authLoginRouter = createTRPCRouter({
         }
         // setting cookie
         console.log("setting cookie")
-        Cookies.set("ie-au", jwtToken, {
-          expires: 30,
+        // Cookies.set("ie-au", jwtToken, {
+          // expires: 30,
           // sameSite: "strict",
           // secure: true,
           // HttpOnly: true,
-        });
+        // });
       } else {
         // Passwords dont match
         throw new TRPCError({

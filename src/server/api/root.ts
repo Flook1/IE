@@ -2,6 +2,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
 import { testGenRouter } from "./routers/test/v1/test-data";
 import { authLoginRouter } from "./routers/v1/auth/login";
+import { testCookie } from "./routers/test/v1/test-cookie";
 
 /**
  * This is the primary router for your server.
@@ -11,6 +12,7 @@ import { authLoginRouter } from "./routers/v1/auth/login";
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   testData: testGenRouter,
+  testCookie: testCookie,
   authLogin: authLoginRouter
 });
 
