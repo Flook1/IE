@@ -9,28 +9,28 @@ datasource db {
 }
 
 model address {
-    id                                      Int        @id @default(autoincrement())
-    line1                                   String     @db.VarChar(100)
-    line2                                   String     @db.VarChar(100)
-    city                                    String     @db.VarChar(100)
-    postcode                                String?    @db.VarChar(10)
-    country_id                              Int
-    latitude                                Decimal    @db.Decimal(16, 12)
-    longitude                               Decimal    @db.Decimal(16, 12)
-    business_id                             String?    @db.VarChar(8)
-    user_id                                 String?    @db.VarChar(8)
-    updated_by                              String?    @db.VarChar(8)
-    updated_on                              DateTime?
-    deleted_by                              String?    @db.VarChar(8)
-    deleted_on                              DateTime?
-    created_by                              String?    @db.VarChar(8)
-    created_on                              DateTime   @default(now())
-    business                                business?  @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    country                                 country    @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_country_id")
-    user_main_address_created_byTouser_main user_main? @relation("address_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_address_deleted_byTouser_main user_main? @relation("address_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_address_updated_byTouser_main user_main? @relation("address_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    user_main_address_user_idTouser_main    user_main? @relation("address_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    id            Int        @id @default(autoincrement())
+    line1         String     @db.VarChar(100)
+    line2         String     @db.VarChar(100)
+    city          String     @db.VarChar(100)
+    postcode      String?    @db.VarChar(10)
+    country_id    Int
+    latitude      Decimal    @db.Decimal(16, 12)
+    longitude     Decimal    @db.Decimal(16, 12)
+    business_id   String?    @db.VarChar(8)
+    user_id       String?    @db.VarChar(8)
+    updated_by    String?    @db.VarChar(8)
+    updated_on    DateTime?
+    deleted_by    String?    @db.VarChar(8)
+    deleted_on    DateTime?
+    created_by    String?    @db.VarChar(8)
+    created_on    DateTime   @default(now())
+    rel_business  business?  @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_country   country    @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_country_id")
+    rel_user_main user_main? @relation("address_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    rel_createdBy user_main? @relation("address_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy user_main? @relation("address_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy user_main? @relation("address_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model auth_business_rule {
@@ -46,25 +46,25 @@ model auth_business_rule {
 }
 
 model auth_role {
-    id                                        Int                 @id @default(autoincrement())
-    role_name                                 String              @db.VarChar(32)
-    role_info                                 String?             @db.VarChar(500)
-    default_page                              String?             @db.VarChar(100)
-    is_system                                 Boolean             @default(false)
-    business_type                             e_type_business?
-    business_id                               String?             @db.VarChar(8)
-    updated_by                                String?             @db.VarChar(8)
-    updated_on                                DateTime?
-    deleted_by                                String?             @db.VarChar(8)
-    deleted_on                                DateTime?
-    created_by                                String?             @db.VarChar(8)
-    created_on                                DateTime            @default(now())
-    business                                  business?           @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_auth_role_created_byTouser_main user_main?          @relation("auth_role_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_auth_role_deleted_byTouser_main user_main?          @relation("auth_role_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_auth_role_updated_byTouser_main user_main?          @relation("auth_role_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    auth_rr_role_rule                         auth_rr_role_rule[]
-    user_main_user_main_role_idToauth_role    user_main[]         @relation("user_main_role_idToauth_role")
+    id                                         Int                 @id @default(autoincrement())
+    role_name                                  String              @db.VarChar(32)
+    role_info                                  String?             @db.VarChar(500)
+    default_page                               String?             @db.VarChar(100)
+    is_system                                  Boolean             @default(false)
+    business_type                              e_type_business?
+    business_id                                String?             @db.VarChar(8)
+    updated_by                                 String?             @db.VarChar(8)
+    updated_on                                 DateTime?
+    deleted_by                                 String?             @db.VarChar(8)
+    deleted_on                                 DateTime?
+    created_by                                 String?             @db.VarChar(8)
+    created_on                                 DateTime            @default(now())
+    rel_business                               business?           @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_auth_rr_role_rule                      auth_rr_role_rule[]
+    rel_user_main_user_main_role_idToauth_role user_main[]         @relation("user_main_role_idToauth_role")
+    rel_deletedBy                              user_main?          @relation("auth_role_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy                              user_main?          @relation("auth_role_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_createdBy                              user_main?          @relation("auth_role_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
 
     @@index([business_id], map: "ix_auth_role_business_id")
     @@index([is_system], map: "ix_auth_role_is_system")
@@ -73,50 +73,50 @@ model auth_role {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model auth_rr_role_rule {
-    id                                                Int        @id(map: "auth_role_rule_pkey") @default(autoincrement())
-    role_id                                           Int
-    rule_name                                         String     @db.VarChar(100)
-    c                                                 Boolean    @default(false)
-    r                                                 Boolean    @default(false)
-    u                                                 Boolean    @default(false)
-    d                                                 Boolean    @default(false)
-    e                                                 Boolean    @default(false)
-    updated_by                                        String?    @db.VarChar(8)
-    updated_on                                        DateTime?
-    created_by                                        String?    @db.VarChar(8)
-    created_on                                        DateTime?  @default(now())
-    user_main_auth_rr_role_rule_created_byTouser_main user_main? @relation("auth_rr_role_rule_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    auth_role                                         auth_role  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_role_id")
-    auth_rule                                         auth_rule  @relation(fields: [rule_name], references: [rule_name], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_rule_name")
-    user_main_auth_rr_role_rule_updated_byTouser_main user_main? @relation("auth_rr_role_rule_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id            Int        @id(map: "auth_role_rule_pkey") @default(autoincrement())
+    role_id       Int
+    rule_name     String     @db.VarChar(100)
+    c             Boolean    @default(false)
+    r             Boolean    @default(false)
+    u             Boolean    @default(false)
+    d             Boolean    @default(false)
+    e             Boolean    @default(false)
+    updated_by    String?    @db.VarChar(8)
+    updated_on    DateTime?
+    created_by    String?    @db.VarChar(8)
+    created_on    DateTime?  @default(now())
+    rel_auth_role auth_role  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_role_id")
+    rel_auth_rule auth_rule  @relation(fields: [rule_name], references: [rule_name], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_rule_name")
+    rel_createdBy user_main? @relation("auth_rr_role_rule_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_updatedBy user_main? @relation("auth_rr_role_rule_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([role_id], map: "ix_auth_role_rule_id")
     @@index([rule_name], map: "ix_auth_role_rule_name")
 }
 
 model auth_rule {
-    id                                        Int                  @id @default(autoincrement())
-    rule_name                                 String               @unique(map: "auth_rule_rule_name_unique") @db.VarChar(48)
-    display_name                              String?              @db.VarChar(100)
-    rule_info                                 String?              @db.VarChar(500)
-    rule_group                                e_type_rule_group?
-    page_url                                  String?              @unique(map: "auth_rule_page_url_unique") @db.VarChar(100)
-    icon                                      String?              @db.VarChar(50)
-    menu_group                                String?              @db.VarChar(50)
-    group_icon                                String?              @db.VarChar(50)
-    access_types                              String               @db.VarChar(9)
-    sort_order                                Int?                 @unique(map: "auth_rule_sort_order_unique")
-    updated_by                                String?              @db.VarChar(8)
-    updated_on                                DateTime?
-    deleted_by                                String?              @db.VarChar(8)
-    deleted_on                                DateTime?
-    created_by                                String?              @db.VarChar(8)
-    created_on                                DateTime             @default(now())
-    auth_business_rule                        auth_business_rule[]
-    auth_rr_role_rule                         auth_rr_role_rule[]
-    user_main_auth_rule_created_byTouser_main user_main?           @relation("auth_rule_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_auth_rule_deleted_byTouser_main user_main?           @relation("auth_rule_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_auth_rule_updated_byTouser_main user_main?           @relation("auth_rule_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                     Int                  @id @default(autoincrement())
+    rule_name              String               @unique(map: "auth_rule_rule_name_unique") @db.VarChar(48)
+    display_name           String?              @db.VarChar(100)
+    rule_info              String?              @db.VarChar(500)
+    rule_group             e_type_rule_group?
+    page_url               String?              @unique(map: "auth_rule_page_url_unique") @db.VarChar(100)
+    icon                   String?              @db.VarChar(50)
+    menu_group             String?              @db.VarChar(50)
+    group_icon             String?              @db.VarChar(50)
+    access_types           String               @db.VarChar(9)
+    sort_order             Int?                 @unique(map: "auth_rule_sort_order_unique")
+    updated_by             String?              @db.VarChar(8)
+    updated_on             DateTime?
+    deleted_by             String?              @db.VarChar(8)
+    deleted_on             DateTime?
+    created_by             String?              @db.VarChar(8)
+    created_on             DateTime             @default(now())
+    rel_auth_business_rule auth_business_rule[]
+    rel_auth_rr_role_rule  auth_rr_role_rule[]
+    rel_createdBy          user_main?           @relation("auth_rule_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy          user_main?           @relation("auth_rule_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy          user_main?           @relation("auth_rule_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([rule_name], map: "ix_auth_rule_name")
     @@index([page_url], map: "ix_auth_rule_page_url")
@@ -153,28 +153,28 @@ model business {
     created_by                                                     String?              @db.VarChar(90)
     created_on                                                     DateTime             @default(now())
     is_legacy                                                      Boolean              @default(false)
-    address                                                        address[]
-    auth_business_rule                                             auth_business_rule[]
-    auth_role                                                      auth_role[]
-    country_business_country_idTocountry                           country              @relation("business_country_idTocountry", fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_country_id")
-    user_main_business_created_byTouser_main                       user_main?           @relation("business_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    country_business_currency_idTocountry                          country              @relation("business_currency_idTocountry", fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
-    user_main_business_deleted_byTouser_main                       user_main?           @relation("business_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_business_owner_user_idTouser_main                    user_main            @relation("business_owner_user_idTouser_main", fields: [owner_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_owner_user_id")
-    user_main_business_updated_byTouser_main                       user_main?           @relation("business_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_address                                                    address[]
+    rel_auth_business_rule                                         auth_business_rule[]
+    rel_auth_role                                                  auth_role[]
+    rel_country                                                    country              @relation("business_country_idTocountry", fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_country_id")
+    rel_curr                                                       country              @relation("business_currency_idTocountry", fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
+    rel_ownerUser                                                  user_main            @relation("business_owner_user_idTouser_main", fields: [owner_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_owner_user_id")
     client_customer_client_customer_client_business_idTobusiness   client_customer[]    @relation("client_customer_client_business_idTobusiness")
     client_customer_client_customer_customer_business_idTobusiness client_customer[]    @relation("client_customer_customer_business_idTobusiness")
-    client_service                                                 client_service[]
-    discount_level                                                 discount_level[]
-    editor_bus_service                                             editor_bus_service[]
-    invoice_invoice_buyer_business_idTobusiness                    invoice[]            @relation("invoice_buyer_business_idTobusiness")
-    invoice_invoice_seller_business_idTobusiness                   invoice[]            @relation("invoice_seller_business_idTobusiness")
-    order_main_order_main_client_business_idTobusiness             order_main[]         @relation("order_main_client_business_idTobusiness")
-    order_main_order_main_editor_business_idTobusiness             order_main[]         @relation("order_main_editor_business_idTobusiness")
-    project                                                        project[]
-    service_access                                                 service_access[]
+    rel_client_service                                             client_service[]
+    rel_discount_level                                             discount_level[]
+    rel_editor_bus_service                                         editor_bus_service[]
+    rel_invAsBuyerBus                                              invoice[]            @relation("invoice_buyer_business_idTobusiness")
+    rel_invAsSellerBus                                             invoice[]            @relation("invoice_seller_business_idTobusiness")
+    rel_OrderAsClientBus                                           order_main[]         @relation("order_main_client_business_idTobusiness")
+    rel_OrderAsEditorBus                                           order_main[]         @relation("order_main_editor_business_idTobusiness")
+    rel_project                                                    project[]
+    rel_service_access                                             service_access[]
     user_main_user_main_business_idTobusiness                      user_main[]          @relation("user_main_business_idTobusiness")
-    wallet_balance                                                 wallet_balance[]
+    rel_wallet_balance                                             wallet_balance[]
+    rel_deletedBy                                                  user_main?           @relation("business_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy                                                  user_main?           @relation("business_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_createdBy                                                  user_main?           @relation("business_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
 
     @@index([business_name], map: "ix_business_business_name")
     @@index([business_type], map: "ix_business_business_type")
@@ -185,81 +185,81 @@ model business {
 }
 
 model client_customer {
-    id                                                      BigInt     @id @default(autoincrement())
-    client_business_id                                      String     @db.VarChar(8)
-    customer_business_id                                    String     @db.VarChar(8)
-    created_by                                              String?    @db.VarChar(8)
-    created_on                                              DateTime   @default(now())
-    business_client_customer_client_business_idTobusiness   business   @relation("client_customer_client_business_idTobusiness", fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
-    user_main                                               user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    business_client_customer_customer_business_idTobusiness business   @relation("client_customer_customer_business_idTobusiness", fields: [customer_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_customer_business_id")
+    id                   BigInt     @id @default(autoincrement())
+    client_business_id   String     @db.VarChar(8)
+    customer_business_id String     @db.VarChar(8)
+    created_by           String?    @db.VarChar(8)
+    created_on           DateTime   @default(now())
+    rel_user_main        user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_clientBus        business   @relation("client_customer_client_business_idTobusiness", fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
+    rel_customerBus      business   @relation("client_customer_customer_business_idTobusiness", fields: [customer_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_customer_business_id")
 }
 
 model client_preference {
-    id                                                Int              @id @default(autoincrement())
-    user_id                                           String           @db.VarChar(8)
-    service_category_id                               Int
-    preference                                        String?
-    updated_by                                        String?          @db.VarChar(8)
-    updated_on                                        DateTime?
-    deleted_by                                        String?          @db.VarChar(8)
-    deleted_on                                        DateTime?
-    created_by                                        String?          @db.VarChar(8)
-    created_on                                        DateTime         @default(now())
-    is_legacy                                         Boolean          @default(false)
-    user_main_client_preference_created_byTouser_main user_main?       @relation("client_preference_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_client_preference_deleted_byTouser_main user_main?       @relation("client_preference_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_category                                  service_category @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
-    user_main_client_preference_updated_byTouser_main user_main?       @relation("client_preference_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    user_main_client_preference_user_idTouser_main    user_main        @relation("client_preference_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    id                   Int              @id @default(autoincrement())
+    user_id              String           @db.VarChar(8)
+    service_category_id  Int
+    preference           String?
+    updated_by           String?          @db.VarChar(8)
+    updated_on           DateTime?
+    deleted_by           String?          @db.VarChar(8)
+    deleted_on           DateTime?
+    created_by           String?          @db.VarChar(8)
+    created_on           DateTime         @default(now())
+    is_legacy            Boolean          @default(false)
+    rel_service_category service_category @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
+    rel_user             user_main        @relation("client_preference_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    rel_updatedBy        user_main?       @relation("client_preference_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_createdBy        user_main?       @relation("client_preference_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy        user_main?       @relation("client_preference_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
 }
 
 model client_service {
-    id                                             Int        @id @default(autoincrement())
-    service_category_id                            Int
-    service_name                                   String     @db.VarChar(48)
-    description                                    String
-    preview_image                                  String     @db.VarChar(200)
-    business_id                                    String     @db.VarChar(8)
-    notes                                          String?
-    updated_by                                     String?    @db.VarChar(8)
-    updated_on                                     DateTime?
-    deleted_by                                     String?    @db.VarChar(8)
-    deleted_on                                     DateTime?
-    created_by                                     String?    @db.VarChar(8)
-    created_on                                     DateTime   @default(now())
-    business                                       business   @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_client_service_created_byTouser_main user_main? @relation("client_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_client_service_deleted_byTouser_main user_main? @relation("client_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_client_service_updated_byTouser_main user_main? @relation("client_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                  Int        @id @default(autoincrement())
+    service_category_id Int
+    service_name        String     @db.VarChar(48)
+    description         String
+    preview_image       String     @db.VarChar(200)
+    business_id         String     @db.VarChar(8)
+    notes               String?
+    updated_by          String?    @db.VarChar(8)
+    updated_on          DateTime?
+    deleted_by          String?    @db.VarChar(8)
+    deleted_on          DateTime?
+    created_by          String?    @db.VarChar(8)
+    created_on          DateTime   @default(now())
+    rel_business        business   @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_createdBy       user_main? @relation("client_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy       user_main? @relation("client_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy       user_main? @relation("client_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model content_file {
-    id                                           BigInt                    @id @default(autoincrement())
-    order_id                                     String                    @db.VarChar(8)
-    content_type                                 e_type_file_content
-    file_name                                    String                    @db.VarChar(255)
-    file_type                                    String                    @db.VarChar(75)
-    file_mime                                    String?                   @db.VarChar(75)
-    file_size                                    BigInt?
-    file_path                                    String
-    revised_file_id                              BigInt?
-    processing_status                            e_status_image_processing @default(dbgenerated("'uploaded'::e_status_image_processing"))
-    updated_by                                   String?                   @db.VarChar(8)
-    updated_on                                   DateTime?
-    deleted_by                                   String?                   @db.VarChar(8)
-    deleted_on                                   DateTime?
-    created_by                                   String?                   @db.VarChar(8)
-    created_on                                   DateTime                  @default(now())
-    is_legacy                                    Boolean                   @default(false)
-    file_cdn                                     String?
-    upload_id                                    String?                   @default(dbgenerated("func_un_ten()")) @db.VarChar(10)
-    user_main_content_file_created_byTouser_main user_main?                @relation("content_file_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_content_file_deleted_byTouser_main user_main?                @relation("content_file_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    order_main                                   order_main                @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
-    user_main_content_file_updated_byTouser_main user_main?                @relation("content_file_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    content_folder_file                          content_folder_file[]
+    id                      BigInt                    @id @default(autoincrement())
+    order_id                String                    @db.VarChar(8)
+    content_type            e_type_file_content
+    file_name               String                    @db.VarChar(255)
+    file_type               String                    @db.VarChar(75)
+    file_mime               String?                   @db.VarChar(75)
+    file_size               BigInt?
+    file_path               String
+    revised_file_id         BigInt?
+    processing_status       e_status_image_processing @default(dbgenerated("'uploaded'::e_status_image_processing"))
+    updated_by              String?                   @db.VarChar(8)
+    updated_on              DateTime?
+    deleted_by              String?                   @db.VarChar(8)
+    deleted_on              DateTime?
+    created_by              String?                   @db.VarChar(8)
+    created_on              DateTime                  @default(now())
+    is_legacy               Boolean                   @default(false)
+    file_cdn                String?
+    upload_id               String?                   @default(dbgenerated("func_un_ten()")) @db.VarChar(10)
+    rel_order_main          order_main                @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
+    rel_content_folder_file content_folder_file[]
+    rel_createdBy           user_main?                @relation("content_file_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy           user_main?                @relation("content_file_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy           user_main?                @relation("content_file_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([order_id], map: "ix_file_order_id")
 }
@@ -282,39 +282,39 @@ model content_folder {
     is_legacy                                                                    Boolean                 @default(false)
     file_cdn                                                                     String?
     upload_id                                                                    String?                 @default(dbgenerated("func_un_ten()")) @db.VarChar(10)
-    user_main_content_folder_created_byTouser_main                               user_main?              @relation("content_folder_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_content_folder_deleted_byTouser_main                               user_main?              @relation("content_folder_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    order_main                                                                   order_main              @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
-    user_main_content_folder_updated_byTouser_main                               user_main?              @relation("content_folder_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    content_folder_file                                                          content_folder_file[]
+    rel_order_main                                                               order_main              @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
+    rel_content_folder_file                                                      content_folder_file[]
     content_folder_folder_content_folder_folder_child_folder_idTocontent_folder  content_folder_folder[] @relation("content_folder_folder_child_folder_idTocontent_folder")
     content_folder_folder_content_folder_folder_parent_folder_idTocontent_folder content_folder_folder[] @relation("content_folder_folder_parent_folder_idTocontent_folder")
+    rel_createdBy                                                                user_main?              @relation("content_folder_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy                                                                user_main?              @relation("content_folder_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy                                                                user_main?              @relation("content_folder_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([order_id], map: "ix_folder_order_id")
 }
 
 model content_folder_file {
-    id             BigInt              @id @default(autoincrement())
-    file_id        BigInt
-    folder_id      BigInt
-    content_type   e_type_file_content
-    created_on     DateTime            @default(now())
-    is_legacy      Boolean             @default(false)
-    content_file   content_file        @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_file_id")
-    content_folder content_folder      @relation(fields: [folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_folder_id")
+    id                 BigInt              @id @default(autoincrement())
+    file_id            BigInt
+    folder_id          BigInt
+    content_type       e_type_file_content
+    created_on         DateTime            @default(now())
+    is_legacy          Boolean             @default(false)
+    rel_content_file   content_file        @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_file_id")
+    rel_content_folder content_folder      @relation(fields: [folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_folder_id")
 
     @@index([file_id], map: "ix_folder_file_file_content")
     @@index([folder_id], map: "ix_folder_file_folder_content")
 }
 
 model content_folder_folder {
-    id                                                                    BigInt         @id @default(autoincrement())
-    parent_folder_id                                                      BigInt
-    child_folder_id                                                       BigInt
-    created_on                                                            DateTime       @default(now())
-    is_legacy                                                             Boolean        @default(false)
-    content_folder_content_folder_folder_child_folder_idTocontent_folder  content_folder @relation("content_folder_folder_child_folder_idTocontent_folder", fields: [child_folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_child_folder_id")
-    content_folder_content_folder_folder_parent_folder_idTocontent_folder content_folder @relation("content_folder_folder_parent_folder_idTocontent_folder", fields: [parent_folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_folder_id")
+    id               BigInt         @id @default(autoincrement())
+    parent_folder_id BigInt
+    child_folder_id  BigInt
+    created_on       DateTime       @default(now())
+    is_legacy        Boolean        @default(false)
+    rel_folderChild  content_folder @relation("content_folder_folder_child_folder_idTocontent_folder", fields: [child_folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_child_folder_id")
+    rel_folderParent content_folder @relation("content_folder_folder_parent_folder_idTocontent_folder", fields: [parent_folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_folder_id")
 
     @@unique([parent_folder_id, child_folder_id], map: "content_folder_folder_parent_folder_id_child_folder_id_unique")
     @@index([child_folder_id], map: "ix_folder_folder_child")
@@ -323,23 +323,23 @@ model content_folder_folder {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model country {
-    id                                     Int              @id @default(autoincrement())
-    country_name                           String           @unique(map: "country_country_name_unique") @db.VarChar(100)
-    capital_city                           String?          @db.VarChar(100)
-    iso2                                   String           @unique(map: "country_iso2_unique") @db.VarChar(2)
-    iso3                                   String           @unique(map: "country_iso3_unique") @db.VarChar(3)
-    isd_code                               String?          @db.VarChar(8)
-    currency_code                          String           @db.VarChar(3)
-    currency_name                          String           @db.VarChar(100)
-    currency_symbol                        String?          @db.VarChar(10)
-    has_price                              Boolean          @default(false)
-    region                                 String?          @db.VarChar(100)
-    address                                address[]
-    business_business_country_idTocountry  business[]       @relation("business_country_idTocountry")
-    business_business_currency_idTocountry business[]       @relation("business_currency_idTocountry")
-    currency_rates                         currency_rates[]
-    invoice                                invoice[]
-    order_detail                           order_detail[]
+    id                 Int              @id @default(autoincrement())
+    country_name       String           @unique(map: "country_country_name_unique") @db.VarChar(100)
+    capital_city       String?          @db.VarChar(100)
+    iso2               String           @unique(map: "country_iso2_unique") @db.VarChar(2)
+    iso3               String           @unique(map: "country_iso3_unique") @db.VarChar(3)
+    isd_code           String?          @db.VarChar(8)
+    currency_code      String           @db.VarChar(3)
+    currency_name      String           @db.VarChar(100)
+    currency_symbol    String?          @db.VarChar(10)
+    has_price          Boolean          @default(false)
+    region             String?          @db.VarChar(100)
+    rel_address        address[]
+    rel_country        business[]       @relation("business_country_idTocountry")
+    rel_curr           business[]       @relation("business_currency_idTocountry")
+    rel_currency_rates currency_rates[]
+    rel_invoice        invoice[]
+    rel_order_detail   order_detail[]
 }
 
 model currency_rates {
@@ -347,78 +347,78 @@ model currency_rates {
     currency_id  Int
     rate_per_usd Decimal  @db.Decimal(12, 6)
     created_on   DateTime @default(now())
-    country      country  @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
+    rel_country  country  @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
 
     @@index([currency_id], map: "ix_t_currency_rates_currency_id")
 }
 
 model delivery {
-    id                                       Int                     @id @default(autoincrement())
-    user_id                                  String                  @db.VarChar(8)
-    delivery_name                            String                  @db.VarChar(100)
-    delivery_address                         String                  @db.VarChar(200)
-    quantity                                 Int                     @db.SmallInt
-    notes                                    String?
-    order_state_id                           Int                     @db.SmallInt
-    project_id                               String?                 @db.VarChar(8)
-    is_auto_delivery                         Boolean                 @default(false)
-    delivery_email                           String?                 @db.VarChar(200)
-    is_delivered                             Boolean                 @default(false)
-    invoice_id                               String?                 @db.VarChar(8)
-    z_cloud_link_url                         String?                 @db.VarChar(200)
-    z_completed_file_path                    String?
-    z_completed_zip_file_path                String?
-    updated_by                               String?                 @db.VarChar(8)
-    updated_on                               DateTime?
-    deleted_by                               String?                 @db.VarChar(8)
-    deleted_on                               DateTime?
-    created_by                               String?                 @db.VarChar(8)
-    created_on                               DateTime                @default(now())
-    user_main_delivery_created_byTouser_main user_main?              @relation("delivery_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_delivery_deleted_byTouser_main user_main?              @relation("delivery_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    invoice                                  invoice?                @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
-    order_state                              order_state             @relation(fields: [order_state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_state_id")
-    project                                  project?                @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_project_id")
-    user_main_delivery_updated_byTouser_main user_main?              @relation("delivery_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    user_main_delivery_user_idTouser_main    user_main               @relation("delivery_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_id")
-    delivery_type_content                    delivery_type_content[]
+    id                                        Int                     @id @default(autoincrement())
+    user_id                                   String                  @db.VarChar(8)
+    delivery_name                             String                  @db.VarChar(100)
+    delivery_address                          String                  @db.VarChar(200)
+    quantity                                  Int                     @db.SmallInt
+    notes                                     String?
+    order_state_id                            Int                     @db.SmallInt
+    project_id                                String?                 @db.VarChar(8)
+    is_auto_delivery                          Boolean                 @default(false)
+    delivery_email                            String?                 @db.VarChar(200)
+    is_delivered                              Boolean                 @default(false)
+    invoice_id                                String?                 @db.VarChar(8)
+    z_cloud_link_url                          String?                 @db.VarChar(200)
+    z_completed_file_path                     String?
+    z_completed_zip_file_path                 String?
+    updated_by                                String?                 @db.VarChar(8)
+    updated_on                                DateTime?
+    deleted_by                                String?                 @db.VarChar(8)
+    deleted_on                                DateTime?
+    created_by                                String?                 @db.VarChar(8)
+    created_on                                DateTime                @default(now())
+    rel_invoice                               invoice?                @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_order_state                           order_state             @relation(fields: [order_state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_state_id")
+    rel_project                               project?                @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_project_id")
+    rel_user_main_delivery_user_idTouser_main user_main               @relation("delivery_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_id")
+    rel_delivery_type_content                 delivery_type_content[]
+    rel_createdBy                             user_main?              @relation("delivery_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy                             user_main?              @relation("delivery_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy                             user_main?              @relation("delivery_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model delivery_type_content {
-    id                                                    Int            @id @default(autoincrement())
-    delivery_id                                           Int
-    content_type                                          e_type_content
-    updated_by                                            String?        @db.VarChar(8)
-    updated_on                                            DateTime?      @db.Timestamptz(6)
-    deleted_by                                            String?        @db.VarChar(8)
-    deleted_on                                            DateTime?
-    created_by                                            String?        @db.VarChar(8)
-    created_on                                            DateTime       @default(now())
-    user_main_delivery_type_content_created_byTouser_main user_main?     @relation("delivery_type_content_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_delivery_type_content_deleted_byTouser_main user_main?     @relation("delivery_type_content_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    delivery                                              delivery       @relation(fields: [delivery_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_delivery_id")
-    user_main_delivery_type_content_updated_byTouser_main user_main?     @relation("delivery_type_content_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id            Int            @id @default(autoincrement())
+    delivery_id   Int
+    content_type  e_type_content
+    updated_by    String?        @db.VarChar(8)
+    updated_on    DateTime?      @db.Timestamptz(6)
+    deleted_by    String?        @db.VarChar(8)
+    deleted_on    DateTime?
+    created_by    String?        @db.VarChar(8)
+    created_on    DateTime       @default(now())
+    rel_delivery  delivery       @relation(fields: [delivery_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_delivery_id")
+    rel_createdBy user_main?     @relation("delivery_type_content_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy user_main?     @relation("delivery_type_content_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy user_main?     @relation("delivery_type_content_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model discount {
-    id                                       Int              @id @default(autoincrement())
-    discount_name                            String           @db.VarChar(100)
-    discount_type                            e_type_discount  @default(dbgenerated("'percent'::e_type_discount"))
-    discount_value                           Json?
-    discount_percent                         Decimal?         @db.Decimal(4, 2)
-    description                              String?
-    updated_by                               String?          @db.VarChar(8)
-    updated_on                               DateTime?
-    deleted_by                               String?          @db.VarChar(8)
-    deleted_on                               DateTime?
-    created_by                               String?          @db.VarChar(8)
-    created_on                               DateTime         @default(now())
-    legacy_discount_id                       String?          @db.VarChar(10)
-    user_main_discount_created_byTouser_main user_main?       @relation("discount_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_discount_deleted_byTouser_main user_main?       @relation("discount_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_discount_updated_byTouser_main user_main?       @relation("discount_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    discount_level                           discount_level[]
-    order_detail                             order_detail[]
+    id                 Int              @id @default(autoincrement())
+    discount_name      String           @db.VarChar(100)
+    discount_type      e_type_discount  @default(dbgenerated("'percent'::e_type_discount"))
+    discount_value     Json?
+    discount_percent   Decimal?         @db.Decimal(4, 2)
+    description        String?
+    updated_by         String?          @db.VarChar(8)
+    updated_on         DateTime?
+    deleted_by         String?          @db.VarChar(8)
+    deleted_on         DateTime?
+    created_by         String?          @db.VarChar(8)
+    created_on         DateTime         @default(now())
+    legacy_discount_id String?          @db.VarChar(10)
+    rel_discount_level discount_level[]
+    rel_order_detail   order_detail[]
+    rel_createdBy      user_main?       @relation("discount_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBY      user_main?       @relation("discount_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy      user_main?       @relation("discount_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model discount_level {
@@ -430,106 +430,106 @@ model discount_level {
     created_by         String?        @db.VarChar(255)
     created_on         DateTime       @default(now())
     is_legacy          Boolean        @default(false)
-    business           business?      @relation(fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
-    user_main          user_main?     @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    discount           discount?      @relation(fields: [discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_discount_id")
-    service_main       service_main?  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_clientBusiness business?      @relation(fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
+    rel_discount       discount?      @relation(fields: [discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_discount_id")
+    rel_service_main   service_main?  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_createdBy      user_main?     @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
 }
 
 model editor_bus_service {
-    id                                                              Int                    @id @default(autoincrement())
-    service_id                                                      Int
-    service_type_id                                                 Int?
-    parent_service_id                                               Int?
-    business_id                                                     String                 @db.VarChar(8)
-    price                                                           Decimal                @db.Decimal(8, 2)
-    state                                                           e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
-    updated_by                                                      String?                @db.VarChar(8)
-    updated_on                                                      DateTime?
-    deleted_by                                                      String?                @db.VarChar(8)
-    deleted_on                                                      DateTime?
-    created_by                                                      String?                @db.VarChar(8)
-    created_on                                                      DateTime               @default(now())
-    is_legacy                                                       Boolean                @default(false)
-    business                                                        business               @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_editor_bus_service_created_byTouser_main              user_main?             @relation("editor_bus_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_editor_bus_service_deleted_byTouser_main              user_main?             @relation("editor_bus_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_main_editor_bus_service_parent_service_idToservice_main service_main?          @relation("editor_bus_service_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
-    service_main_editor_bus_service_service_idToservice_main        service_main           @relation("editor_bus_service_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
-    service_type                                                    service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
-    user_main_editor_bus_service_updated_byTouser_main              user_main?             @relation("editor_bus_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                Int                    @id @default(autoincrement())
+    service_id        Int
+    service_type_id   Int?
+    parent_service_id Int?
+    business_id       String                 @db.VarChar(8)
+    price             Decimal                @db.Decimal(8, 2)
+    state             e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
+    updated_by        String?                @db.VarChar(8)
+    updated_on        DateTime?
+    deleted_by        String?                @db.VarChar(8)
+    deleted_on        DateTime?
+    created_by        String?                @db.VarChar(8)
+    created_on        DateTime               @default(now())
+    is_legacy         Boolean                @default(false)
+    business          business               @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_parentService service_main?          @relation("editor_bus_service_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
+    rel_service       service_main           @relation("editor_bus_service_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_service_type  service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
+    rel_createdBy     user_main?             @relation("editor_bus_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy     user_main?             @relation("editor_bus_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy     user_main?             @relation("editor_bus_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model editor_user_service {
-    id                                                               Int                    @id @default(autoincrement())
-    service_id                                                       Int
-    service_type_id                                                  Int?
-    parent_service_id                                                Int?
-    user_id                                                          String                 @db.VarChar(8)
-    price                                                            Decimal                @db.Decimal(8, 2)
-    state                                                            e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
-    get_email_alert                                                  Boolean                @default(false)
-    updated_by                                                       String?                @db.VarChar(8)
-    updated_on                                                       DateTime?
-    deleted_by                                                       String?                @db.VarChar(8)
-    deleted_on                                                       DateTime?
-    created_by                                                       String?                @db.VarChar(8)
-    created_on                                                       DateTime               @default(now())
-    is_legacy                                                        Boolean                @default(false)
-    user_main_editor_user_service_created_byTouser_main              user_main?             @relation("editor_user_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_editor_user_service_deleted_byTouser_main              user_main?             @relation("editor_user_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_main_editor_user_service_parent_service_idToservice_main service_main?          @relation("editor_user_service_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
-    service_main_editor_user_service_service_idToservice_main        service_main           @relation("editor_user_service_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
-    service_type                                                     service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
-    user_main_editor_user_service_updated_byTouser_main              user_main?             @relation("editor_user_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    user_main_editor_user_service_user_idTouser_main                 user_main              @relation("editor_user_service_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    id                Int                    @id @default(autoincrement())
+    service_id        Int
+    service_type_id   Int?
+    parent_service_id Int?
+    user_id           String                 @db.VarChar(8)
+    price             Decimal                @db.Decimal(8, 2)
+    state             e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
+    get_email_alert   Boolean                @default(false)
+    updated_by        String?                @db.VarChar(8)
+    updated_on        DateTime?
+    deleted_by        String?                @db.VarChar(8)
+    deleted_on        DateTime?
+    created_by        String?                @db.VarChar(8)
+    created_on        DateTime               @default(now())
+    is_legacy         Boolean                @default(false)
+    rel_service       service_main           @relation("editor_user_service_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_parentService service_main?          @relation("editor_user_service_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
+    rel_service_type  service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
+    rel_editorUser    user_main              @relation("editor_user_service_user_idTouser_main", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_user_id")
+    rel_createdBy     user_main?             @relation("editor_user_service_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy     user_main?             @relation("editor_user_service_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy     user_main?             @relation("editor_user_service_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model invoice {
-    id                                            String                  @id @unique(map: "invoice_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
-    seller_business_id                            String                  @db.VarChar(8)
-    seller_user_id                                String?                 @db.VarChar(8)
-    buyer_business_id                             String                  @db.VarChar(8)
-    buyer_user_id                                 String?                 @db.VarChar(8)
-    currency_id                                   Int                     @db.SmallInt
-    tax_gst_type                                  e_type_gst?             @default(dbgenerated("'no gst'::e_type_gst"))
-    gross_amount                                  Decimal                 @db.Decimal(8, 2)
-    discount                                      Decimal                 @default(0) @db.Decimal(8, 2)
-    tax_amount                                    Decimal                 @default(0) @db.Decimal(8, 2)
-    net_amount                                    Decimal                 @db.Decimal(8, 2)
-    usd_net_amount                                Decimal                 @db.Decimal(10, 6)
-    usd_rate                                      Decimal                 @db.Decimal(10, 6)
-    date_due                                      String?                 @db.VarChar(255)
-    date_follow_up                                DateTime?               @db.Date
-    is_paid                                       Boolean                 @default(false)
-    payment_intent                                String?                 @db.VarChar(100)
-    payment_term                                  e_type_payment?
-    description                                   String?
-    notes                                         String?
-    invoice_type                                  e_type_invoice
-    invoice_creation_method                       e_type_invoice_creation @default(dbgenerated("'system'::e_type_invoice_creation"))
-    w_legacy_invoice_id                           String?                 @db.VarChar(24)
-    updated_by                                    String?                 @db.VarChar(8)
-    updated_on                                    DateTime?
-    deleted_by                                    String?                 @db.VarChar(8)
-    deleted_on                                    DateTime?
-    created_by                                    String?                 @db.VarChar(8)
-    created_on                                    DateTime                @default(now())
-    delivery                                      delivery[]
-    business_invoice_buyer_business_idTobusiness  business                @relation("invoice_buyer_business_idTobusiness", fields: [buyer_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_buyer_business_id")
-    user_main_invoice_buyer_user_idTouser_main    user_main?              @relation("invoice_buyer_user_idTouser_main", fields: [buyer_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_buyer_user_id")
-    user_main_invoice_created_byTouser_main       user_main?              @relation("invoice_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    country                                       country                 @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
-    user_main_invoice_deleted_byTouser_main       user_main?              @relation("invoice_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    business_invoice_seller_business_idTobusiness business                @relation("invoice_seller_business_idTobusiness", fields: [seller_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_seller_business_id")
-    user_main_invoice_seller_user_idTouser_main   user_main?              @relation("invoice_seller_user_idTouser_main", fields: [seller_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_seller_user_id")
-    user_main_invoice_updated_byTouser_main       user_main?              @relation("invoice_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    invoice_item                                  invoice_item[]
-    invoice_receipt                               invoice_receipt[]
-    invoice_token                                 invoice_token[]
-    order_invoice                                 order_invoice[]
-    wallet_balance                                wallet_balance[]
+    id                      String                  @id @unique(map: "invoice_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
+    seller_business_id      String                  @db.VarChar(8)
+    seller_user_id          String?                 @db.VarChar(8)
+    buyer_business_id       String                  @db.VarChar(8)
+    buyer_user_id           String?                 @db.VarChar(8)
+    currency_id             Int                     @db.SmallInt
+    tax_gst_type            e_type_gst?             @default(dbgenerated("'no gst'::e_type_gst"))
+    gross_amount            Decimal                 @db.Decimal(8, 2)
+    discount                Decimal                 @default(0) @db.Decimal(8, 2)
+    tax_amount              Decimal                 @default(0) @db.Decimal(8, 2)
+    net_amount              Decimal                 @db.Decimal(8, 2)
+    usd_net_amount          Decimal                 @db.Decimal(10, 6)
+    usd_rate                Decimal                 @db.Decimal(10, 6)
+    date_due                String?                 @db.VarChar(255)
+    date_follow_up          DateTime?               @db.Date
+    is_paid                 Boolean                 @default(false)
+    payment_intent          String?                 @db.VarChar(100)
+    payment_term            e_type_payment?
+    description             String?
+    notes                   String?
+    invoice_type            e_type_invoice
+    invoice_creation_method e_type_invoice_creation @default(dbgenerated("'system'::e_type_invoice_creation"))
+    w_legacy_invoice_id     String?                 @db.VarChar(24)
+    updated_by              String?                 @db.VarChar(8)
+    updated_on              DateTime?
+    deleted_by              String?                 @db.VarChar(8)
+    deleted_on              DateTime?
+    created_by              String?                 @db.VarChar(8)
+    created_on              DateTime                @default(now())
+    rel_delivery            delivery[]
+    rel_country             country                 @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
+    rel_buyerUser           user_main?              @relation("invoice_buyer_user_idTouser_main", fields: [buyer_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_buyer_user_id")
+    rel_buyerBus            business                @relation("invoice_buyer_business_idTobusiness", fields: [buyer_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_buyer_business_id")
+    rel_sellerBus           business                @relation("invoice_seller_business_idTobusiness", fields: [seller_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_seller_business_id")
+    rel_sellerUser          user_main?              @relation("invoice_seller_user_idTouser_main", fields: [seller_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_seller_user_id")
+    rel_updatedBy           user_main?              @relation("invoice_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_invoice_item        invoice_item[]
+    rel_invoice_receipt     invoice_receipt[]
+    rel_invoice_token       invoice_token[]
+    rel_order_invoice       order_invoice[]
+    rel_wallet_balance      wallet_balance[]
+    rel_deletedBy           user_main?              @relation("invoice_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_createdBy           user_main?              @relation("invoice_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
 
     @@index([buyer_business_id], map: "ix_invoice_buyer_business_id")
     @@index([buyer_user_id], map: "ix_invoice_buyer_user_id")
@@ -540,41 +540,41 @@ model invoice {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model invoice_item {
-    id                                           Int         @id @default(autoincrement())
-    invoice_id                                   String      @db.VarChar(8)
-    order_id                                     String?     @db.VarChar(8)
-    gross_amount                                 Decimal     @db.Decimal(8, 2)
-    discount                                     Decimal     @db.Decimal(8, 2)
-    tax_amount                                   Decimal     @db.Decimal(8, 2)
-    net_amount                                   Decimal     @db.Decimal(8, 2)
-    usd_net_amount                               Decimal     @db.Decimal(10, 6)
-    usd_rate                                     Decimal     @db.Decimal(10, 6)
-    description                                  String
-    img_qty                                      Int         @db.SmallInt
-    img_per_rate                                 Decimal     @db.Decimal(8, 2)
-    updated_by                                   String?     @db.VarChar(8)
-    updated_on                                   DateTime?
-    created_by                                   String?     @db.VarChar(8)
-    created_on                                   DateTime?   @default(now())
-    user_main_invoice_item_created_byTouser_main user_main?  @relation("invoice_item_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    invoice                                      invoice     @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
-    user_main_invoice_item_updated_byTouser_main user_main?  @relation("invoice_item_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    order_main                                   order_main? @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "invoice_item_order_id_foreign")
+    id             Int         @id @default(autoincrement())
+    invoice_id     String      @db.VarChar(8)
+    order_id       String?     @db.VarChar(8)
+    gross_amount   Decimal     @db.Decimal(8, 2)
+    discount       Decimal     @db.Decimal(8, 2)
+    tax_amount     Decimal     @db.Decimal(8, 2)
+    net_amount     Decimal     @db.Decimal(8, 2)
+    usd_net_amount Decimal     @db.Decimal(10, 6)
+    usd_rate       Decimal     @db.Decimal(10, 6)
+    description    String
+    img_qty        Int         @db.SmallInt
+    img_per_rate   Decimal     @db.Decimal(8, 2)
+    updated_by     String?     @db.VarChar(8)
+    updated_on     DateTime?
+    created_by     String?     @db.VarChar(8)
+    created_on     DateTime?   @default(now())
+    rel_invoice    invoice     @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_order_main order_main? @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "invoice_item_order_id_foreign")
+    rel_createdBY  user_main?  @relation("invoice_item_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_updatedBY  user_main?  @relation("invoice_item_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model invoice_receipt {
-    id                                              Int        @id @default(autoincrement())
-    invoice_id                                      String     @db.VarChar(8)
-    receipt_id                                      String     @db.VarChar(8)
-    amount_applied                                  Decimal    @db.Decimal(8, 2)
-    updated_by                                      String?    @db.VarChar(8)
-    updated_on                                      DateTime?
-    created_by                                      String?    @db.VarChar(8)
-    created_on                                      DateTime   @default(now())
-    user_main_invoice_receipt_created_byTouser_main user_main? @relation("invoice_receipt_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    invoice                                         invoice    @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
-    receipt                                         receipt    @relation(fields: [receipt_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_receipt_id")
-    user_main_invoice_receipt_updated_byTouser_main user_main? @relation("invoice_receipt_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id             Int        @id @default(autoincrement())
+    invoice_id     String     @db.VarChar(8)
+    receipt_id     String     @db.VarChar(8)
+    amount_applied Decimal    @db.Decimal(8, 2)
+    updated_by     String?    @db.VarChar(8)
+    updated_on     DateTime?
+    created_by     String?    @db.VarChar(8)
+    created_on     DateTime   @default(now())
+    rel_invoice    invoice    @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_receipt    receipt    @relation(fields: [receipt_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_receipt_id")
+    rel_createdBy  user_main? @relation("invoice_receipt_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_updatedBy  user_main? @relation("invoice_receipt_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([invoice_id], map: "ix_invoice_receipt_invoices_id")
     @@index([receipt_id], map: "ix_invoice_receipt_receipt_id")
@@ -585,7 +585,7 @@ model invoice_token {
     token       String   @db.VarChar(255)
     invoice_id  String   @db.VarChar(8)
     expiry_time DateTime
-    invoice     invoice  @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_invoice invoice  @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
 }
 
 model log_api {
@@ -603,7 +603,7 @@ model log_api {
     http_code         Int?
     session_id        String?    @db.VarChar(100)
     log_id            String?    @db.VarChar(20)
-    user_main         user_main? @relation(fields: [called_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_called_by")
+    rel_calledBy      user_main? @relation(fields: [called_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_called_by")
 
     @@index([called_by], map: "ix_t_log_called_by")
     @@index([date_completed_on], map: "ix_t_log_completed_on")
@@ -621,40 +621,40 @@ model log_type {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model order_detail {
-    id                                           BigInt        @id @default(autoincrement())
-    order_id                                     String        @db.VarChar(8)
-    service_id                                   Int           @db.SmallInt
-    service_type_id                              Int?          @db.SmallInt
-    quantity                                     Int           @db.SmallInt
-    quantity_processed                           Int?          @db.SmallInt
-    currency_id                                  Int           @db.SmallInt
-    tax_gst_type                                 e_type_gst?   @default(dbgenerated("'no gst'::e_type_gst"))
-    price_per_unit                               Decimal       @db.Decimal(8, 2)
-    discount_id                                  Int?
-    discount_amount                              Decimal       @default(0) @db.Decimal(8, 2)
-    gross_amount                                 Decimal       @db.Decimal(8, 2)
-    tax_rate                                     Decimal?      @db.Decimal(8, 2)
-    tax_amount                                   Decimal?      @db.Decimal(8, 2)
-    net_amount                                   Decimal       @db.Decimal(8, 2)
-    usd_rate                                     Decimal       @db.Decimal(10, 6)
-    usd_net_amount                               Decimal       @db.Decimal(10, 6)
-    editor_bus_rate                              Decimal?      @db.Decimal(8, 2)
-    editor_bus_total                             Decimal?      @db.Decimal(8, 2)
-    editor_user_rate                             Decimal?      @db.Decimal(8, 2)
-    editor_user_total                            Decimal?      @db.Decimal(8, 2)
-    updated_by                                   String?       @db.VarChar(8)
-    updated_on                                   DateTime?
-    created_by                                   String?       @db.VarChar(8)
-    created_on                                   DateTime      @default(now())
-    is_legacy                                    Boolean       @default(false)
+    id                 BigInt        @id @default(autoincrement())
+    order_id           String        @db.VarChar(8)
+    service_id         Int           @db.SmallInt
+    service_type_id    Int?          @db.SmallInt
+    quantity           Int           @db.SmallInt
+    quantity_processed Int?          @db.SmallInt
+    currency_id        Int           @db.SmallInt
+    tax_gst_type       e_type_gst?   @default(dbgenerated("'no gst'::e_type_gst"))
+    price_per_unit     Decimal       @db.Decimal(8, 2)
+    discount_id        Int?
+    discount_amount    Decimal       @default(0) @db.Decimal(8, 2)
+    gross_amount       Decimal       @db.Decimal(8, 2)
+    tax_rate           Decimal?      @db.Decimal(8, 2)
+    tax_amount         Decimal?      @db.Decimal(8, 2)
+    net_amount         Decimal       @db.Decimal(8, 2)
+    usd_rate           Decimal       @db.Decimal(10, 6)
+    usd_net_amount     Decimal       @db.Decimal(10, 6)
+    editor_bus_rate    Decimal?      @db.Decimal(8, 2)
+    editor_bus_total   Decimal?      @db.Decimal(8, 2)
+    editor_user_rate   Decimal?      @db.Decimal(8, 2)
+    editor_user_total  Decimal?      @db.Decimal(8, 2)
+    updated_by         String?       @db.VarChar(8)
+    updated_on         DateTime?
+    created_by         String?       @db.VarChar(8)
+    created_on         DateTime      @default(now())
+    is_legacy          Boolean       @default(false)
     //   Relationships
-    user_main_order_detail_created_byTouser_main user_main?    @relation("order_detail_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    country                                      country       @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
-    discount                                     discount?     @relation(fields: [discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_discount_id")
-    order_main                                   order_main    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
-    service_main                                 service_main  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
-    service_type                                 service_type? @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
-    user_main_order_detail_updated_byTouser_main user_main?    @relation("order_detail_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_country        country       @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_currency_id")
+    rel_discount       discount?     @relation(fields: [discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_discount_id")
+    rel_order_main     order_main    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
+    rel_service_main   service_main  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_service_type   service_type? @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
+    rel_createdBy      user_main?    @relation("order_detail_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_updatedBy      user_main?    @relation("order_detail_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([currency_id], map: "ix_order_detail_currency_id")
     @@index([order_id], map: "ix_order_detail_order_id")
@@ -663,28 +663,28 @@ model order_detail {
 }
 
 model order_invoice {
-    id         Int        @id @default(autoincrement())
-    order_id   String     @db.VarChar(8)
-    invoice_id String     @db.VarChar(8)
-    created_by String?    @db.VarChar(8)
-    created_on DateTime   @default(now())
-    is_legacy  Boolean    @default(false)
-    user_main  user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    invoice    invoice    @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
-    order_main order_main @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
+    id             Int        @id @default(autoincrement())
+    order_id       String     @db.VarChar(8)
+    invoice_id     String     @db.VarChar(8)
+    created_by     String?    @db.VarChar(8)
+    created_on     DateTime   @default(now())
+    is_legacy      Boolean    @default(false)
+    rel_createdBy  user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_invoice    invoice    @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_order_main order_main @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_order_id")
 }
 
 model order_log {
-    id          BigInt     @id(map: "order_log_state_pkey") @default(autoincrement())
-    order_id    String     @db.VarChar(8)
-    state_id    Int?
-    event       String?    @db.VarChar(48)
-    notes       String?
-    created_by  String?    @db.VarChar(8)
-    created_on  DateTime   @default(now())
-    log_type_id Int?
-    user_main   user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    log_type    log_type?  @relation(fields: [log_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_log_type_id")
+    id            BigInt     @id(map: "order_log_state_pkey") @default(autoincrement())
+    order_id      String     @db.VarChar(8)
+    state_id      Int?
+    event         String?    @db.VarChar(48)
+    notes         String?
+    created_by    String?    @db.VarChar(8)
+    created_on    DateTime   @default(now())
+    log_type_id   Int?
+    rel_createdBy user_main? @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_logType   log_type?  @relation(fields: [log_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_log_type_id")
 
     @@index([order_id], map: "ix_order_log_state_order_id")
     @@index([state_id], map: "ix_order_log_state_state_id")
@@ -704,52 +704,52 @@ model order_log_payment {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model order_main {
-    id                                               String           @id @unique(map: "order_main_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
-    service_code                                     String           @db.VarChar(6)
-    state_id                                         Int              @db.SmallInt
-    order_name                                       String           @db.VarChar(255)
-    project_id                                       String?          @db.VarChar(8)
-    client_business_id                               String?          @db.VarChar(8)
-    date_due_on                                      DateTime?
-    date_completed_on                                DateTime?
-    order_start_wait                                 Int              @default(0) @db.SmallInt
-    order_wait_time                                  DateTime?
-    editor_business_id                               String?          @db.VarChar(8)
-    editor_user_id                                   String?          @db.VarChar(8)
-    editor_qc_id                                     String?          @db.VarChar(8)
-    is_paid                                          Boolean          @default(false)
-    payment_intent                                   String?          @db.VarChar(100)
-    payment_term                                     e_type_payment
-    z_file_source_zip_path                           String?
-    z_file_output_zip_path                           String?
-    z_file_project_zip_path                          String?
-    notes                                            String?
-    has_sales_inv                                    Boolean          @default(false)
-    has_purchase_inv                                 Boolean          @default(false)
-    updated_by                                       String?          @db.VarChar(8)
-    updated_on                                       DateTime?
-    deleted_by                                       String?          @db.VarChar(8)
-    deleted_on                                       DateTime?
-    created_by                                       String?          @db.VarChar(8)
-    created_on                                       DateTime         @default(now())
-    is_legacy                                        Boolean          @default(false)
-    client_user_id                                   String?          @db.VarChar(8)
-    content_file                                     content_file[]
-    content_folder                                   content_folder[]
-    invoice_item                                     invoice_item[]
-    order_detail                                     order_detail[]
-    order_invoice                                    order_invoice[]
-    user_main_order_main_client_user_idTouser_main   user_main?       @relation("order_main_client_user_idTouser_main", fields: [client_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_assigned_to_client")
-    user_main_order_main_editor_user_idTouser_main   user_main?       @relation("order_main_editor_user_idTouser_main", fields: [editor_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_assigned_to_editor")
-    business_order_main_client_business_idTobusiness business?        @relation("order_main_client_business_idTobusiness", fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
-    user_main_order_main_created_byTouser_main       user_main?       @relation("order_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_order_main_deleted_byTouser_main       user_main?       @relation("order_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    business_order_main_editor_business_idTobusiness business?        @relation("order_main_editor_business_idTobusiness", fields: [editor_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_editor_business_id")
-    project                                          project?         @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_project_id")
-    user_main_order_main_editor_qc_idTouser_main     user_main?       @relation("order_main_editor_qc_idTouser_main", fields: [editor_qc_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_qc_editor")
-    service_main                                     service_main     @relation(fields: [service_code], references: [service_code], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_code")
-    order_state                                      order_state      @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_state_id")
-    user_main_order_main_updated_byTouser_main       user_main?       @relation("order_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                      String           @id @unique(map: "order_main_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
+    service_code            String           @db.VarChar(6)
+    state_id                Int              @db.SmallInt
+    order_name              String           @db.VarChar(255)
+    project_id              String?          @db.VarChar(8)
+    client_business_id      String?          @db.VarChar(8)
+    date_due_on             DateTime?
+    date_completed_on       DateTime?
+    order_start_wait        Int              @default(0) @db.SmallInt
+    order_wait_time         DateTime?
+    editor_business_id      String?          @db.VarChar(8)
+    editor_user_id          String?          @db.VarChar(8)
+    editor_qc_id            String?          @db.VarChar(8)
+    is_paid                 Boolean          @default(false)
+    payment_intent          String?          @db.VarChar(100)
+    payment_term            e_type_payment
+    z_file_source_zip_path  String?
+    z_file_output_zip_path  String?
+    z_file_project_zip_path String?
+    notes                   String?
+    has_sales_inv           Boolean          @default(false)
+    has_purchase_inv        Boolean          @default(false)
+    updated_by              String?          @db.VarChar(8)
+    updated_on              DateTime?
+    deleted_by              String?          @db.VarChar(8)
+    deleted_on              DateTime?
+    created_by              String?          @db.VarChar(8)
+    created_on              DateTime         @default(now())
+    is_legacy               Boolean          @default(false)
+    client_user_id          String?          @db.VarChar(8)
+    content_file            content_file[]
+    content_folder          content_folder[]
+    invoice_item            invoice_item[]
+    order_detail            order_detail[]
+    order_invoice           order_invoice[]
+    rel_clientUser          user_main?       @relation("order_main_client_user_idTouser_main", fields: [client_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_assigned_to_client")
+    rel_clientBus           business?        @relation("order_main_client_business_idTobusiness", fields: [client_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_client_business_id")
+    rel_editorUser          user_main?       @relation("order_main_editor_user_idTouser_main", fields: [editor_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_assigned_to_editor")
+    rel_editorQcUser        user_main?       @relation("order_main_editor_qc_idTouser_main", fields: [editor_qc_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_qc_editor")
+    rel_editorBus           business?        @relation("order_main_editor_business_idTobusiness", fields: [editor_business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_editor_business_id")
+    rel_createdBy           user_main?       @relation("order_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy           user_main?       @relation("order_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy           user_main?       @relation("order_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_project             project?         @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_project_id")
+    rel_serviceMain         service_main     @relation(fields: [service_code], references: [service_code], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_code")
+    rel_OrderState          order_state      @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_state_id")
 
     @@index([editor_user_id], map: "ix_orders_assigned_to_editor")
     @@index([client_business_id], map: "ix_orders_client_business_id")
@@ -763,121 +763,121 @@ model order_main {
 }
 
 model order_state {
-    id                                          Int          @id @default(autoincrement())
-    state_name                                  String       @db.VarChar(32)
-    state_color                                 String?      @db.VarChar(24)
-    description                                 String?
-    sort_order                                  Int?
-    updated_by                                  String?      @db.VarChar(8)
-    updated_on                                  DateTime?
-    deleted_by                                  String?      @db.VarChar(8)
-    deleted_on                                  DateTime?
-    created_by                                  String?      @db.VarChar(8)
-    created_on                                  DateTime     @default(now())
-    delivery                                    delivery[]
-    order_main                                  order_main[]
-    user_main_order_state_created_byTouser_main user_main?   @relation("order_state_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_order_state_deleted_byTouser_main user_main?   @relation("order_state_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_order_state_updated_byTouser_main user_main?   @relation("order_state_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id            Int          @id @default(autoincrement())
+    state_name    String       @db.VarChar(32)
+    state_color   String?      @db.VarChar(24)
+    description   String?
+    sort_order    Int?
+    updated_by    String?      @db.VarChar(8)
+    updated_on    DateTime?
+    deleted_by    String?      @db.VarChar(8)
+    deleted_on    DateTime?
+    created_by    String?      @db.VarChar(8)
+    created_on    DateTime     @default(now())
+    delivery      delivery[]
+    order_main    order_main[]
+    rel_createdBy user_main?   @relation("order_state_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy user_main?   @relation("order_state_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy user_main?   @relation("order_state_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model project {
-    id                                      String       @id @unique(map: "project_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
-    project_name                            String?      @db.VarChar(100)
-    project_address                         String?      @db.VarChar(200)
-    business_id                             String       @db.VarChar(8)
-    latitude                                Decimal      @db.Decimal(10, 8)
-    longitude                               Decimal      @db.Decimal(11, 8)
-    updated_by                              String?      @db.VarChar(8)
-    updated_on                              DateTime?
-    deleted_by                              String?      @db.VarChar(8)
-    deleted_on                              DateTime?
-    created_by                              String?      @db.VarChar(8)
-    created_on                              DateTime     @default(now())
-    delivery                                delivery[]
-    order_main                              order_main[]
-    business                                business     @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_project_created_byTouser_main user_main?   @relation("project_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_project_deleted_byTouser_main user_main?   @relation("project_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_project_updated_byTouser_main user_main?   @relation("project_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id              String       @id @unique(map: "project_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
+    project_name    String?      @db.VarChar(100)
+    project_address String?      @db.VarChar(200)
+    business_id     String       @db.VarChar(8)
+    latitude        Decimal      @db.Decimal(10, 8)
+    longitude       Decimal      @db.Decimal(11, 8)
+    updated_by      String?      @db.VarChar(8)
+    updated_on      DateTime?
+    deleted_by      String?      @db.VarChar(8)
+    deleted_on      DateTime?
+    created_by      String?      @db.VarChar(8)
+    created_on      DateTime     @default(now())
+    delivery        delivery[]
+    order_main      order_main[]
+    business        business     @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_createdBy   user_main?   @relation("project_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy   user_main?   @relation("project_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy   user_main?   @relation("project_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model receipt {
-    id                                      String            @id @unique(map: "receipt_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
-    payment_date                            DateTime
-    amount                                  Decimal           @db.Decimal(8, 2)
-    usd_rate                                Decimal           @db.Decimal(10, 6)
-    payment_ref                             String            @db.VarChar(48)
-    updated_by                              String?           @db.VarChar(8)
-    updated_on                              DateTime?
-    deleted_by                              String?           @db.VarChar(8)
-    deleted_on                              DateTime?
-    created_by                              String?           @db.VarChar(8)
-    created_on                              DateTime          @default(now())
-    invoice_receipt                         invoice_receipt[]
-    user_main_receipt_created_byTouser_main user_main?        @relation("receipt_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_receipt_deleted_byTouser_main user_main?        @relation("receipt_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_receipt_updated_byTouser_main user_main?        @relation("receipt_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id              String            @id @unique(map: "receipt_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
+    payment_date    DateTime
+    amount          Decimal           @db.Decimal(8, 2)
+    usd_rate        Decimal           @db.Decimal(10, 6)
+    payment_ref     String            @db.VarChar(48)
+    updated_by      String?           @db.VarChar(8)
+    updated_on      DateTime?
+    deleted_by      String?           @db.VarChar(8)
+    deleted_on      DateTime?
+    created_by      String?           @db.VarChar(8)
+    created_on      DateTime          @default(now())
+    invoice_receipt invoice_receipt[]
+    rel_createdBy   user_main?        @relation("receipt_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy   user_main?        @relation("receipt_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy   user_main?        @relation("receipt_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model service_access {
-    id                                                          Int                    @id @default(autoincrement())
-    service_id                                                  Int
-    service_type_id                                             Int?
-    parent_service_id                                           Int?
-    business_id                                                 String                 @db.VarChar(8)
-    state                                                       e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
-    updated_by                                                  String?                @db.VarChar(8)
-    updated_on                                                  DateTime?
-    deleted_by                                                  String?                @db.VarChar(8)
-    deleted_on                                                  DateTime?
-    created_by                                                  String?                @db.VarChar(8)
-    created_on                                                  DateTime               @default(now())
-    is_legacy                                                   Boolean                @default(false)
-    business                                                    business               @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_service_access_created_byTouser_main              user_main?             @relation("service_access_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_access_deleted_byTouser_main              user_main?             @relation("service_access_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_main_service_access_parent_service_idToservice_main service_main?          @relation("service_access_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
-    service_main_service_access_service_idToservice_main        service_main           @relation("service_access_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
-    service_type                                                service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
-    user_main_service_access_updated_byTouser_main              user_main?             @relation("service_access_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                Int                    @id @default(autoincrement())
+    service_id        Int
+    service_type_id   Int?
+    parent_service_id Int?
+    business_id       String                 @db.VarChar(8)
+    state             e_state_editor_service @default(dbgenerated("'requested'::e_state_editor_service"))
+    updated_by        String?                @db.VarChar(8)
+    updated_on        DateTime?
+    deleted_by        String?                @db.VarChar(8)
+    deleted_on        DateTime?
+    created_by        String?                @db.VarChar(8)
+    created_on        DateTime               @default(now())
+    is_legacy         Boolean                @default(false)
+    rel_business      business               @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_parentService service_main?          @relation("service_access_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
+    rel_service       service_main           @relation("service_access_service_idToservice_main", fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_service_type  service_type?          @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
+    rel_createdBy     user_main?             @relation("service_access_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy     user_main?             @relation("service_access_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy     user_main?             @relation("service_access_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model service_addon {
-    id                                                         Int          @id @default(autoincrement())
-    parent_service_id                                          Int
-    addon_service_id                                           Int
-    deleted_by                                                 String?      @db.VarChar(8)
-    deleted_on                                                 DateTime?
-    created_by                                                 String?      @db.VarChar(8)
-    created_on                                                 DateTime     @default(now())
-    service_main_service_addon_addon_service_idToservice_main  service_main @relation("service_addon_addon_service_idToservice_main", fields: [addon_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_addon_service_id")
-    user_main_service_addon_created_byTouser_main              user_main?   @relation("service_addon_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_addon_deleted_byTouser_main              user_main?   @relation("service_addon_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_main_service_addon_parent_service_idToservice_main service_main @relation("service_addon_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
+    id                Int          @id @default(autoincrement())
+    parent_service_id Int
+    addon_service_id  Int
+    deleted_by        String?      @db.VarChar(8)
+    deleted_on        DateTime?
+    created_by        String?      @db.VarChar(8)
+    created_on        DateTime     @default(now())
+    rel_serviceAddon  service_main @relation("service_addon_addon_service_idToservice_main", fields: [addon_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_addon_service_id")
+    rel_parentService service_main @relation("service_addon_parent_service_idToservice_main", fields: [parent_service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_service_id")
+    rel_createdBy     user_main?   @relation("service_addon_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy     user_main?   @relation("service_addon_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
 
     @@unique([parent_service_id, addon_service_id], map: "service_addon_parent_service_id_addon_service_id_unique")
 }
 
 model service_category {
-    id                                               Int                 @id @default(autoincrement())
-    service_category_code                            String              @unique(map: "service_category_service_category_code_unique") @db.VarChar(6)
-    service_category_name                            String              @db.VarChar(100)
-    description                                      String?
-    preview_image                                    String?             @db.VarChar(200)
-    sort_order                                       Int?                @unique(map: "service_category_sort_order_unique")
-    updated_by                                       String?             @db.VarChar(8)
-    updated_on                                       DateTime?
-    deleted_by                                       String?             @db.VarChar(8)
-    deleted_on                                       DateTime?
-    created_by                                       String?             @db.VarChar(8)
-    created_on                                       DateTime            @default(now())
-    client_preference                                client_preference[]
-    user_main_service_category_created_byTouser_main user_main?          @relation("service_category_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_category_deleted_byTouser_main user_main?          @relation("service_category_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_service_category_updated_byTouser_main user_main?          @relation("service_category_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    service_main                                     service_main[]
-    service_type                                     service_type[]
+    id                    Int                 @id @default(autoincrement())
+    service_category_code String              @unique(map: "service_category_service_category_code_unique") @db.VarChar(6)
+    service_category_name String              @db.VarChar(100)
+    description           String?
+    preview_image         String?             @db.VarChar(200)
+    sort_order            Int?                @unique(map: "service_category_sort_order_unique")
+    updated_by            String?             @db.VarChar(8)
+    updated_on            DateTime?
+    deleted_by            String?             @db.VarChar(8)
+    deleted_on            DateTime?
+    created_by            String?             @db.VarChar(8)
+    created_on            DateTime            @default(now())
+    rel_client_preference client_preference[]
+    rel_service_main      service_main[]
+    rel_service_type      service_type[]
+    rel_createdBy         user_main?          @relation("service_category_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBY         user_main?          @relation("service_category_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy         user_main?          @relation("service_category_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([service_category_code], map: "ix_service_category_service_category_code")
     @@index([service_category_name], map: "ix_service_category_service_category_name")
@@ -908,22 +908,22 @@ model service_main {
     created_by                                                              String?               @db.VarChar(8)
     created_on                                                              DateTime              @default(now())
     is_legacy                                                               Boolean               @default(false)
-    discount_level                                                          discount_level[]
     editor_bus_service_editor_bus_service_parent_service_idToservice_main   editor_bus_service[]  @relation("editor_bus_service_parent_service_idToservice_main")
+    rel_discount_level                                                      discount_level[]
     editor_bus_service_editor_bus_service_service_idToservice_main          editor_bus_service[]  @relation("editor_bus_service_service_idToservice_main")
     editor_user_service_editor_user_service_parent_service_idToservice_main editor_user_service[] @relation("editor_user_service_parent_service_idToservice_main")
     editor_user_service_editor_user_service_service_idToservice_main        editor_user_service[] @relation("editor_user_service_service_idToservice_main")
-    order_detail                                                            order_detail[]
-    order_main                                                              order_main[]
+    rel_order_detail                                                        order_detail[]
+    rel_order_main                                                          order_main[]
     service_access_service_access_parent_service_idToservice_main           service_access[]      @relation("service_access_parent_service_idToservice_main")
     service_access_service_access_service_idToservice_main                  service_access[]      @relation("service_access_service_idToservice_main")
-    service_addon_service_addon_addon_service_idToservice_main              service_addon[]       @relation("service_addon_addon_service_idToservice_main")
-    service_addon_service_addon_parent_service_idToservice_main             service_addon[]       @relation("service_addon_parent_service_idToservice_main")
-    user_main_service_main_created_byTouser_main                            user_main?            @relation("service_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_main_deleted_byTouser_main                            user_main?            @relation("service_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_category                                                        service_category      @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
-    user_main_service_main_updated_byTouser_main                            user_main?            @relation("service_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    service_price                                                           service_price[]
+    rel_serviceAddon                                                        service_addon[]       @relation("service_addon_addon_service_idToservice_main")
+    rel_serviceParent                                                       service_addon[]       @relation("service_addon_parent_service_idToservice_main")
+    rel_service_price                                                       service_price[]
+    rel_service_category                                                    service_category      @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
+    rel_createBy                                                            user_main?            @relation("service_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy                                                           user_main?            @relation("service_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy                                                           user_main?            @relation("service_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([client_type], map: "ix_service_client_type")
     @@index([is_addon], map: "ix_service_is_addon")
@@ -934,50 +934,50 @@ model service_main {
 }
 
 model service_price {
-    service_id                                    Int
-    id                                            Int           @id @default(autoincrement())
-    service_type_id                               Int?
-    price_type                                    e_type_price
-    gross_price                                   Json
-    tax_rate                                      Json
-    retail_price                                  Json
-    updated_by                                    String?       @db.VarChar(8)
-    updated_on                                    DateTime?
-    deleted_by                                    String?       @db.VarChar(8)
-    deleted_on                                    DateTime?
-    created_by                                    String?       @db.VarChar(8)
-    created_on                                    DateTime      @default(now())
-    is_legacy                                     Boolean       @default(false)
-    user_main_service_price_created_byTouser_main user_main?    @relation("service_price_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_price_deleted_byTouser_main user_main?    @relation("service_price_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_main                                  service_main  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
-    service_type                                  service_type? @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
-    user_main_service_price_updated_byTouser_main user_main?    @relation("service_price_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    service_id       Int
+    id               Int           @id @default(autoincrement())
+    service_type_id  Int?
+    price_type       e_type_price
+    gross_price      Json
+    tax_rate         Json
+    retail_price     Json
+    updated_by       String?       @db.VarChar(8)
+    updated_on       DateTime?
+    deleted_by       String?       @db.VarChar(8)
+    deleted_on       DateTime?
+    created_by       String?       @db.VarChar(8)
+    created_on       DateTime      @default(now())
+    is_legacy        Boolean       @default(false)
+    rel_service_main service_main  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_id")
+    rel_service_type service_type? @relation(fields: [service_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_type_id")
+    rel_createdBy    user_main?    @relation("service_price_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy    user_main?    @relation("service_price_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy    user_main?    @relation("service_price_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 }
 
 model service_type {
-    id                                           Int                   @id @default(autoincrement())
-    service_type_code                            String                @unique(map: "service_type_service_type_code_unique") @db.VarChar(6)
-    service_type_name                            String                @db.VarChar(100)
-    service_category_id                          Int
-    description                                  String?
-    preview_image                                String?               @db.VarChar(200)
-    sort_order                                   Int?                  @unique(map: "service_type_sort_order_unique")
-    updated_by                                   String?               @db.VarChar(8)
-    updated_on                                   DateTime?             @db.Timestamptz(6)
-    deleted_by                                   String?               @db.VarChar(8)
-    deleted_on                                   DateTime?             @db.Timestamptz(6)
-    created_by                                   String?               @db.VarChar(8)
-    created_on                                   DateTime              @default(now()) @db.Timestamptz(6)
-    editor_bus_service                           editor_bus_service[]
-    editor_user_service                          editor_user_service[]
-    order_detail                                 order_detail[]
-    service_access                               service_access[]
-    service_price                                service_price[]
-    user_main_service_type_created_byTouser_main user_main?            @relation("service_type_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_service_type_deleted_byTouser_main user_main?            @relation("service_type_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    service_category                             service_category      @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
-    user_main_service_type_updated_byTouser_main user_main?            @relation("service_type_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    id                      Int                   @id @default(autoincrement())
+    service_type_code       String                @unique(map: "service_type_service_type_code_unique") @db.VarChar(6)
+    service_type_name       String                @db.VarChar(100)
+    service_category_id     Int
+    description             String?
+    preview_image           String?               @db.VarChar(200)
+    sort_order              Int?                  @unique(map: "service_type_sort_order_unique")
+    updated_by              String?               @db.VarChar(8)
+    updated_on              DateTime?             @db.Timestamptz(6)
+    deleted_by              String?               @db.VarChar(8)
+    deleted_on              DateTime?             @db.Timestamptz(6)
+    created_by              String?               @db.VarChar(8)
+    created_on              DateTime              @default(now()) @db.Timestamptz(6)
+    rel_editor_bus_service  editor_bus_service[]
+    rel_editor_user_service editor_user_service[]
+    rel_order_detail        order_detail[]
+    rel_service_access      service_access[]
+    rel_service_price       service_price[]
+    rel_service_category    service_category      @relation(fields: [service_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_category_id")
+    rel_createdBy           user_main?            @relation("service_type_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy           user_main?            @relation("service_type_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy           user_main?            @relation("service_type_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
 
     @@index([service_type_code], map: "ix_service_type_service_type_code")
     @@index([service_type_name], map: "ix_service_type_service_type_name")
@@ -994,40 +994,67 @@ model sessions {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model user_main {
-    user_id                                                           String                  @id @unique(map: "user_main_user_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
-    name_first                                                        String                  @db.VarChar(100)
-    name_last                                                         String?                 @db.VarChar(100)
-    email_id                                                          String                  @unique(map: "user_main_email_id_unique") @db.VarChar(200)
-    role_id                                                           Int
-    business_id                                                       String?                 @db.VarChar(8)
-    title                                                             String?                 @db.VarChar(200)
-    phone_no                                                          String?                 @db.VarChar(15)
-    pass                                                              String?                 @db.VarChar(256)
-    pass_reset_token                                                  String?                 @db.Uuid
-    pass_reset_token_expiry                                           DateTime?
-    last_login_ip                                                     String?                 @db.Inet
-    last_login_time                                                   DateTime?
-    profile_image                                                     String?                 @db.VarChar(100)
-    max_jobs                                                          Int?
-    stripe_code                                                       String?                 @db.VarChar(100)
-    addr_line1                                                        String?                 @db.VarChar(100)
-    addr_line2                                                        String?                 @db.VarChar(100)
-    city                                                              String?                 @db.VarChar(48)
-    postcode                                                          String?                 @db.VarChar(10)
-    country_id                                                        Int?
-    updated_by                                                        String?                 @db.VarChar(8)
-    updated_on                                                        DateTime?
-    deleted_by                                                        String?                 @db.VarChar(8)
-    deleted_on                                                        DateTime?
-    created_by                                                        String?                 @db.VarChar(8)
-    created_on                                                        DateTime                @default(now())
-    is_legacy                                                         Boolean                 @default(false)
-    email_verified                                                    DateTime?               @db.Timestamp(6)
-    email_token                                                       String?                 @db.VarChar(200)
+    user_id                                                       String              @id @unique(map: "user_main_user_id_unique") @default(dbgenerated("func_un_eight()")) @db.VarChar(8)
+    name_first                                                    String              @db.VarChar(100)
+    name_last                                                     String?             @db.VarChar(100)
+    email_id                                                      String              @unique(map: "user_main_email_id_unique") @db.VarChar(200)
+    role_id                                                       Int
+    business_id                                                   String?             @db.VarChar(8)
+    title                                                         String?             @db.VarChar(200)
+    phone_no                                                      String?             @db.VarChar(15)
+    pass                                                          String?             @db.VarChar(256)
+    pass_reset_token                                              String?             @db.Uuid
+    pass_reset_token_expiry                                       DateTime?
+    last_login_ip                                                 String?             @db.Inet
+    last_login_time                                               DateTime?
+    profile_image                                                 String?             @db.VarChar(100)
+    max_jobs                                                      Int?
+    stripe_code                                                   String?             @db.VarChar(100)
+    addr_line1                                                    String?             @db.VarChar(100)
+    addr_line2                                                    String?             @db.VarChar(100)
+    city                                                          String?             @db.VarChar(48)
+    postcode                                                      String?             @db.VarChar(10)
+    country_id                                                    Int?
+    updated_by                                                    String?             @db.VarChar(8)
+    updated_on                                                    DateTime?
+    deleted_by                                                    String?             @db.VarChar(8)
+    deleted_on                                                    DateTime?
+    created_by                                                    String?             @db.VarChar(8)
+    created_on                                                    DateTime            @default(now())
+    is_legacy                                                     Boolean             @default(false)
+    email_verified                                                DateTime?           @db.Timestamp(6)
+    email_token                                                   String?             @db.VarChar(200)
+    rel_bus                                                     business?           @relation("user_main_business_idTobusiness", fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
+    rel_role                                                      auth_role           @relation("user_main_role_idToauth_role", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_role_id")
+    rel_busOwner                                                  business?           @relation("business_owner_user_idTouser_main")
+    user_parent_child_user_parent_child_child_user_idTouser_main  user_parent_child[] @relation("user_parent_child_child_user_idTouser_main")
+    user_parent_child_user_parent_child_parent_user_idTouser_main user_parent_child[] @relation("user_parent_child_parent_user_idTouser_main")
+
+    // updated by info
+    rel_createdBy user_main? @relation("user_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy user_main? @relation("user_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+    rel_updatedBy user_main? @relation("user_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+
+    // not as important
+    address_address_user_idTouser_main                         address[]             @relation("address_user_idTouser_main")
+    order_log                                                  order_log[]
+    client_customer                                            client_customer[]
+    client_preference_client_preference_user_idTouser_main     client_preference[]   @relation("client_preference_user_idTouser_main")
+    delivery_delivery_user_idTouser_main                       delivery[]            @relation("delivery_user_idTouser_main")
+    discount_level                                             discount_level[]
+    editor_user_service_editor_user_service_user_idTouser_main editor_user_service[] @relation("editor_user_service_user_idTouser_main")
+    invoice_invoice_buyer_user_idTouser_main                   invoice[]             @relation("invoice_buyer_user_idTouser_main")
+    invoice_invoice_seller_user_idTouser_main                  invoice[]             @relation("invoice_seller_user_idTouser_main")
+    log_api                                                    log_api[]
+    order_invoice                                              order_invoice[]
+    order_main_order_main_client_user_idTouser_main            order_main[]          @relation("order_main_client_user_idTouser_main")
+    order_main_order_main_editor_user_idTouser_main            order_main[]          @relation("order_main_editor_user_idTouser_main")
+    order_main_order_main_editor_qc_idTouser_main              order_main[]          @relation("order_main_editor_qc_idTouser_main")
+
+    // Created, updated, deleted relations, can ignore generall
     address_address_created_byTouser_main                             address[]               @relation("address_created_byTouser_main")
     address_address_deleted_byTouser_main                             address[]               @relation("address_deleted_byTouser_main")
     address_address_updated_byTouser_main                             address[]               @relation("address_updated_byTouser_main")
-    address_address_user_idTouser_main                                address[]               @relation("address_user_idTouser_main")
     auth_role_auth_role_created_byTouser_main                         auth_role[]             @relation("auth_role_created_byTouser_main")
     auth_role_auth_role_deleted_byTouser_main                         auth_role[]             @relation("auth_role_deleted_byTouser_main")
     auth_role_auth_role_updated_byTouser_main                         auth_role[]             @relation("auth_role_updated_byTouser_main")
@@ -1038,59 +1065,23 @@ model user_main {
     auth_rule_auth_rule_updated_byTouser_main                         auth_rule[]             @relation("auth_rule_updated_byTouser_main")
     business_business_created_byTouser_main                           business[]              @relation("business_created_byTouser_main")
     business_business_deleted_byTouser_main                           business[]              @relation("business_deleted_byTouser_main")
-    business_business_owner_user_idTouser_main                        business?               @relation("business_owner_user_idTouser_main")
     business_business_updated_byTouser_main                           business[]              @relation("business_updated_byTouser_main")
-    client_customer                                                   client_customer[]
-    client_preference_client_preference_created_byTouser_main         client_preference[]     @relation("client_preference_created_byTouser_main")
-    client_preference_client_preference_deleted_byTouser_main         client_preference[]     @relation("client_preference_deleted_byTouser_main")
-    client_preference_client_preference_updated_byTouser_main         client_preference[]     @relation("client_preference_updated_byTouser_main")
-    client_preference_client_preference_user_idTouser_main            client_preference[]     @relation("client_preference_user_idTouser_main")
-    client_service_client_service_created_byTouser_main               client_service[]        @relation("client_service_created_byTouser_main")
-    client_service_client_service_deleted_byTouser_main               client_service[]        @relation("client_service_deleted_byTouser_main")
-    client_service_client_service_updated_byTouser_main               client_service[]        @relation("client_service_updated_byTouser_main")
-    content_file_content_file_created_byTouser_main                   content_file[]          @relation("content_file_created_byTouser_main")
-    content_file_content_file_deleted_byTouser_main                   content_file[]          @relation("content_file_deleted_byTouser_main")
-    content_file_content_file_updated_byTouser_main                   content_file[]          @relation("content_file_updated_byTouser_main")
-    content_folder_content_folder_created_byTouser_main               content_folder[]        @relation("content_folder_created_byTouser_main")
-    content_folder_content_folder_deleted_byTouser_main               content_folder[]        @relation("content_folder_deleted_byTouser_main")
-    content_folder_content_folder_updated_byTouser_main               content_folder[]        @relation("content_folder_updated_byTouser_main")
-    delivery_delivery_created_byTouser_main                           delivery[]              @relation("delivery_created_byTouser_main")
-    delivery_delivery_deleted_byTouser_main                           delivery[]              @relation("delivery_deleted_byTouser_main")
-    delivery_delivery_updated_byTouser_main                           delivery[]              @relation("delivery_updated_byTouser_main")
-    delivery_delivery_user_idTouser_main                              delivery[]              @relation("delivery_user_idTouser_main")
-    delivery_type_content_delivery_type_content_created_byTouser_main delivery_type_content[] @relation("delivery_type_content_created_byTouser_main")
-    delivery_type_content_delivery_type_content_deleted_byTouser_main delivery_type_content[] @relation("delivery_type_content_deleted_byTouser_main")
-    delivery_type_content_delivery_type_content_updated_byTouser_main delivery_type_content[] @relation("delivery_type_content_updated_byTouser_main")
-    discount_discount_created_byTouser_main                           discount[]              @relation("discount_created_byTouser_main")
-    discount_discount_deleted_byTouser_main                           discount[]              @relation("discount_deleted_byTouser_main")
-    discount_discount_updated_byTouser_main                           discount[]              @relation("discount_updated_byTouser_main")
-    discount_level                                                    discount_level[]
-    editor_bus_service_editor_bus_service_created_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_created_byTouser_main")
-    editor_bus_service_editor_bus_service_deleted_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_deleted_byTouser_main")
-    editor_bus_service_editor_bus_service_updated_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_updated_byTouser_main")
-    editor_user_service_editor_user_service_created_byTouser_main     editor_user_service[]   @relation("editor_user_service_created_byTouser_main")
-    editor_user_service_editor_user_service_deleted_byTouser_main     editor_user_service[]   @relation("editor_user_service_deleted_byTouser_main")
-    editor_user_service_editor_user_service_updated_byTouser_main     editor_user_service[]   @relation("editor_user_service_updated_byTouser_main")
-    editor_user_service_editor_user_service_user_idTouser_main        editor_user_service[]   @relation("editor_user_service_user_idTouser_main")
-    invoice_invoice_buyer_user_idTouser_main                          invoice[]               @relation("invoice_buyer_user_idTouser_main")
-    invoice_invoice_created_byTouser_main                             invoice[]               @relation("invoice_created_byTouser_main")
-    invoice_invoice_deleted_byTouser_main                             invoice[]               @relation("invoice_deleted_byTouser_main")
-    invoice_invoice_seller_user_idTouser_main                         invoice[]               @relation("invoice_seller_user_idTouser_main")
-    invoice_invoice_updated_byTouser_main                             invoice[]               @relation("invoice_updated_byTouser_main")
-    invoice_item_invoice_item_created_byTouser_main                   invoice_item[]          @relation("invoice_item_created_byTouser_main")
-    invoice_item_invoice_item_updated_byTouser_main                   invoice_item[]          @relation("invoice_item_updated_byTouser_main")
-    invoice_receipt_invoice_receipt_created_byTouser_main             invoice_receipt[]       @relation("invoice_receipt_created_byTouser_main")
-    invoice_receipt_invoice_receipt_updated_byTouser_main             invoice_receipt[]       @relation("invoice_receipt_updated_byTouser_main")
-    log_api                                                           log_api[]
-    order_detail_order_detail_created_byTouser_main                   order_detail[]          @relation("order_detail_created_byTouser_main")
-    order_detail_order_detail_updated_byTouser_main                   order_detail[]          @relation("order_detail_updated_byTouser_main")
-    order_invoice                                                     order_invoice[]
-    order_log                                                         order_log[]
-    order_main_order_main_client_user_idTouser_main                   order_main[]            @relation("order_main_client_user_idTouser_main")
-    order_main_order_main_editor_user_idTouser_main                   order_main[]            @relation("order_main_editor_user_idTouser_main")
-    order_main_order_main_created_byTouser_main                       order_main[]            @relation("order_main_created_byTouser_main")
-    order_main_order_main_deleted_byTouser_main                       order_main[]            @relation("order_main_deleted_byTouser_main")
-    order_main_order_main_editor_qc_idTouser_main                     order_main[]            @relation("order_main_editor_qc_idTouser_main")
+    wallet_balance_wallet_balance_created_byTouser_main               wallet_balance[]        @relation("wallet_balance_created_byTouser_main")
+    wallet_balance_wallet_balance_updated_byTouser_main               wallet_balance[]        @relation("wallet_balance_updated_byTouser_main")
+    service_main_service_main_created_byTouser_main                   service_main[]          @relation("service_main_created_byTouser_main")
+    service_main_service_main_deleted_byTouser_main                   service_main[]          @relation("service_main_deleted_byTouser_main")
+    service_main_service_main_updated_byTouser_main                   service_main[]          @relation("service_main_updated_byTouser_main")
+    service_price_service_price_created_byTouser_main                 service_price[]         @relation("service_price_created_byTouser_main")
+    service_price_service_price_deleted_byTouser_main                 service_price[]         @relation("service_price_deleted_byTouser_main")
+    service_price_service_price_updated_byTouser_main                 service_price[]         @relation("service_price_updated_byTouser_main")
+    service_type_service_type_created_byTouser_main                   service_type[]          @relation("service_type_created_byTouser_main")
+    service_type_service_type_deleted_byTouser_main                   service_type[]          @relation("service_type_deleted_byTouser_main")
+    service_type_service_type_updated_byTouser_main                   service_type[]          @relation("service_type_updated_byTouser_main")
+    other_user_main_user_main_created_byTouser_main                   user_main[]             @relation("user_main_created_byTouser_main")
+    other_user_main_user_main_deleted_byTouser_main                   user_main[]             @relation("user_main_deleted_byTouser_main")
+    other_user_main_user_main_updated_byTouser_main                   user_main[]             @relation("user_main_updated_byTouser_main")
+    user_parent_child_user_parent_child_created_byTouser_main         user_parent_child[]     @relation("user_parent_child_created_byTouser_main")
+    user_parent_child_user_parent_child_deleted_byTouser_main         user_parent_child[]     @relation("user_parent_child_deleted_byTouser_main")
     order_main_order_main_updated_byTouser_main                       order_main[]            @relation("order_main_updated_byTouser_main")
     order_state_order_state_created_byTouser_main                     order_state[]           @relation("order_state_created_byTouser_main")
     order_state_order_state_deleted_byTouser_main                     order_state[]           @relation("order_state_deleted_byTouser_main")
@@ -1109,29 +1100,44 @@ model user_main {
     service_category_service_category_created_byTouser_main           service_category[]      @relation("service_category_created_byTouser_main")
     service_category_service_category_deleted_byTouser_main           service_category[]      @relation("service_category_deleted_byTouser_main")
     service_category_service_category_updated_byTouser_main           service_category[]      @relation("service_category_updated_byTouser_main")
-    service_main_service_main_created_byTouser_main                   service_main[]          @relation("service_main_created_byTouser_main")
-    service_main_service_main_deleted_byTouser_main                   service_main[]          @relation("service_main_deleted_byTouser_main")
-    service_main_service_main_updated_byTouser_main                   service_main[]          @relation("service_main_updated_byTouser_main")
-    service_price_service_price_created_byTouser_main                 service_price[]         @relation("service_price_created_byTouser_main")
-    service_price_service_price_deleted_byTouser_main                 service_price[]         @relation("service_price_deleted_byTouser_main")
-    service_price_service_price_updated_byTouser_main                 service_price[]         @relation("service_price_updated_byTouser_main")
-    service_type_service_type_created_byTouser_main                   service_type[]          @relation("service_type_created_byTouser_main")
-    service_type_service_type_deleted_byTouser_main                   service_type[]          @relation("service_type_deleted_byTouser_main")
-    service_type_service_type_updated_byTouser_main                   service_type[]          @relation("service_type_updated_byTouser_main")
-    business_user_main_business_idTobusiness                          business?               @relation("user_main_business_idTobusiness", fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
-    user_main_user_main_created_byTouser_main                         user_main?              @relation("user_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    other_user_main_user_main_created_byTouser_main                   user_main[]             @relation("user_main_created_byTouser_main")
-    user_main_user_main_deleted_byTouser_main                         user_main?              @relation("user_main_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    other_user_main_user_main_deleted_byTouser_main                   user_main[]             @relation("user_main_deleted_byTouser_main")
-    auth_role_user_main_role_idToauth_role                            auth_role               @relation("user_main_role_idToauth_role", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_role_id")
-    user_main_user_main_updated_byTouser_main                         user_main?              @relation("user_main_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    other_user_main_user_main_updated_byTouser_main                   user_main[]             @relation("user_main_updated_byTouser_main")
-    user_parent_child_user_parent_child_child_user_idTouser_main      user_parent_child[]     @relation("user_parent_child_child_user_idTouser_main")
-    user_parent_child_user_parent_child_created_byTouser_main         user_parent_child[]     @relation("user_parent_child_created_byTouser_main")
-    user_parent_child_user_parent_child_deleted_byTouser_main         user_parent_child[]     @relation("user_parent_child_deleted_byTouser_main")
-    user_parent_child_user_parent_child_parent_user_idTouser_main     user_parent_child[]     @relation("user_parent_child_parent_user_idTouser_main")
-    wallet_balance_wallet_balance_created_byTouser_main               wallet_balance[]        @relation("wallet_balance_created_byTouser_main")
-    wallet_balance_wallet_balance_updated_byTouser_main               wallet_balance[]        @relation("wallet_balance_updated_byTouser_main")
+    invoice_invoice_created_byTouser_main                             invoice[]               @relation("invoice_created_byTouser_main")
+    invoice_invoice_deleted_byTouser_main                             invoice[]               @relation("invoice_deleted_byTouser_main")
+    invoice_invoice_updated_byTouser_main                             invoice[]               @relation("invoice_updated_byTouser_main")
+    invoice_item_invoice_item_created_byTouser_main                   invoice_item[]          @relation("invoice_item_created_byTouser_main")
+    invoice_item_invoice_item_updated_byTouser_main                   invoice_item[]          @relation("invoice_item_updated_byTouser_main")
+    invoice_receipt_invoice_receipt_created_byTouser_main             invoice_receipt[]       @relation("invoice_receipt_created_byTouser_main")
+    invoice_receipt_invoice_receipt_updated_byTouser_main             invoice_receipt[]       @relation("invoice_receipt_updated_byTouser_main")
+    order_detail_order_detail_created_byTouser_main                   order_detail[]          @relation("order_detail_created_byTouser_main")
+    order_detail_order_detail_updated_byTouser_main                   order_detail[]          @relation("order_detail_updated_byTouser_main")
+    editor_bus_service_editor_bus_service_created_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_created_byTouser_main")
+    editor_bus_service_editor_bus_service_deleted_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_deleted_byTouser_main")
+    editor_bus_service_editor_bus_service_updated_byTouser_main       editor_bus_service[]    @relation("editor_bus_service_updated_byTouser_main")
+    editor_user_service_editor_user_service_created_byTouser_main     editor_user_service[]   @relation("editor_user_service_created_byTouser_main")
+    editor_user_service_editor_user_service_deleted_byTouser_main     editor_user_service[]   @relation("editor_user_service_deleted_byTouser_main")
+    editor_user_service_editor_user_service_updated_byTouser_main     editor_user_service[]   @relation("editor_user_service_updated_byTouser_main")
+    client_service_client_service_created_byTouser_main               client_service[]        @relation("client_service_created_byTouser_main")
+    client_service_client_service_deleted_byTouser_main               client_service[]        @relation("client_service_deleted_byTouser_main")
+    client_service_client_service_updated_byTouser_main               client_service[]        @relation("client_service_updated_byTouser_main")
+    content_file_content_file_created_byTouser_main                   content_file[]          @relation("content_file_created_byTouser_main")
+    content_file_content_file_deleted_byTouser_main                   content_file[]          @relation("content_file_deleted_byTouser_main")
+    content_file_content_file_updated_byTouser_main                   content_file[]          @relation("content_file_updated_byTouser_main")
+    content_folder_content_folder_created_byTouser_main               content_folder[]        @relation("content_folder_created_byTouser_main")
+    content_folder_content_folder_deleted_byTouser_main               content_folder[]        @relation("content_folder_deleted_byTouser_main")
+    content_folder_content_folder_updated_byTouser_main               content_folder[]        @relation("content_folder_updated_byTouser_main")
+    delivery_delivery_created_byTouser_main                           delivery[]              @relation("delivery_created_byTouser_main")
+    delivery_delivery_deleted_byTouser_main                           delivery[]              @relation("delivery_deleted_byTouser_main")
+    delivery_delivery_updated_byTouser_main                           delivery[]              @relation("delivery_updated_byTouser_main")
+    delivery_type_content_delivery_type_content_created_byTouser_main delivery_type_content[] @relation("delivery_type_content_created_byTouser_main")
+    delivery_type_content_delivery_type_content_deleted_byTouser_main delivery_type_content[] @relation("delivery_type_content_deleted_byTouser_main")
+    delivery_type_content_delivery_type_content_updated_byTouser_main delivery_type_content[] @relation("delivery_type_content_updated_byTouser_main")
+    discount_discount_created_byTouser_main                           discount[]              @relation("discount_created_byTouser_main")
+    discount_discount_deleted_byTouser_main                           discount[]              @relation("discount_deleted_byTouser_main")
+    discount_discount_updated_byTouser_main                           discount[]              @relation("discount_updated_byTouser_main")
+    order_main_order_main_created_byTouser_main                       order_main[]            @relation("order_main_created_byTouser_main")
+    order_main_order_main_deleted_byTouser_main                       order_main[]            @relation("order_main_deleted_byTouser_main")
+    client_preference_client_preference_created_byTouser_main         client_preference[]     @relation("client_preference_created_byTouser_main")
+    client_preference_client_preference_deleted_byTouser_main         client_preference[]     @relation("client_preference_deleted_byTouser_main")
+    client_preference_client_preference_updated_byTouser_main         client_preference[]     @relation("client_preference_updated_byTouser_main")
 
     @@index([business_id], map: "ix_user_business_id")
     @@index([country_id], map: "ix_user_country_id")
@@ -1143,17 +1149,17 @@ model user_main {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model user_parent_child {
-    id                                                    Int        @id @default(autoincrement())
-    parent_user_id                                        String     @db.VarChar(8)
-    child_user_id                                         String     @db.VarChar(8)
-    deleted_by                                            String?    @db.VarChar(8)
-    deleted_on                                            DateTime?
-    created_by                                            String?    @db.VarChar(8)
-    created_on                                            DateTime   @default(now())
-    user_main_user_parent_child_child_user_idTouser_main  user_main  @relation("user_parent_child_child_user_idTouser_main", fields: [child_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_child_user_id")
-    user_main_user_parent_child_created_byTouser_main     user_main? @relation("user_parent_child_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    user_main_user_parent_child_deleted_byTouser_main     user_main? @relation("user_parent_child_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
-    user_main_user_parent_child_parent_user_idTouser_main user_main  @relation("user_parent_child_parent_user_idTouser_main", fields: [parent_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_user_id")
+    id             Int        @id @default(autoincrement())
+    parent_user_id String     @db.VarChar(8)
+    child_user_id  String     @db.VarChar(8)
+    deleted_by     String?    @db.VarChar(8)
+    deleted_on     DateTime?
+    created_by     String?    @db.VarChar(8)
+    created_on     DateTime   @default(now())
+    rel_userChild  user_main  @relation("user_parent_child_child_user_idTouser_main", fields: [child_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_child_user_id")
+    rel_userParent user_main  @relation("user_parent_child_parent_user_idTouser_main", fields: [parent_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_user_id")
+    rel_createdBy  user_main? @relation("user_parent_child_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
+    rel_deletedBy  user_main? @relation("user_parent_child_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
 
     @@unique([parent_user_id, child_user_id], map: "user_parent_child_parent_user_id_child_user_id_unique")
 }
@@ -1171,22 +1177,22 @@ model w_knex_migration_lock {
 }
 
 model wallet_balance {
-    id                                             String           @id @default("func_un_eight()") @db.VarChar(255)
-    transaction_id                                 String?          @db.VarChar(255)
-    payment_intent                                 String?          @db.VarChar(255)
-    description                                    String?          @db.VarChar(255)
-    invoice_id                                     String?          @db.VarChar(255)
-    amount                                         Decimal?         @db.Decimal(8, 2)
-    state                                          e_event_payment?
-    business_id                                    String?          @db.VarChar(255)
-    updated_by                                     String?          @db.VarChar(255)
-    updated_on                                     DateTime?
-    created_by                                     String?          @db.VarChar(255)
-    created_on                                     DateTime?
-    user_main_wallet_balance_created_byTouser_main user_main?       @relation("wallet_balance_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
-    invoice                                        invoice?         @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
-    user_main_wallet_balance_updated_byTouser_main user_main?       @relation("wallet_balance_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
-    business                                       business?        @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "wallet_balance_business_id_foreign")
+    id             String           @id @default("func_un_eight()") @db.VarChar(255)
+    transaction_id String?          @db.VarChar(255)
+    payment_intent String?          @db.VarChar(255)
+    description    String?          @db.VarChar(255)
+    invoice_id     String?          @db.VarChar(255)
+    amount         Decimal?         @db.Decimal(8, 2)
+    state          e_event_payment?
+    business_id    String?          @db.VarChar(255)
+    updated_by     String?          @db.VarChar(255)
+    updated_on     DateTime?
+    created_by     String?          @db.VarChar(255)
+    created_on     DateTime?
+    rel_invoice    invoice?         @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_invoice_id")
+    rel_business   business?        @relation(fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "wallet_balance_business_id_foreign")
+    rel_updatedBy  user_main?       @relation("wallet_balance_updated_byTouser_main", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_updated_by")
+    rel_createdBy  user_main?       @relation("wallet_balance_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
 }
 
 model wappler_migrations {

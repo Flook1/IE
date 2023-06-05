@@ -25,7 +25,7 @@ export const sesSet = async (userId: string, sesId: string) => {
       name_last: true,
       business_id: true,
       // business details
-      business_user_main_business_idTobusiness: {
+      rel_bus: {
         select: {
           id: true,
           owner_user_id: true,
@@ -34,7 +34,7 @@ export const sesSet = async (userId: string, sesId: string) => {
           client_type: true,
           payment_type: true,
           currency_id: true,
-          country_business_currency_idTocountry: {
+          rel_country: {
             select: {
               currency_symbol: true,
               currency_code: true,
@@ -45,7 +45,7 @@ export const sesSet = async (userId: string, sesId: string) => {
       },
       role_id: true,
       // role section
-      auth_role_user_main_role_idToauth_role: {
+      rel_role: {
         select: {
           id: true,
           role_name: true,
@@ -58,10 +58,8 @@ export const sesSet = async (userId: string, sesId: string) => {
   // Now lets setup the conditional informaiton for ses
   // Obj start
 
-  const bus_id: string | undefined =
-    user?.business_user_main_business_idTobusiness?.id;
-  const bus_type: string | undefined =
-    user?.business_user_main_business_idTobusiness?.business_type;
+  const bus_id: string | undefined= user?.rel_bus?.id;
+  const bus_type: string | undefined = user?.rel_bus?.business_type;
 
   const user_name_full: string | undefined =
     user?.name_first && user?.name_last
@@ -76,11 +74,11 @@ export const sesSet = async (userId: string, sesId: string) => {
   console.log(`isManager, count more than 0 ${isManager.length}`);
 
   if (
-    user?.business_user_main_business_idTobusiness?.business_type == "client"
+    user?.rel_bus?.business_type == "client"
   ) {
     if (
       user.user_id ==
-      user.business_user_main_business_idTobusiness.owner_user_id
+      user.rel_bus.owner_user_id
     ) {
       // if passed means is owner
       userType = "client owner";
@@ -95,11 +93,11 @@ export const sesSet = async (userId: string, sesId: string) => {
 
   // Editor check
   if (
-    user?.business_user_main_business_idTobusiness?.business_type == "editor"
+    user?.rel_bus?.business_type == "editor"
   ) {
     if (
       user.user_id ==
-      user.business_user_main_business_idTobusiness.owner_user_id
+      user.rel_bus.owner_user_id
     ) {
       // if passed means is owner
       userType = "editor owner";
