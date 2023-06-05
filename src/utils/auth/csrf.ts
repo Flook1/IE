@@ -19,12 +19,34 @@ export const csrfCreate = async (opts: ctxMain) => {
     const csrfToken = nanoid();
     const csrfHashed = await argon.hash(csrfToken);
 
-    // parse cookies
-    const tokenParsed = cookie.serialize("ieCsrfToken", csrfToken);
-    const hashedParsed = cookie.serialize("ieCsrfHashed", csrfHashed);
+    try {
+      // parse cookies
+      const tokenParsed = cookie.serialize("ieCsrfToken", csrfToken, {
+        httpOnly: true,
+        path: "/",
+        sameSite: true,
+        secure: false,
+        maxAge: 60 * 5,
+      });
 
-    // set the headers
-    opts.res.setHeader("set-cookie", [tokenParsed, hashedParsed]);
+      const hashedParsed = cookie.serialize("ieCsrfHashed", csrfHashed, {
+        httpOnly: false,
+        path: "/",
+        sameSite: true,
+        secure: false,
+        maxAge: 60 * 5,
+      });
+
+      // set the headers
+      opts.res.setHeader("set-cookie", [tokenParsed, hashedParsed]);
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error setting csrf token or serialising the tokens",
+      });
+    }
+
+    return
   }
 };
 

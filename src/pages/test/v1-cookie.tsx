@@ -8,7 +8,7 @@ const V1TestCookie: NextPage = () => {
     enabled: false,
   });
   const setCsrf = api.testCookie.setCSRF.useQuery(undefined, {
-    enabled: false,
+    enabled: true,
   });
   const csrfVerify = api.testCookie.csrfVerify.useQuery(undefined, {
     enabled: false,
@@ -16,6 +16,14 @@ const V1TestCookie: NextPage = () => {
   const limitTest = api.testLimit.limitTest.useQuery(undefined, {
     enabled: true,
   });
+
+  const limitTestRefetch =  (e:React.MouseEvent<HTMLButtonElement>) => {
+
+    e.preventDefault()
+
+    void limitTest.refetch()
+
+  }
 
   return (
     <>
@@ -44,7 +52,7 @@ const V1TestCookie: NextPage = () => {
           header="testLimit"
           content={limitTest}
         ></DebugView>
-        <button className="d-btn">Trigger Limit Call</button>
+        <button className="d-btn" onClick={(e) => {limitTestRefetch(e)}}>Trigger Limit Call</button>
       </div>
     </>
   );
