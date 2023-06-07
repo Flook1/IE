@@ -21,7 +21,7 @@ export const isTest = (envSel: string) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.MY_ENV === "test") {
+    if (env.NEXT_PUBLIC_MY_ENV === "test") {
       return;
     } else {
       throw new TRPCError({
@@ -50,7 +50,7 @@ export const isDev = (envSel: string) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.MY_ENV === "dev") {
+    if (env.NEXT_PUBLIC_MY_ENV === "dev") {
       return;
     } else {
       throw new TRPCError({
@@ -79,7 +79,7 @@ export const isProd = (envSel: string) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.MY_ENV === "prod") {
+    if (env.NEXT_PUBLIC_MY_ENV === "prod") {
       return;
     } else {
       throw new TRPCError({
@@ -109,7 +109,7 @@ export const isStage = (envSel: string) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.MY_ENV === "stag") {
+    if (env.NEXT_PUBLIC_MY_ENV === "stag") {
       return;
     } else {
       throw new TRPCError({

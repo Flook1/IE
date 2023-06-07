@@ -2,6 +2,7 @@ import { env } from "@/src/env.mjs";
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import * as argon2id from "argon2";
+import crypto, { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -27,19 +28,18 @@ export const authLoginRouter = createTRPCRouter({
         });
       }
 
-      const passMatch = verifyPassHash(userData.pass, input.password);
+      const passMatch = await verifyPassHash(userData.pass, input.password);
 
       let jwtToken;
       if (passMatch) {
-        jwtToken = jwtSign(true);
-        // Set cookie
-        if (!jwtToken) {
-          // Token had an error
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Jwt Token creation had an error",
-          });
-        }
+        // Create sess id:
+
+        const sesId = crypto.randomUUID
+        const dateNow = new Date
+
+        console.log(`dateNow:`)
+        // create session:
+
         // setting cookie
         console.log("setting cookie")
         // Cookies.set("ie-au", jwtToken, {
@@ -85,7 +85,7 @@ const getUserAuthBasic = async (email: string) => {
     },
   });
 
-  console.log(`user from getUser ${JSON.stringify(user, null, " ")}}`);
+  // console.log(`user from getUser ${JSON.stringify(user, null, " ")}}`);
 
   return user;
 };
@@ -124,11 +124,10 @@ const jwtSign = (authed: boolean) => {
 };
 
 /* -------------------------------------------------------------------------- */
-const verifyPassHash = (hashPass: string, pass: string) => {
+const verifyPassHash = async (hashPass: string, pass: string) => {
   // If Pass exists: match passwords
   try {
-    // if (await argon2id.verify(hashPass, pass)) {
-    if (true) {
+    if (await argon2id.verify(hashPass, pass)) {
       // if passwords match
       return true;
     } else {

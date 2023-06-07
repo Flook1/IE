@@ -1,13 +1,13 @@
 import { env } from "@/src/env.mjs";
 import { ruleAccess } from "@/src/utils/auth/access";
-import {  isDev, isProd } from "@/src/utils/auth/isEnv";
+import { isDev, isProd } from "@/src/utils/auth/isEnv";
 import { getUserAuthFull } from "@/src/utils/user/getUserAuthFull";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const testGenRouter = createTRPCRouter({
   envLog: publicProcedure.query(() => {
-    isDev(`my`)
+    isDev(`my`);
     console.log(`NODE Env: ${env.NODE_ENV}`);
     console.log(`My Env: ${env.MY_ENV}`);
     return {
@@ -18,7 +18,7 @@ export const testGenRouter = createTRPCRouter({
   }),
   basicRuleCheck: publicProcedure.query(async () => {
     isDev("my");
-    const ruleAccessData = await ruleAccess("dashboard", "c")
+    const ruleAccessData = await ruleAccess("dashboard", "c");
 
     return {
       ruleAccessData,
@@ -65,7 +65,7 @@ export const testGenRouter = createTRPCRouter({
     console.log("running BEFORE error test");
     console.log("running BEFORE  error test");
 
-    throw new TRPCError({code: "INTERNAL_SERVER_ERROR"});
+    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 
     console.log("running after error test");
     console.log("running after error test");

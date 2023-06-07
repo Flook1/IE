@@ -5,6 +5,20 @@ import type { UserType } from "../general/cookie";
 
 // set session or update session, will update session if session passed.
 
+export const sesCreate = async (sesId: string, expire: Date) => {
+  // we are jsut creating a unique id and creating a session from that
+  await prisma.sessions.create({
+    data: {
+      sid: sesId,
+      sess: {},
+      expired: expire
+    }
+  })
+
+  return
+}
+
+
 export const sesSet = async (userId: string, sesId: string) => {
   if (!userId || !sesId) {
     throw new TRPCError({
@@ -13,7 +27,6 @@ export const sesSet = async (userId: string, sesId: string) => {
     });
   }
 
-  // First lets get the user object
   const user = await prisma.user_main.findFirst({
     where: {
       user_id: userId,
@@ -43,8 +56,8 @@ export const sesSet = async (userId: string, sesId: string) => {
           },
         },
       },
-      role_id: true,
       // role section
+      role_id: true,
       rel_role: {
         select: {
           id: true,
@@ -55,10 +68,12 @@ export const sesSet = async (userId: string, sesId: string) => {
     },
   });
 
+  // First lets get the user object
+
   // Now lets setup the conditional informaiton for ses
   // Obj start
 
-  const bus_id: string | undefined= user?.rel_bus?.id;
+  const bus_id: string | undefined = user?.rel_bus?.id;
   const bus_type: string | undefined = user?.rel_bus?.business_type;
 
   const user_name_full: string | undefined =
@@ -69,17 +84,21 @@ export const sesSet = async (userId: string, sesId: string) => {
   // user type, sub user type
   let userType: UserType = null;
 
-  const isManager = await userParentQuery(userId);
+  const isManager = await prisma.user_parent_child.findMany({
+    where: {
+      parent_user_id: userId,
+      deleted_on: null,
+    },
+    select: {
+      child_user_id: true,
+      parent_user_id: true,
+    },
+  });
 
   console.log(`isManager, count more than 0 ${isManager.length}`);
 
-  if (
-    user?.rel_bus?.business_type == "client"
-  ) {
-    if (
-      user.user_id ==
-      user.rel_bus.owner_user_id
-    ) {
+  if (user?.rel_bus?.business_type == "client") {
+    if (user.user_id == user.rel_bus.owner_user_id) {
       // if passed means is owner
       userType = "client owner";
     } else {
@@ -92,13 +111,8 @@ export const sesSet = async (userId: string, sesId: string) => {
   }
 
   // Editor check
-  if (
-    user?.rel_bus?.business_type == "editor"
-  ) {
-    if (
-      user.user_id ==
-      user.rel_bus.owner_user_id
-    ) {
+  if (user?.rel_bus?.business_type == "editor") {
+    if (user.user_id == user.rel_bus.owner_user_id) {
       // if passed means is owner
       userType = "editor owner";
     } else {
@@ -112,6 +126,7 @@ export const sesSet = async (userId: string, sesId: string) => {
 
   // combine session object:
   const ses = {
+    sesId,
     user,
     bus_id,
     bus_type,
@@ -134,24 +149,13 @@ export const sesSet = async (userId: string, sesId: string) => {
         },
       });
     } catch (error) {
-      throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: "Error trying to update session object, maybe cant find the session id"})
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message:
+          "Error trying to update session object, maybe cant find the session id",
+      });
     }
   }
 
   return ses;
-};
-
-/* -------------------------------------------------------------------------- */
-export const userParentQuery = async (user_id: string) => {
-  // This will return the list of users this user is parent/manager of
-  return await prisma.user_parent_child.findMany({
-    where: {
-      parent_user_id: user_id,
-      deleted_on: null,
-    },
-    select: {
-      child_user_id: true,
-      parent_user_id: true,
-    },
-  });
 };

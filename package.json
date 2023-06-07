@@ -58,6 +58,7 @@
     "cookie": "^0.5.0",
     "daisyui": "^2.52.0",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.8",
     "jsonwebtoken": "^9.0.0",
     "lucide-react": "^0.221.0",
     "nanoid": "^4.0.2",
