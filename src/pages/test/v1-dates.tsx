@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
 import type { NextPage } from "next";
 import DebugView from "@/src/components/test/debug-view";
-import useRenderCounter from "@/src/utils/general/renderCount";
+import useRenderCounter from "@/src/components/general/renderCount";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";

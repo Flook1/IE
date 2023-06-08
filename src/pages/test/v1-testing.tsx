@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 
 
 const V1Testing: NextPage = () => {
+  const testZEnum = api.testData.zEnumTest.useQuery({ruleGroup:"functiona"}, {enabled: true});
   const testBasicRuleCheck = api.testData.basicRuleCheck.useQuery(undefined, {enabled: false});
   const testEnvLog = api.testData.envLog.useQuery(undefined, {enabled: false});
   const testError = api.testData.basicDb.useQuery(undefined, {enabled: false});
@@ -17,6 +18,11 @@ const V1Testing: NextPage = () => {
     <>
       <div className="m-32 p-14">
         <Separator />
+        <DebugView
+          visible={true}
+          header="zEnumTest"
+          content={testZEnum}
+        ></DebugView>
         <DebugView
           visible={true}
           header="TestEnvLog"

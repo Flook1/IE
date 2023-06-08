@@ -751,6 +751,9 @@ model order_main {
     rel_serviceMain         service_main     @relation(fields: [service_code], references: [service_code], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_service_code")
     rel_OrderState          order_state      @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_state_id")
 
+    // gaydn added
+    // rel_editorToChild          user_parent_child?       @relation("orderEditorToChild", fields: [editor_user_id], references: [child_user_id])
+
     @@index([editor_user_id], map: "ix_orders_assigned_to_editor")
     @@index([client_business_id], map: "ix_orders_client_business_id")
     @@index([date_completed_on], map: "ix_orders_completed_on")
@@ -1027,8 +1030,8 @@ model user_main {
     rel_bus                                                     business?           @relation("user_main_business_idTobusiness", fields: [business_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_business_id")
     rel_role                                                      auth_role           @relation("user_main_role_idToauth_role", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_role_id")
     rel_busOwner                                                  business?           @relation("business_owner_user_idTouser_main")
-    user_parent_child_user_parent_child_child_user_idTouser_main  user_parent_child[] @relation("user_parent_child_child_user_idTouser_main")
-    user_parent_child_user_parent_child_parent_user_idTouser_main user_parent_child[] @relation("user_parent_child_parent_user_idTouser_main")
+    rel_childOf  user_parent_child[] @relation("user_parent_child_child_user_idTouser_main")
+    rel_parentOf user_parent_child[] @relation("user_parent_child_parent_user_idTouser_main")
 
     // updated by info
     rel_createdBy user_main? @relation("user_main_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
@@ -1160,6 +1163,9 @@ model user_parent_child {
     rel_userParent user_main  @relation("user_parent_child_parent_user_idTouser_main", fields: [parent_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_parent_user_id")
     rel_createdBy  user_main? @relation("user_parent_child_created_byTouser_main", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_created_by")
     rel_deletedBy  user_main? @relation("user_parent_child_deleted_byTouser_main", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_con_deleted_by")
+
+    // mine after mgiration
+    // rel_ChildToOrderEditor  order_main  @relation("childToOrderEditorUser", fields: [child_user_id], references: [editor_user_id])
 
     @@unique([parent_user_id, child_user_id], map: "user_parent_child_parent_user_id_child_user_id_unique")
 }

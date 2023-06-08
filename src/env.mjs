@@ -22,6 +22,11 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
     NEXT_PUBLIC_MY_ENV: z.enum(["dev", "test", "prod", "stag"]).default("dev"),
+    NEXT_PUBLIC_PASS_MIN: z.string().min(1),
+    NEXT_PUBLIC_PASS_MAX: z.string().min(1),
+    NEXT_PUBLIC_PASS_SYMBOL: z.string().min(1),
+    NEXT_PUBLIC_PASS_NUMBER: z.string().min(1),
+    NEXT_PUBLIC_PASS_CAPITAL: z.string().min(1),
 
   },
 
@@ -35,6 +40,12 @@ export const env = createEnv({
     NEXT_PUBLIC_MY_ENV: process.env.MY_ENV,
     NODE_ENV: process.env.NODE_ENV,
     JWT_SECRET: process.env.JWT_SECRET,
+    // Pass info:
+    NEXT_PUBLIC_PASS_MIN: process.env.NEXT_PUBLIC_PASS_MIN,
+    NEXT_PUBLIC_PASS_MAX: process.env.NEXT_PUBLIC_PASS_MAX,
+    NEXT_PUBLIC_PASS_SYMBOL: process.env.NEXT_PUBLIC_PASS_SYMBOL,
+    NEXT_PUBLIC_PASS_NUMBER: process.env.NEXT_PUBLIC_PASS_NUMBER,
+    NEXT_PUBLIC_PASS_CAPITAL: process.env.NEXT_PUBLIC_PASS_CAPITAL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

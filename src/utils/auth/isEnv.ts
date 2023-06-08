@@ -2,8 +2,10 @@ import { env } from "@/src/env.mjs";
 import { TRPCError } from "@trpc/server";
 
 /* -------------------------------------------------------------------------- */
+type EnvSel = "my" | "node"
 
-export const isTest = (envSel: string) => {
+
+export const isTest = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -32,7 +34,7 @@ export const isTest = (envSel: string) => {
   }
 };
 
-export const isDev = (envSel: string) => {
+export const isDev = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -61,7 +63,7 @@ export const isDev = (envSel: string) => {
   }
 };
 
-export const isProd = (envSel: string) => {
+export const isProd = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -91,7 +93,7 @@ export const isProd = (envSel: string) => {
 };
 
 
-export const isStage = (envSel: string) => {
+export const isStage = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",

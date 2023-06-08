@@ -1,9 +1,63 @@
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
-import { unknown } from "zod";
-import type { UserType } from "../general/cookie";
+import cookie from "cookie";
+import type { IeCookie, UserType, AuthSesObj } from "../general/cookie";
+import { type ctxMain } from "@/src/server/api/trpc";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { TRPCClientError } from "@trpc/client";
 
-// set session or update session, will update session if session passed.
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export const sesGet = async (opts: ctxMain) => {
+  const allCookies: IeCookie = opts.req.cookies;
+  const ieAuthSesCookie = allCookies.ieAuthSes;
+
+  try {
+    if (ieAuthSesCookie) {
+      const sesObj = await prisma.sessions.findFirst({
+        where: {
+          sid: ieAuthSesCookie,
+        },
+        select: {
+          sid: true,
+          sess: true,
+          expired: true,
+        },
+      });
+
+      if (!sesObj?.sess) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "there is no session object in database",
+        });
+      }
+
+      // todo need type of session
+      const sesJson = sesObj?.sess;
+
+      return {
+        isSes: true,
+        sesJson,
+        sesObj,
+      };
+
+
+    } else {
+      return {
+        isSes: false,
+      };
+    }
+  } catch (error) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "something went wrong getting the session data from database",
+      cause: error,
+    });
+  }
+};
 
 export const sesCreate = async (sesId: string, expire: Date) => {
   // we are jsut creating a unique id and creating a session from that
@@ -11,15 +65,68 @@ export const sesCreate = async (sesId: string, expire: Date) => {
     data: {
       sid: sesId,
       sess: {},
-      expired: expire
-    }
-  })
+      expired: expire,
+    },
+    select: {
+      sid: true,
+    },
+  });
 
-  return
-}
+  return {
+    sesId,
+  };
+};
 
+export const sesSetCookie = (sesId: string, expire: Date, opts: ctxMain) => {
+  // parse cookies
+  try {
+    const sesParsed = cookie.serialize("ieAuthSes", sesId, {
+      httpOnly: true,
+      path: "/",
+      sameSite: true,
+      secure: false,
+      expires: expire,
+    });
 
-export const sesSet = async (userId: string, sesId: string) => {
+    opts.res.setHeader("set-cookie", [sesParsed]);
+  } catch (error) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message:
+        "soemthing went wrong trying to SETTING the ieauthses cookie, likely with the date",
+      cause: error,
+    });
+  }
+
+  return;
+};
+
+export const sesDelCookie = (sesId: string, opts: ctxMain) => {
+  try {
+    const dateNow = dayjs().tz("utc").toDate();
+    // parse cookies
+    const sesParsed = cookie.serialize("ieAuthSes", sesId, {
+      httpOnly: true,
+      path: "/",
+      sameSite: true,
+      secure: false,
+      expires: dateNow,
+    });
+
+    opts.res.setHeader("set-cookie", [sesParsed]);
+  } catch (error) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message:
+        "soemthing went wrong trying to DELETING the ieauthses cookie, likely with the date",
+      cause: error,
+    });
+  }
+
+  return;
+};
+
+export const sesSetDb = async (userId: string, sesId: string) => {
   if (!userId || !sesId) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -67,8 +174,6 @@ export const sesSet = async (userId: string, sesId: string) => {
       },
     },
   });
-
-  // First lets get the user object
 
   // Now lets setup the conditional informaiton for ses
   // Obj start
@@ -134,6 +239,7 @@ export const sesSet = async (userId: string, sesId: string) => {
     userType,
   };
 
+
   console.log(`ses object | ${JSON.stringify(ses, null, " ")}`);
 
   // update session
@@ -153,6 +259,7 @@ export const sesSet = async (userId: string, sesId: string) => {
         code: "INTERNAL_SERVER_ERROR",
         message:
           "Error trying to update session object, maybe cant find the session id",
+        cause: error,
       });
     }
   }

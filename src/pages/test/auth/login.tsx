@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 
 // Testing login api and what is returned, this is all dummy data.
 const TestLogin: NextPage = () => {
-  const apiLogin = api.authLogin.login.useMutation();
+  const apiLogin = api.authMain.login.useMutation();
   const { isLoading, data, context, error } = apiLogin;
 
   const handleSubmit = () => {

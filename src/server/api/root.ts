@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
 import { testGenRouter } from "./routers/test/v1/test-data";
-import { authLoginRouter } from "./routers/v1/auth/login";
+import { authMainRouter } from "./routers/v1/auth/authMain";
 import { testCookie } from "./routers/test/v1/test-cookie";
 import { testLimit } from "./routers/test/v1/test-limits";
 import { testAuth } from "./routers/test/v1/test-auth";
@@ -19,7 +19,7 @@ export const appRouter = createTRPCRouter({
   testCookie: testCookie,
   testLimit: testLimit,
   testAuth: testAuth,
-  authLogin: authLoginRouter
+  authMain: authMainRouter
 });
 
 // export type definition of API

@@ -13,8 +13,12 @@ const V1TestCookie: NextPage = () => {
   const csrfVerify = api.testCookie.csrfVerify.useQuery(undefined, {
     enabled: false,
   });
-  const limitTest = api.testLimit.limitTest.useQuery(undefined, {
+  const testCookieGet = api.testCookie.cookieGet.useQuery(undefined, {
     enabled: true,
+  });
+
+  const limitTest = api.testLimit.limitTest.useQuery(undefined, {
+    enabled: false,
   });
 
   const limitTestRefetch =  (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -29,7 +33,11 @@ const V1TestCookie: NextPage = () => {
     <>
       <div className="m-32 p-14">
         <Separator />
-
+        <DebugView
+          visible={true}
+          header="testGetCookie"
+          content={testCookieGet}
+        ></DebugView>
         <DebugView
           visible={true}
           header="SeeCookieServerSide"

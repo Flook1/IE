@@ -1,18 +1,20 @@
 import { env } from "@/src/env.mjs";
 import { ruleAccess } from "@/src/utils/auth/access";
 import { isDev, isProd } from "@/src/utils/auth/isEnv";
+import { ruleGroup } from "@/src/utils/general/zEnums";
 import { getUserAuthFull } from "@/src/utils/user/getUserAuthFull";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const testGenRouter = createTRPCRouter({
   envLog: publicProcedure.query(() => {
     isDev(`my`);
     console.log(`NODE Env: ${env.NODE_ENV}`);
-    console.log(`My Env: ${env.MY_ENV}`);
+    console.log(`My Env: ${env.NEXT_PUBLIC_MY_ENV}`);
     return {
       NodeEnv: env.NODE_ENV,
-      MyEnv: env.MY_ENV,
+      MyEnv: env.NEXT_PUBLIC_MY_ENV,
       WorkflowRun: true,
     };
   }),
@@ -94,4 +96,13 @@ export const testGenRouter = createTRPCRouter({
       userFullAuthTest,
     };
   }),
+  zEnumTest: publicProcedure
+    .input(
+      z.object({
+        ruleGroup: ruleGroup,
+      })
+    )
+    .query(({ ctx }) => {
+      return "something";
+    }),
 });
