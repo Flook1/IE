@@ -1,3 +1,25 @@
+--Create Functions
+CREATE OR REPLACE FUNCTION public.func_last_post(text, character)
+ RETURNS integer
+ LANGUAGE sql
+ IMMUTABLE
+AS $function$ select length($1)- length(regexp_replace($1, '.*' || $2,'')); $function$
+;
+
+-- Create Functions
+CREATE OR REPLACE FUNCTION public.func_un_eight()
+ RETURNS character
+ LANGUAGE plpgsql
+AS $function$ declare _serial char(8); _i int; _chars char(36) = 'abcdefghijklmnopqrstuvwxyz0123456789'; begin _serial = ''; for _i in 1 .. 8 loop _serial = _serial || substr(_chars, int4(floor(random() * length(_chars))), 1); end loop; return lower(_serial); end; $function$
+;
+
+-- Create Functions
+CREATE OR REPLACE FUNCTION public.func_un_ten()
+ RETURNS character
+ LANGUAGE plpgsql
+AS $function$ declare _serial char(10); _i int; _chars char(36) = 'abcdefghijklmnopqrstuvwxyz0123456789'; begin _serial = ''; for _i in 1 .. 10 loop _serial = _serial || substr(_chars, int4(floor(random() * length(_chars))), 1); end loop; return lower(_serial); end; $function$
+;
+
 -- CreateEnum
 CREATE TYPE "e_event_payment" AS ENUM ('success', 'checkout', 'pending', 'failure', 'complete');
 
