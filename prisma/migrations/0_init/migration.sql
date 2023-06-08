@@ -894,7 +894,7 @@ CREATE TABLE "w_knex_migration_lock" (
 
 -- CreateTable
 CREATE TABLE "wallet_balance" (
-    "id" VARCHAR(255) NOT NULL DEFAULT 'func_un_eight()',
+    "id" VARCHAR(255) NOT NULL DEFAULT func_un_eight(),
     "transaction_id" VARCHAR(255),
     "payment_intent" VARCHAR(255),
     "description" VARCHAR(255),
