@@ -43,7 +43,7 @@ export const errLog = async (errObj: ErrObj, error: object) => {
           errors: errString,
           log_id: errObj.internalCode,
           server_action: errObj.apiName,
-          remarks: errObj,
+          remarks: JSON.stringify(errObj),
         },
         select: {
           id: true,
