@@ -6,12 +6,15 @@ import useRenderCounter from "@/src/components/general/renderCount";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { useEffect, useState } from "react";
+import {type  ReactElement, useEffect, useState } from "react";
+import LayTest from "@/src/components/layouts/LayTest";
+import type { NextPageWithLayout } from "@/src/pages/_app";
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const V1Testing: NextPage = () => {
+const V1Testing: NextPageWithLayout = () => {
   const rerenderCount = useRenderCounter({ enabled: true });
 
   const testDates = api.testDate.dateBasic.useQuery(undefined, {
@@ -49,4 +52,10 @@ const V1Testing: NextPage = () => {
     </>
   );
 };
+
+// layout function
+V1Testing.getLayout = function getLayout(page: ReactElement) {
+  return <LayTest>{page}</LayTest>;
+};
+
 export default V1Testing;

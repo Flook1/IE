@@ -1,11 +1,13 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import type { NextPage } from "next";
 import DebugView from "@/src/components/test/debug-view";
 import { Card } from "@/components/ui/card";
+import type { NextPageWithLayout } from "../_app";
+import type { ReactElement } from "react";
+import LayTest from "@/src/components/layouts/LayTest";
 
 
-const V1Testing: NextPage = () => {
+const V1Testing: NextPageWithLayout = () => {
   const testZEnum = api.testData.zEnumTest.useQuery({ruleGroup:"functiona"}, {enabled: true});
   const testBasicRuleCheck = api.testData.basicRuleCheck.useQuery(undefined, {enabled: false});
   const testEnvLog = api.testData.envLog.useQuery(undefined, {enabled: false});
@@ -84,3 +86,9 @@ const V1Testing: NextPage = () => {
   );
 };
 export default V1Testing;
+
+
+// layout function
+V1Testing.getLayout = function getLayout(page: ReactElement) {
+  return <LayTest>{page}</LayTest>;
+};

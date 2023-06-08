@@ -1,9 +1,11 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import type { NextPage } from "next";
 import DebugView from "@/src/components/test/debug-view";
+import type { NextPageWithLayout } from "../_app";
+import type { ReactElement } from "react";
+import LayTest from "@/src/components/layouts/LayTest";
 
-const V1TestCookie: NextPage = () => {
+const V1TestCookie: NextPageWithLayout = () => {
   const cookieConsoleLog = api.testCookie.cookieLog.useQuery(undefined, {
     enabled: false,
   });
@@ -21,13 +23,11 @@ const V1TestCookie: NextPage = () => {
     enabled: false,
   });
 
-  const limitTestRefetch =  (e:React.MouseEvent<HTMLButtonElement>) => {
+  const limitTestRefetch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-    e.preventDefault()
-
-    void limitTest.refetch()
-
-  }
+    void limitTest.refetch();
+  };
 
   return (
     <>
@@ -60,9 +60,22 @@ const V1TestCookie: NextPage = () => {
           header="testLimit"
           content={limitTest}
         ></DebugView>
-        <button className="d-btn" onClick={(e) => {limitTestRefetch(e)}}>Trigger Limit Call</button>
+        <button
+          className="d-btn"
+          onClick={(e) => {
+            limitTestRefetch(e);
+          }}
+        >
+          Trigger Limit Call
+        </button>
       </div>
     </>
   );
 };
+
+// layout function
+V1TestCookie.getLayout = function getLayout(page: ReactElement) {
+  return <LayTest>{page}</LayTest>;
+};
+
 export default V1TestCookie;

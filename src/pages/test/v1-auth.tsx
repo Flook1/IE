@@ -1,10 +1,10 @@
-import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import type { NextPage } from "next";
 import DebugView from "@/src/components/test/debug-view";
-import { Card } from "@/components/ui/card";
+import LayTest from "@/src/components/layouts/LayTest";
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "../_app";
 
-const V1Testing: NextPage = () => {
+const V1Testing: NextPageWithLayout = () => {
   const testSesObj = api.testAuth.authSesObj.useQuery(undefined, {
     enabled: true,
   });
@@ -20,5 +20,10 @@ const V1Testing: NextPage = () => {
       </div>
     </>
   );
+};
+
+// layout function
+V1Testing.getLayout = function getLayout(page: ReactElement) {
+  return <LayTest>{page}</LayTest>;
 };
 export default V1Testing;
