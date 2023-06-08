@@ -21,7 +21,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
-    NEXT_PUBLIC_MY_ENV: z.enum(["dev", "test", "prod", "stag"]).default("dev"),
+    NEXT_PUBLIC_MY_ENV: z.enum(["development", "test", "production", "staging"]).default("development"),
     NEXT_PUBLIC_PASS_MIN: z.string().min(1),
     NEXT_PUBLIC_PASS_MAX: z.string().min(1),
     NEXT_PUBLIC_PASS_SYMBOL: z.string().min(1),

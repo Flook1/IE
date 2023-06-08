@@ -15,8 +15,8 @@ export const testAuth = createTRPCRouter({
 
     // create session obj test
     const sesSetObj =  await sesSetDb("qfbu8n", "randomses");
-    
 
-    return JSON.stringify(sesSetObj)
+
+    return sesSetObj
   }),
 });

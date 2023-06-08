@@ -25,7 +25,8 @@ const MyApp: AppType = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <div data-theme="bumblebee">
+    // <div data-theme="bumblebee">
+    <div data-theme="dark">
       <ReactQueryDevtools initialIsOpen={true} />
       {getLayout(<Component {...pageProps} />)}
     </div>

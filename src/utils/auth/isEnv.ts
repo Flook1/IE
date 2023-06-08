@@ -2,14 +2,52 @@ import { env } from "@/src/env.mjs";
 import { TRPCError } from "@trpc/server";
 
 /* -------------------------------------------------------------------------- */
-type EnvSel = "my" | "node"
+type EnvSel = "my" | "node";
+type EnvType = "development" | "test" | "production" | "staging";
 
+export const isEnv = (
+  envSel: EnvSel,
+  envType: EnvType,
+  throwError: boolean
+) => {
+  if (envSel !== "node" && envSel !== "my") {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "hard coded error on enviroment check with string passed",
+    });
+  }
+
+  let allowed = false
+
+  if (envSel === "node") {
+    if (env.NODE_ENV === envType) {
+      allowed = true;
+    } else {
+      allowed = false;
+    }
+  } else if (envSel === "my") {
+    if (env.NEXT_PUBLIC_MY_ENV === envType) {
+      allowed = true;
+    } else {
+      allowed = false;
+    }
+  }
+
+  if (throwError && !allowed) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: `Only allowed in ${envType} environment`,
+    });
+  } else {
+    return allowed;
+  }
+};
 
 export const isTest = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "hard coded error on enviroment check with string passed",
+      message: "hard coded error on environment check with string passed",
     });
   }
 
@@ -52,7 +90,7 @@ export const isDev = (envSel: EnvSel) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.NEXT_PUBLIC_MY_ENV === "dev") {
+    if (env.NEXT_PUBLIC_MY_ENV === "development") {
       return;
     } else {
       throw new TRPCError({
@@ -81,7 +119,7 @@ export const isProd = (envSel: EnvSel) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.NEXT_PUBLIC_MY_ENV === "prod") {
+    if (env.NEXT_PUBLIC_MY_ENV === "production") {
       return;
     } else {
       throw new TRPCError({
@@ -91,7 +129,6 @@ export const isProd = (envSel: EnvSel) => {
     }
   }
 };
-
 
 export const isStage = (envSel: EnvSel) => {
   if (envSel !== "node" && envSel !== "my") {
@@ -111,7 +148,7 @@ export const isStage = (envSel: EnvSel) => {
       });
     }
   } else if (envSel === "my") {
-    if (env.NEXT_PUBLIC_MY_ENV === "stag") {
+    if (env.NEXT_PUBLIC_MY_ENV === "staging") {
       return;
     } else {
       throw new TRPCError({

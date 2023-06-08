@@ -6,6 +6,7 @@ import { testCookie } from "./routers/test/v1/test-cookie";
 import { testLimit } from "./routers/test/v1/test-limits";
 import { testAuth } from "./routers/test/v1/test-auth";
 import { testDateRouter } from "./routers/test/v1/test-dates";
+import { genMainRouter } from "./routers/v1/general/gen-main";
 
 /**
  * This is the primary router for your server.
@@ -19,7 +20,8 @@ export const appRouter = createTRPCRouter({
   testCookie: testCookie,
   testLimit: testLimit,
   testAuth: testAuth,
-  authMain: authMainRouter
+  authMain: authMainRouter,
+  genMain: genMainRouter,
 });
 
 // export type definition of API
