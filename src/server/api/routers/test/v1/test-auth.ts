@@ -2,7 +2,7 @@ import { ruleAccess } from "@/src/utils/auth/access";
 import { csrfCreate, csrfVerify } from "@/src/utils/auth/csrf";
 import { isDev } from "@/src/utils/auth/isEnv";
 import rateLimit from "@/src/utils/auth/rateLimit";
-import { sesSet } from "@/src/utils/auth/ses";
+import { sesSetDb } from "@/src/utils/auth/ses";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -14,6 +14,9 @@ export const testAuth = createTRPCRouter({
     isDev("my");
 
     // create session obj test
-    return await sesSet("qfbu8n", "randomses");
+    const sesSetObj =  await sesSetDb("qfbu8n", "randomses");
+    
+
+    return JSON.stringify(sesSetObj)
   }),
 });

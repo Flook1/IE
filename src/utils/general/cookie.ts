@@ -16,4 +16,6 @@ export type UserType =
   | "editor owner"
   | "editor manager"
   | "editor team"
+  | "ie owner"
+  | "ie team"
   | null;
