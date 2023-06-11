@@ -1,4 +1,4 @@
-import { isEnv } from "@/src/utils/auth/isEnv";
+import { isEnv } from "@/src/1/auth/utils-server/isEnv";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -15,7 +15,6 @@ export const genMainRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       const allowed = isEnv(input.envSel, input.envType, false);
 
-      return allowed;
+      return { isAllowed: allowed };
     }),
 });
-

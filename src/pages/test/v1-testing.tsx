@@ -8,7 +8,7 @@ import LayTest from "@/src/components/layouts/LayTest";
 
 
 const V1Testing: NextPageWithLayout = () => {
-  const testZEnum = api.testData.zEnumTest.useQuery({ruleGroup:"functiona"}, {enabled: true});
+  const testZEnum = api.testData.zEnumTest.useQuery({zRuleGroup:"function"}, {enabled: true});
   const testBasicRuleCheck = api.testData.basicRuleCheck.useQuery(undefined, {enabled: false});
   const testEnvLog = api.testData.envLog.useQuery(undefined, {enabled: false});
   const testError = api.testData.basicDb.useQuery(undefined, {enabled: false});

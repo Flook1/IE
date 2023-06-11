@@ -1,8 +1,8 @@
-import { ruleAccess } from "@/src/utils/auth/access";
-import { csrfCreate, csrfVerify } from "@/src/utils/auth/csrf";
-import { isDev } from "@/src/utils/auth/isEnv";
-import rateLimit from "@/src/utils/auth/rateLimit";
-import { sesSetDb } from "@/src/utils/auth/ses";
+import { ruleAccess } from "@/src/1/auth/utils-server/access";
+import { csrfCreate, csrfVerify } from "@/src/1/auth/utils-server/csrf";
+import rateLimit from "@/src/1/auth/utils-server/rateLimit";
+import { sesSetDb } from "@/src/1/auth/utils-server/ses";
+import { isDev } from "@/src/1/auth/utils-server/isEnv";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 

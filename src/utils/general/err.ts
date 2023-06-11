@@ -55,7 +55,7 @@ export const errLog = async (errObj: ErrObj, error: object) => {
       // send email
     }
 
-    if (errObj.trpcThrow) {
+    if (errObj.trpcThrow  && false) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "something here",

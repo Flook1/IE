@@ -1,6 +1,6 @@
-import { ruleAccess } from "@/src/utils/auth/access";
-import { csrfCreate, csrfVerify } from "@/src/utils/auth/csrf";
-import { isDev } from "@/src/utils/auth/isEnv";
+import { ruleAccess } from "@/src/1/auth/utils-server/access";
+import { csrfCreate, csrfVerify } from "@/src/1/auth/utils-server/csrf";
+import { isDev } from "@/src/1/auth/utils-server/isEnv";
 import type { IeCookie } from "@/src/utils/general/cookie";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";

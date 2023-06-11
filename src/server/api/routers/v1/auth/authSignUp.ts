@@ -27,11 +27,11 @@ export const authSignUpRouter = createTRPCRouter({
           .max(Number(env.NEXT_PUBLIC_PASS_MAX)),
         nameFirst: z.string().min(1).max(25).toLowerCase(),
         nameLast: z.string().min(1).max(25).toLowerCase(),
-        clientType: zEnum.ClientType,
-        busType: zEnum.BusType,
+        clientType: zEnum.zClientType,
+        busType: zEnum.zBusType,
         busName: z.string().min(1).max(25).toLowerCase(),
-        payType: zEnum.PayType,
-        curr: zEnum.CurrCode,
+        payType: zEnum.zPayType,
+        curr: zEnum.zCurrCode,
       })
     )
     .mutation(async ({ ctx, input }) => {

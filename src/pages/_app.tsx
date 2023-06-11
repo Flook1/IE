@@ -4,6 +4,10 @@ import type { NextPage } from "next";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "../components/general/toaster";
+
+
+
 
 // types
 // export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -26,9 +30,10 @@ const MyApp: AppType = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     // <div data-theme="bumblebee">
-    <div data-theme="dark">
+    <div className="flex-1 bg-background">
       <ReactQueryDevtools initialIsOpen={true} />
       {getLayout(<Component {...pageProps} />)}
+      <Toaster/>
     </div>
   );
 };

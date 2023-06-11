@@ -1,12 +1,12 @@
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import cookie from "cookie";
-import type { IeCookie, UserType, AuthSesObj } from "../general/cookie";
 import { type ctxMain } from "@/src/server/api/trpc";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { TRPCClientError } from "@trpc/client";
+import type { IeCookie, AuthSesObj, UserType } from "@/src/utils/general/cookie";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

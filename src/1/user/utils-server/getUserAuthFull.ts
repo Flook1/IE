@@ -17,7 +17,7 @@ export const getUserAuthFull = async (user_id: string) => {
         pass: true,
         pass_reset_token: true,
         pass_reset_token_expiry: true,
-        business_business_owner_user_idTouser_main: {
+        rel_busOwner: {
           select: {
             business_name: true
           }

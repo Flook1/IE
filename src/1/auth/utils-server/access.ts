@@ -1,6 +1,6 @@
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
-import type * as zEnum from "../general/zEnums";
+import type * as zEnum from "../../../utils/general/zEnums";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */

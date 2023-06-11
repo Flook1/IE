@@ -3,8 +3,9 @@ import z from "zod";
 // general enums
 
 /* ------------------------------- auth stuff ------------------------------- */
-export const RuleGroup = z.enum(["page", "page-detail", "function"]);
-export const RuleNames = z.enum([
+export const zRuleGroup = z.enum(["page", "page-detail", "function"]);
+export type  tRuleGroup = z.infer<typeof zRuleGroup>
+export const zRuleNames = z.enum([
   "new order",
   "dashboard",
   "projects",
@@ -41,9 +42,10 @@ export const RuleNames = z.enum([
   "portfolio",
   "roles",
 ]);
+export type  tRuleNames = z.infer<typeof zRuleNames>
 
 /* -------------------------------- userStuff ------------------------------- */
-export const Roles = z.enum([
+export const zRoles = z.enum([
   "ie_admin",
   "ie_user",
   "client_owner",
@@ -53,36 +55,60 @@ export const Roles = z.enum([
   "customer_owner",
   "editor_qc",
 ]);
-export const ClientType = z.enum(["photographer", "standard"]);
-export const BusType = z.enum(["ie", "client", "editor", "customer"]);
+export type  tRoles = z.infer<typeof zRoles>
+
+export const zClientType = z.enum(["photographer", "standard"]);
+export type  tClientType = z.infer<typeof zClientType>
+
+export const zBusType = z.enum(["ie", "client", "editor", "customer"]);
+export type  tBusType = z.infer<typeof zBusType>
+
 
 /* -------------------------------- Pay info -------------------------------- */
-export const CurrCode = z.enum(["CAD", "USD", "EUR", "GBP", "AUD", "NZD"]);
-export const PayType = z.enum(["advance", "monthly"]);
-export const PayEvent = z.enum([
+export const zCurrCode = z.enum(["CAD", "USD", "EUR", "GBP", "AUD", "NZD"]);
+export type  tCurrCode = z.infer<typeof zCurrCode>
+
+export const zPayType = z.enum(["advance", "monthly"]);
+export type  tPayType = z.infer<typeof zPayType>
+
+export const zPayEvent = z.enum([
   "success",
   "checkout",
   "pending",
   "failure",
   "complete",
 ]);
-export const PayAccTerm = z.enum(["credit", "debit"]);
-export const PriceType = z.enum(["per image", "per floor", "flat rate"]);
-export const DiscountType = z.enum(["percent", "fixed"]);
+export type  tPayEvent = z.infer<typeof zPayEvent>
+
+export const zPayAccTerm = z.enum(["credit", "debit"]);
+export type  tPayAccTerm = z.infer<typeof zPayAccTerm>
+
+export const zPriceType = z.enum(["per image", "per floor", "flat rate"]);
+export type  tPriceType = z.infer<typeof zPriceType>
+
+export const zDiscountType = z.enum(["percent", "fixed"]);
+export type  tDiscountType = z.infer<typeof zDiscountType>
+
 
 /* --------------------------------- invoice -------------------------------- */
-export const InvType = z.enum(["sales", "purchase"]);
-export const InvGstType = z.enum(["inc", "exc", "no gst"]);
-export const InvCreationType = z.enum([
+export const zInvType = z.enum(["sales", "purchase"]);
+export type  tInvType = z.infer<typeof zInvType>
+
+export const zInvGstType = z.enum(["inc", "exc", "no gst"]);
+export type  tInvGstType = z.infer<typeof zInvGstType>
+
+export const zInvCreationType = z.enum([
   "system",
   "ie team",
   "client",
   "editor",
   "other",
 ]);
+export type  tInvCreationType = z.infer<typeof zInvCreationType>
+
 
 /* ---------------------------------- Order --------------------------------- */
-export const OrderStatus = z.enum([
+export const zOrderStatus = z.enum([
   "draft",
   "checkout",
   "payment successful",
@@ -96,17 +122,21 @@ export const OrderStatus = z.enum([
   "settled",
   "cancelled",
 ]);
+export type  tOrderStatus = z.infer<typeof zOrderStatus>
+
 
 /* -------------------------------- services -------------------------------- */
-export const ServiceStatus = z.enum([
+export const zServiceStatus = z.enum([
   "approved",
   "requested",
   "rejected",
   "cancelled",
 ]);
+export type  tServiceStatus = z.infer<typeof zServiceStatus>
+
 
 /* --------------------------------- content -------------------------------- */
-export const ContentType = z.enum([
+export const zContentType = z.enum([
   "editing extras",
   "main images",
   "floor plans",
@@ -115,12 +145,18 @@ export const ContentType = z.enum([
   "video content",
   "custom content",
 ]);
+export type  tContentType = z.infer<typeof zContentType>
 
-export const ContentUploadType = z.enum(["source", "output", "project"]);
-export const ContentImgProcessStatus = z.enum([
+
+export const zContentUploadType = z.enum(["source", "output", "project"]);
+export type  tContentUploadType = z.infer<typeof zContentUploadType>
+
+export const zContentImgProcessStatus = z.enum([
   "uploaded",
   "processing",
   "finished",
 ]);
+export type  tContentImgProcessStatus = z.infer<typeof zContentImgProcessStatus>
+
 
 /* ---------------------------------- other --------------------------------- */

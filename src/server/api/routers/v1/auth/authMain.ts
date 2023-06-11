@@ -8,29 +8,39 @@ import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { zLoginForm, type tLoginForm, type tErrAuth } from "@/src/1/auth/login/types";
+
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 export const authMainRouter = createTRPCRouter({
   login: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email().toLowerCase(),
-        password: z
-          .string()
-          .min(Number(env.NEXT_PUBLIC_PASS_MIN))
-          .max(Number(env.NEXT_PUBLIC_PASS_MAX)),
-      })
-    )
+    .input(zLoginForm)
     .mutation(async ({ ctx, input }) => {
+      let errMsg: tErrAuth
+
       // check if email exists
       const userData = await getUserAuthBasic(input.email);
-      // check if password exists
-      if (userData?.pass == null) {
+
+
+      // check if user exists
+      if (!userData) {
+      // if (true) {
+        errMsg = "Incorrect Credentials"
         // this is when need to reset the email, likely client from old system
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "No Password on record",
+          code: "UNAUTHORIZED",
+          message:  errMsg,
+        });
+      }
+      // check if password exists
+      if (userData?.pass == null) {
+      // if (true) {
+        errMsg = "No password on record"
+        // this is when need to reset the email, likely client from old system
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:  errMsg,
         });
       }
 
@@ -55,10 +65,11 @@ export const authMainRouter = createTRPCRouter({
         // HttpOnly: true,
         // });
       } else {
+        errMsg = "Incorrect Credentials"
         // Passwords dont match
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: "Passwords didn't match",
+          message: errMsg,
         });
       }
 
@@ -75,6 +86,8 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      let errMsg: tErrAuth
+
       // create email verifcation
       const uuid = randomUUID();
       const dateNow = dayjs().add(1, "hour").format();
@@ -107,9 +120,11 @@ export const authMainRouter = createTRPCRouter({
         // token created. Send Emails. send admin and user
         // todo
       } else {
+        errMsg = "Incorrect Credentials"
+
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "no user exists with this email",
+          code: "BAD_REQUEST",
+          message: errMsg,
         });
       }
 
@@ -123,6 +138,8 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
+      let errMsg:tErrAuth
+
       const dateNow = dayjs().format();
 
       const token = await prisma.user_main.findFirst({
@@ -138,9 +155,10 @@ export const authMainRouter = createTRPCRouter({
       });
 
       if (!token) {
+        errMsg = "Reset Password Token Not Valid"
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "No token with that id or expired",
+          code: "UNAUTHORIZED",
+          message: errMsg,
         });
       }
 
@@ -162,12 +180,15 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      let errMsg:tErrAuth
+
       if (input.password !== input.passwordConfirm) {
+        errMsg = "Passwords Don't Match"
         // check pass match
         // error out
         throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Passwords dont match",
+          code: "UNAUTHORIZED",
+          message: errMsg,
         });
       }
 
@@ -189,9 +210,10 @@ export const authMainRouter = createTRPCRouter({
       });
       // error if no user found:
       if (!qUser) {
+        errMsg = "Reset Password Token Not Valid"
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "No token with that id or expired",
+          code: "BAD_REQUEST",
+          message: errMsg,
         });
       }
 
@@ -210,6 +232,7 @@ export const authMainRouter = createTRPCRouter({
           },
         });
       } catch (error) {
+
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "CONTACT IE | error updated user record for password reset",
@@ -229,6 +252,9 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      let errMsg: tErrAuth
+
+
       const dateNow = dayjs();
       // get user object
       const qUser = await prisma.user_main.findFirst({
@@ -242,11 +268,13 @@ export const authMainRouter = createTRPCRouter({
       });
 
       if (!qUser){
-        throw new TRPCError({code: "BAD_REQUEST", message: "no email verification with that token exists"})
+        errMsg = "Email Token Not Valid"
+        throw new TRPCError({code: "BAD_REQUEST", message: errMsg})
       }
 
       if (qUser?.email_verified){
-        throw new TRPCError({code: "BAD_REQUEST", message: "Email already verified"})
+        errMsg = "Email Already Verified"
+        throw new TRPCError({code: "BAD_REQUEST", message: errMsg})
       }
 
       // update user email verified
@@ -263,9 +291,7 @@ export const authMainRouter = createTRPCRouter({
         }
       });
 
-      return {
-        message: "Email has been verified"
-      }
+      return
     }),
 });
 
@@ -290,7 +316,7 @@ const getUserAuthBasic = async (email: string) => {
     },
   });
 
-  // console.log(`user from getUser ${JSON.stringify(user, null, " ")}}`);
+  console.log(`user from getUser ${JSON.stringify(user, null, " ")}}`);
 
   return user;
 };

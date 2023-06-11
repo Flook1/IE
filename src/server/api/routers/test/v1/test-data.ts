@@ -1,8 +1,8 @@
 import { env } from "@/src/env.mjs";
-import { ruleAccess } from "@/src/utils/auth/access";
-import { isDev, isProd } from "@/src/utils/auth/isEnv";
-import { ruleGroup } from "@/src/utils/general/zEnums";
-import { getUserAuthFull } from "@/src/utils/user/getUserAuthFull";
+import { ruleAccess } from "@/src/1/auth/utils-server/access";
+import { isDev, isProd } from "@/src/1/auth/utils-server/isEnv";
+import { zRuleGroup } from "@/src/utils/general/zEnums";
+import { getUserAuthFull } from "@/src/1/user/utils-server/getUserAuthFull";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -99,7 +99,7 @@ export const testGenRouter = createTRPCRouter({
   zEnumTest: publicProcedure
     .input(
       z.object({
-        ruleGroup: ruleGroup,
+        zRuleGroup: zRuleGroup,
       })
     )
     .query(({ ctx }) => {

@@ -1,7 +1,7 @@
-import { ruleAccess } from "@/src/utils/auth/access";
-import { csrfCreate, csrfVerify } from "@/src/utils/auth/csrf";
-import { isDev } from "@/src/utils/auth/isEnv";
-import rateLimit from "@/src/utils/auth/rateLimit";
+import { ruleAccess } from "@/src/1/auth/utils-server/access";
+import { csrfCreate, csrfVerify } from "@/src/1/auth/utils-server/csrf";
+import { isDev } from "@/src/1/auth/utils-server/isEnv";
+import rateLimit from "@/src/1/auth/utils-server/rateLimit";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -22,6 +22,6 @@ export const testLimit = createTRPCRouter({
     console.log("after limit passed");
     console.log("after limit passed");
 
-    return "asdaniosdna";
+    return "something";
   }),
 });
