@@ -5,7 +5,6 @@ import { type ctxMain } from "@/src/server/api/trpc";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { TRPCClientError } from "@trpc/client";
 import type {
   IeCookie,
   AuthSesObj,
@@ -39,9 +38,10 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
     const sesGetCheck = await prisma.sessions.findFirst({
       where: {
         sid: ieAuthSesCookie,
-        expired: {
+        expires_on: {
           gte: dateNow,
         },
+        deleted_on: null,
       },
       select: { sid: true },
     });
@@ -68,12 +68,13 @@ export const sesGet = async (opts: ctxMain) => {
     const sesObj = await prisma.sessions.findFirst({
       where: {
         sid: ieAuthSesCookie,
-        expired: { gte: dateNow },
+        expires_on: { gte: dateNow },
+        deleted_on: null,
       },
       select: {
         sid: true,
         sess: true,
-        expired: true,
+        expires_on: true,
       },
     });
 
@@ -103,13 +104,13 @@ export const sesGet = async (opts: ctxMain) => {
   }
 };
 
-export const sesCreate = async (sesId: string, expire: Date) => {
+export const sesCreate = async (sesId: string, expires: Date) => {
   // we are jsut creating a unique id and creating a session from that
   await prisma.sessions.create({
     data: {
       sid: sesId,
       sess: {},
-      expired: expire,
+      expires_on: expires,
     },
     select: {
       sid: true,
@@ -122,6 +123,8 @@ export const sesCreate = async (sesId: string, expire: Date) => {
 };
 
 export const sesSetCookie = ( opts: ctxMain, sesId: string, expire: Date,) => {
+  console.log("setting cookie");
+
   // parse cookies
   try {
     const sesParsed = cookie.serialize("ieAuthSes", sesId, {
@@ -158,7 +161,7 @@ export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
         sid: sesId,
       },
       data: {
-        
+        deleted_on: dateNow
       }
     })
     // parse cookies
@@ -193,7 +196,7 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
     });
   }
 
-  try {
+
     const user = await prisma.user_main.findFirst({
       where: {
         user_id: userId,
@@ -204,6 +207,7 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
         name_first: true,
         name_last: true,
         business_id: true,
+        email_verified: true,
         // business details
         rel_bus: {
           select: {
@@ -309,17 +313,17 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
     };
 
     // console.log(`ses object | ${JSON.stringify(ses, null, " ")}`);
-
+    // this is just to stop type error in prisma insert
+    const sesInsert:JSON = ses
     // update session
-    // session should be created before this is called.
-    if (false) {
+    if (true) {
       try {
         await prisma.sessions.update({
           where: {
             sid: sesId,
           },
           data: {
-            sess: ses,
+            sess: sesInsert,
           },
         });
       } catch (error) {
@@ -334,13 +338,7 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
 
     // console.log("just before return");
     return ses;
-  } catch (error) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Something went wrong, not sure what",
-      cause: error,
-    });
-  }
+
 };
 
 /* -------------------------------------------------------------------------- */

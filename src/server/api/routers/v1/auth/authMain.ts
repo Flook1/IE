@@ -3,81 +3,82 @@ import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import * as argon2id from "argon2";
 import crypto, { randomUUID } from "crypto";
-import { eachMonthOfInterval } from "date-fns";
 import dayjs from "dayjs";
-import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { zLoginForm, type tLoginForm, type tErrAuth } from "@/src/1/auth/login/types";
-
+import {
+  zLoginForm,
+  type tLoginForm,
+  type tErrAuth,
+} from "@/src/1/auth/login/types";
+import {
+  verifyPassHash,
+  getUserAuthBasic,
+} from "@/src/1/auth/utils-server/login";
+import {
+  sesCreate,
+  sesSetCookie,
+  sesSetDb,
+} from "@/src/1/auth/utils-server/ses";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 export const authMainRouter = createTRPCRouter({
-  login: publicProcedure
-    .input(zLoginForm)
-    .mutation(async ({ ctx, input }) => {
-      let errMsg: tErrAuth
+  login: publicProcedure.input(zLoginForm).mutation(async ({ ctx, input }) => {
+    let errMsg: tErrAuth;
 
-      // check if email exists
-      const userData = await getUserAuthBasic(input.email);
+    // check if email exists
+    const userData = await getUserAuthBasic(input.email);
 
-
-      // check if user exists
-      if (!userData) {
+    // check if user exists
+    if (!userData) {
       // if (true) {
-        errMsg = "Incorrect Credentials"
-        // this is when need to reset the email, likely client from old system
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message:  errMsg,
-        });
-      }
-      // check if password exists
-      if (userData?.pass == null) {
+      errMsg = "Incorrect Credentials";
+      // this is when need to reset the email, likely client from old system
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: errMsg,
+      });
+    }
+    // check if password exists
+    if (userData?.pass == null) {
       // if (true) {
-        errMsg = "No password on record"
-        // this is when need to reset the email, likely client from old system
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:  errMsg,
-        });
-      }
+      errMsg = "No password on record";
+      // this is when need to reset the email, likely client from old system
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: errMsg,
+      });
+    }
 
-      const passMatch = await verifyPassHash(userData.pass, input.password);
+    const passMatch = await verifyPassHash(userData.pass, input.password);
 
-      let jwtToken;
-      if (passMatch) {
-        // Create sess id:
+    if (!passMatch) {
+      errMsg = "Incorrect Credentials";
+      // Passwords dont match
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: errMsg,
+      });
+    }
 
-        const sesId = crypto.randomUUID;
-        const dateNow = new Date();
+    // Create sess id:
+    const sesId = crypto.randomUUID();
+    const dateJs = dayjs();
+    const dateExpires = dateJs.add(30, "days").toDate();
 
-        console.log(`dateNow:`);
-        // create session:
+    // setting cookie
+    sesSetCookie(ctx, sesId, dateExpires);
 
-        // setting cookie
-        console.log("setting cookie");
-        // Cookies.set("ie-au", jwtToken, {
-        // expires: 30,
-        // sameSite: "strict",
-        // secure: true,
-        // HttpOnly: true,
-        // });
-      } else {
-        errMsg = "Incorrect Credentials"
-        // Passwords dont match
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: errMsg,
-        });
-      }
+    // create db session
+    await sesCreate(sesId, dateExpires);
 
-      return {
-        userData,
-        jwtToken,
-      };
-    }),
+    // update session with object
+    const sesObj = await sesSetDb(ctx, userData.user_id, sesId);
+
+    return { ...sesObj };
+    // return
+  }),
 
   resetPassCreate: publicProcedure
     .input(
@@ -86,7 +87,7 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      let errMsg: tErrAuth
+      let errMsg: tErrAuth;
 
       // create email verifcation
       const uuid = randomUUID();
@@ -120,7 +121,7 @@ export const authMainRouter = createTRPCRouter({
         // token created. Send Emails. send admin and user
         // todo
       } else {
-        errMsg = "Incorrect Credentials"
+        errMsg = "Incorrect Credentials";
 
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -138,7 +139,7 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      let errMsg:tErrAuth
+      let errMsg: tErrAuth;
 
       const dateNow = dayjs().format();
 
@@ -155,7 +156,7 @@ export const authMainRouter = createTRPCRouter({
       });
 
       if (!token) {
-        errMsg = "Reset Password Token Not Valid"
+        errMsg = "Reset Password Token Not Valid";
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: errMsg,
@@ -180,10 +181,10 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      let errMsg:tErrAuth
+      let errMsg: tErrAuth;
 
       if (input.password !== input.passwordConfirm) {
-        errMsg = "Passwords Don't Match"
+        errMsg = "Passwords Don't Match";
         // check pass match
         // error out
         throw new TRPCError({
@@ -210,7 +211,7 @@ export const authMainRouter = createTRPCRouter({
       });
       // error if no user found:
       if (!qUser) {
-        errMsg = "Reset Password Token Not Valid"
+        errMsg = "Reset Password Token Not Valid";
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: errMsg,
@@ -232,7 +233,6 @@ export const authMainRouter = createTRPCRouter({
           },
         });
       } catch (error) {
-
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "CONTACT IE | error updated user record for password reset",
@@ -252,8 +252,7 @@ export const authMainRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      let errMsg: tErrAuth
-
+      let errMsg: tErrAuth;
 
       const dateNow = dayjs();
       // get user object
@@ -267,111 +266,30 @@ export const authMainRouter = createTRPCRouter({
         },
       });
 
-      if (!qUser){
-        errMsg = "Email Token Not Valid"
-        throw new TRPCError({code: "BAD_REQUEST", message: errMsg})
+      if (!qUser) {
+        errMsg = "Email Token Not Valid";
+        throw new TRPCError({ code: "BAD_REQUEST", message: errMsg });
       }
 
-      if (qUser?.email_verified){
-        errMsg = "Email Already Verified"
-        throw new TRPCError({code: "BAD_REQUEST", message: errMsg})
+      if (qUser?.email_verified) {
+        errMsg = "Email Already Verified";
+        throw new TRPCError({ code: "BAD_REQUEST", message: errMsg });
       }
 
       // update user email verified
       const uUser = await prisma.user_main.update({
         where: {
-          user_id: qUser.user_id
+          user_id: qUser.user_id,
         },
         data: {
           email_verified: dateNow.format(),
           email_token: null,
         },
         select: {
-          user_id: true
-        }
+          user_id: true,
+        },
       });
 
-      return
+      return;
     }),
 });
-
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-// Server components below
-
-/* -------------------------------------------------------------------------- */
-// Get user for auth details
-const getUserAuthBasic = async (email: string) => {
-  const user = await prisma.user_main.findFirst({
-    where: {
-      email_id: email,
-    },
-    select: {
-      user_id: true,
-      business_id: true,
-      email_id: true,
-      pass: true,
-      pass_reset_token: true,
-      pass_reset_token_expiry: true,
-    },
-  });
-
-  console.log(`user from getUser ${JSON.stringify(user, null, " ")}}`);
-
-  return user;
-};
-
-/* -------------------------------------------------------------------------- */
-const jwtSign = (authed: boolean) => {
-  if (authed) {
-    try {
-      // Create jwt
-      console.log("starting to create JWT");
-      const jwtOpts = {
-        userId: "asdnflaksdfnkajksd",
-        busId: "naskdnfklasdf",
-        somethingNested: {
-          rule1: true,
-          rule2: true,
-          rule3: true,
-          rule4: true,
-        },
-      };
-      console.log(`jwtOpts: ${JSON.stringify(jwtOpts, null, " ")}`);
-
-      // jwt signing:
-      const jwtToken = jwt.sign(jwtOpts, env.JWT_SECRET);
-
-      return jwtToken;
-    } catch (error) {
-      // Jwt creation failed
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Something went wrong with creating jwt",
-        cause: error,
-      });
-    }
-  }
-};
-
-/* -------------------------------------------------------------------------- */
-const verifyPassHash = async (hashPass: string, pass: string) => {
-  // If Pass exists: match passwords
-  try {
-    if (await argon2id.verify(hashPass, pass)) {
-      // if passwords match
-      return true;
-    } else {
-      // passwords dont match
-      return false;
-    }
-  } catch (error) {
-    // Internal password hash error
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message:
-        "Something when wrong with the password hash matching  with argon.",
-      cause: error,
-    });
-  }
-};
