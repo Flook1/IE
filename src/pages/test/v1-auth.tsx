@@ -7,9 +7,6 @@ import { useRouter } from "next/router";
 
 const V1Testing: NextPageWithLayout = () => {
   const router = useRouter();
-  const testSesObj = api.testAuth.authSesObj.useQuery(undefined, {
-    enabled: false,
-  });
   const testIsEnv = api.genMain.isEnv.useQuery(
     { envSel: "my", envType: "development" },
     {
@@ -33,11 +30,6 @@ const V1Testing: NextPageWithLayout = () => {
   return (
     <>
       <div className="m-32 p-14">
-        <DebugView
-          visible={true}
-          header="testSesObj"
-          content={testSesObj}
-        ></DebugView>
         <DebugView
           visible={true}
           header="testIsEnv"
