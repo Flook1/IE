@@ -4,7 +4,6 @@ import { testGenRouter } from "./routers/test/v1/test-data";
 import { authMainRouter } from "./routers/v1/auth/authMain";
 import { testCookie } from "./routers/test/v1/test-cookie";
 import { testLimit } from "./routers/test/v1/test-limits";
-import { testAuth } from "./routers/test/v1/test-auth";
 import { testDateRouter } from "./routers/test/v1/test-dates";
 import { genMainRouter } from "./routers/v1/general/gen-main";
 import { authCheckRouter } from "./routers/v1/auth/authCheck";
