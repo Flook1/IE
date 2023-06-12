@@ -20,7 +20,7 @@ export const appRouter = createTRPCRouter({
   testDate: testDateRouter,
   testCookie: testCookie,
   testLimit: testLimit,
-  testAuth: testAuth,
+  // testAuth: testAuth,
   authMain: authMainRouter,
   authCheck: authCheckRouter,
   genMain: genMainRouter,

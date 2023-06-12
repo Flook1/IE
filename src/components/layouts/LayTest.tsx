@@ -37,9 +37,9 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.cookie.url}>Cookie</Link>
           </Button>
-          <Button asChild>
-            <Link href={objUrl.testing.auth.url}>auth</Link>
-          </Button>
+          {/* <Button asChild> */}
+            {/* <Link href={objUrl.testing.auth.url}>auth</Link> */}
+          {/* </Button> */}
           <Button asChild>
             <Link href={objUrl.testing.testing.url}>testing</Link>
           </Button>
