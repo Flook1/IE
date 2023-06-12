@@ -314,7 +314,8 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
 
     // console.log(`ses object | ${JSON.stringify(ses, null, " ")}`);
     // this is just to stop type error in prisma insert
-    const sesInsert:JSON = ses
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sesInsert:any = ses
     // update session
     if (true) {
       try {
@@ -323,6 +324,7 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
             sid: sesId,
           },
           data: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             sess: sesInsert,
           },
         });
