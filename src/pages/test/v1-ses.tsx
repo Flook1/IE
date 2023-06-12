@@ -9,18 +9,20 @@ const V1TestSes: NextPageWithLayout = () => {
   const sesCheckExists = api.authCheck.sesCheck.useQuery(
     { verify: false },
     {
-      enabled: true,
+      enabled: false,
     }
   );
   const sesCheckVerify = api.authCheck.sesCheck.useQuery(
     { verify: true },
     {
-      enabled: true,
+      enabled: false,
     }
   );
   const sesGetReturn = api.authCheck.sesGetReturn.useQuery(undefined, {
-    enabled: true,
+    enabled: false,
   });
+
+  const sesGet = api.authCheck.sesGet.useQuery(undefined, { enabled: true });
 
   return (
     <>
@@ -39,6 +41,11 @@ const V1TestSes: NextPageWithLayout = () => {
           visible={true}
           header="sesGetReturn"
           content={sesGetReturn}
+        ></DebugView>
+        <DebugView
+          visible={true}
+          header="sesGet"
+          content={sesGet}
         ></DebugView>
       </div>
     </>

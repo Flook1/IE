@@ -2,8 +2,8 @@ import type { ctxMain } from "@/src/server/api/trpc";
 import argon from "argon2";
 import { nanoid } from "nanoid";
 import cookie from "cookie";
-import type { IeCookie } from "../../../../utils/general/cookie";
 import { TRPCError } from "@trpc/server";
+import { type IeCookie } from "@/src/utils/general/cookie";
 
 /* -------------------------------------------------------------------------- */
 
