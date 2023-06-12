@@ -43,6 +43,9 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
             <Link href="/test/v1-testing">testing</Link>
           </Button>
           <Button asChild>
+            <Link href="/test/v1-ses">ses</Link>
+          </Button>
+          <Button asChild>
             <Link href="/test/v1-ui">Ui Stuff</Link>
           </Button>
         </div>

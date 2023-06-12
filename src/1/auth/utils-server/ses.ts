@@ -6,54 +6,100 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { TRPCClientError } from "@trpc/client";
-import type { IeCookie, AuthSesObj, UserType } from "@/src/utils/general/cookie";
+import type {
+  IeCookie,
+  AuthSesObj,
+  UserType,
+} from "@/src/utils/general/cookie";
+import { objErrSes } from "../login/types";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+export const sesCheck = async (opts: ctxMain, verify: boolean) => {
+  const dateJs = dayjs();
+  const dateNow = dateJs.format();
+
+  const allCookies: IeCookie = opts.req.cookies;
+
+  const ieAuthSesCookie = allCookies.ieAuthSes;
+
+  if (!ieAuthSesCookie) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: objErrSes.NoCookie,
+    });
+  }
+
+  if (!verify) {
+    return;
+  }
+
+  if (verify) {
+    const sesGetCheck = await prisma.sessions.findFirst({
+      where: {
+        sid: ieAuthSesCookie,
+        expired: {
+          gte: dateNow,
+        },
+      },
+      select: { sid: true },
+    });
+
+    if (!sesGetCheck) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: objErrSes.SesNotValid,
+      });
+    } else {
+      return;
+    }
+  }
+};
+
 export const sesGet = async (opts: ctxMain) => {
+  const dateJs = dayjs();
+  const dateNow = dateJs.format();
+
   const allCookies: IeCookie = opts.req.cookies;
   const ieAuthSesCookie = allCookies.ieAuthSes;
 
-  try {
-    if (ieAuthSesCookie) {
-      const sesObj = await prisma.sessions.findFirst({
-        where: {
-          sid: ieAuthSesCookie,
-        },
-        select: {
-          sid: true,
-          sess: true,
-          expired: true,
-        },
+  if (ieAuthSesCookie) {
+    const sesObj = await prisma.sessions.findFirst({
+      where: {
+        sid: ieAuthSesCookie,
+        expired: { gte: dateNow },
+      },
+      select: {
+        sid: true,
+        sess: true,
+        expired: true,
+      },
+    });
+
+    if (!sesObj || !sesObj?.sess) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: objErrSes.SesNotValid,
       });
 
-      if (!sesObj?.sess) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "there is no session object in database",
-        });
-      }
-
-      // todo need type of session
-      const sesJson = sesObj?.sess;
-
-      return {
-        isSes: true,
-        sesJson,
-        sesObj,
-      };
-    } else {
-      return {
-        isSes: false,
-      };
+      // we should trigger session update
     }
-  } catch (error) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "something went wrong getting the session data from database",
-      cause: error,
-    });
+
+    // todo need type of session
+    const sesJson = sesObj?.sess;
+
+    return {
+      isSes: true,
+      sesJson,
+      sesObj,
+    };
+  }
+
+  if (!ieAuthSesCookie) {
+    return {
+      isSes: false,
+    };
   }
 };
 
@@ -75,7 +121,7 @@ export const sesCreate = async (sesId: string, expire: Date) => {
   };
 };
 
-export const sesSetCookie = (sesId: string, expire: Date, opts: ctxMain) => {
+export const sesSetCookie = ( opts: ctxMain, sesId: string, expire: Date,) => {
   // parse cookies
   try {
     const sesParsed = cookie.serialize("ieAuthSes", sesId, {
@@ -87,6 +133,9 @@ export const sesSetCookie = (sesId: string, expire: Date, opts: ctxMain) => {
     });
 
     opts.res.setHeader("set-cookie", [sesParsed]);
+
+    return
+
   } catch (error) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -96,12 +145,22 @@ export const sesSetCookie = (sesId: string, expire: Date, opts: ctxMain) => {
     });
   }
 
-  return;
+
 };
 
-export const sesDelCookie = (sesId: string, opts: ctxMain) => {
+export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
   try {
     const dateNow = dayjs().tz("utc").toDate();
+
+    // delete from prisma
+    await prisma.sessions.update({
+      where: {
+        sid: sesId,
+      },
+      data: {
+        
+      }
+    })
     // parse cookies
     const sesParsed = cookie.serialize("ieAuthSes", sesId, {
       httpOnly: true,
@@ -110,6 +169,7 @@ export const sesDelCookie = (sesId: string, opts: ctxMain) => {
       secure: false,
       expires: dateNow,
     });
+
 
     opts.res.setHeader("set-cookie", [sesParsed]);
   } catch (error) {
@@ -125,7 +185,7 @@ export const sesDelCookie = (sesId: string, opts: ctxMain) => {
 };
 
 /* -------------------------------------------------------------------------- */
-export const sesSetDb = async (userId: string, sesId: string) => {
+export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) => {
   if (!userId || !sesId) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -272,9 +332,8 @@ export const sesSetDb = async (userId: string, sesId: string) => {
       }
     }
 
-    // console.log("jsut before return");
+    // console.log("just before return");
     return ses;
-
   } catch (error) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -282,51 +341,52 @@ export const sesSetDb = async (userId: string, sesId: string) => {
       cause: error,
     });
   }
-
 };
 
 /* -------------------------------------------------------------------------- */
 /* ---------------------------------- types --------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+// Ses object
 export interface TSesObj {
-  sesId:          string;
-  user:           User;
-  bus_id:         string;
-  bus_type:       string;
+  sesId: string;
+  user: User;
+  bus_id: string;
+  bus_type: string;
   user_name_full: string;
-  userType:       string;
+  userType: string;
 }
 
 export interface User {
-  user_id:     string;
-  email_id:    string;
-  name_first:  string;
-  name_last:   string;
+  user_id: string;
+  email_id: string;
+  name_first: string;
+  name_last: string;
   business_id: string;
-  rel_bus:     RelBus;
-  role_id:     number;
-  rel_role:    RelRole;
+  rel_bus: RelBus;
+  role_id: number;
+  rel_role: RelRole;
 }
 
 export interface RelBus {
-  id:            string;
+  id: string;
   owner_user_id: string;
   business_name: string;
   business_type: string;
-  client_type:   null;
-  payment_type:  string;
-  currency_id:   number;
-  rel_country:   RelCountry;
+  client_type: null;
+  payment_type: string;
+  currency_id: number;
+  rel_country: RelCountry;
 }
 
 export interface RelCountry {
   currency_symbol: string;
-  currency_code:   string;
-  currency_name:   string;
+  currency_code: string;
+  currency_name: string;
 }
 
 export interface RelRole {
-  id:        number;
+  id: number;
   role_name: string;
   role_info: string;
 }
-

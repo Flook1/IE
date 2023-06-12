@@ -986,7 +986,7 @@ model service_type {
 model sessions {
   sid     String   @id @db.VarChar(255)
   sess    Json     @db.Json
-  expired DateTime @db.Timestamp(6)
+  expired DateTime @db.Timestamptz(6)
 
   @@index([expired], map: "sessions_expired_index")
 }

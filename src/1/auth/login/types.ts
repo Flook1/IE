@@ -24,14 +24,19 @@ export type tErrAuth =
   | "Reset Password Token Not Valid"
   | "Email Token Not Valid"
   | "Email Already Verified"
-  | "Passwords Don't Match"
+  | "Passwords Don't Match";
 
-  export const objErrAuth = {
-    NoPass: "No Password On Record",
-    Creds: "Incorrect Credentials",
-    ResetToken: "Reset Password Token Not Valid",
-    EmailToken: "Email Token Not Valid",
-    EmailVerified: "Email Already Verified",
-    PassDontMatch: "Passwords Don't Match",
-  }
+export const objErrAuth = {
+  NoPass: "No Password On Record",
+  Creds: "Incorrect Credentials",
+  ResetToken: "Reset Password Token Not Valid",
+  EmailToken: "Email Token Not Valid",
+  EmailVerified: "Email Already Verified",
+  PassDontMatch: "Passwords Don't Match",
+};
 
+export type tErrSes = "Not Valid Session" | "No Session Cookie";
+export const objErrSes = {
+  SesNotValid: "Not Valid Session",
+  NoCookie: "No Session Cookie"
+}
