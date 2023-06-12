@@ -984,11 +984,13 @@ model service_type {
 }
 
 model sessions {
-  sid     String   @id @db.VarChar(255)
-  sess    Json     @db.Json
-  expired DateTime @db.Timestamp(6)
+  sid        String    @id @db.VarChar(255)
+  sess       Json      @db.Json
+  expires_on DateTime  @db.Timestamp(6)
+  deleted_on DateTime? @db.Timestamp(6)
+  other_json Json?     @db.Json
 
-  @@index([expired], map: "sessions_expired_index")
+  @@index([expires_on], map: "sessions_expired_index")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
