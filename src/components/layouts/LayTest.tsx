@@ -19,7 +19,6 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
         if (!data.isAllowed) {
           // if (false) {
           // if (!data) {
-          // will redirect here:
           void router.push(objUrl.gen.notFound.url);
         }
       },

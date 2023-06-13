@@ -35,8 +35,10 @@ import {
 import { DevTool } from "@hookform/devtools";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
+import { useRouter } from "next/router";
+import { objUrl } from "@/src/1/gen/types/urls";
 const Login: NextPageWithLayout = () => {
+  const router = useRouter()
   const toast = useToast();
 
   const mutationLogin = api.authMain.login.useMutation({
@@ -44,7 +46,6 @@ const Login: NextPageWithLayout = () => {
       let errRun = false;
 
       error.message as tErrAuth;
-      // if (error.message == errType) {
       if (error.message == objErrAuth.NoPass) {
         errRun = true;
         if (true) {
@@ -77,7 +78,10 @@ const Login: NextPageWithLayout = () => {
         console.log(data);
         toast.toast({ title: "Logged In" });
       }
+      console.log("reset the form")
+      loginForm.reset()
       // go to dashboard
+      void router.push(objUrl.v1.report.dash.url)
 
     },
   });

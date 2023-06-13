@@ -11,6 +11,11 @@
 
 export const objUrl = {
   v1: {
+    report: {
+      dash: {
+        url: "/v1/dash"
+      }
+    },
     auth: {
       login: {
         url: "/v1/auth/login",
@@ -95,7 +100,7 @@ export const objUrl = {
       },
     },
     wallet: {
-      
+
     },
     user: {
       profile: {
