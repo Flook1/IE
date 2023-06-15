@@ -9,7 +9,8 @@ import type { NextPage } from "next";
 type DebugViewProp = {
   visible: boolean;
   header: string;
-  content: string | object;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any;
 };
 
 const DebugView: NextPage<DebugViewProp> = ({ visible, header, content }) => {

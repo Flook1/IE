@@ -15,6 +15,8 @@ import { objErrSes } from "../login/types";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/* -------------------------------------------------------------------------- */
+
 export const sesCheck = async (opts: ctxMain, verify: boolean) => {
   const dateJs = dayjs();
   const dateNow = dateJs.format();
@@ -22,6 +24,10 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
   const allCookies: IeCookie = opts.req.cookies;
 
   const ieAuthSesCookie = allCookies.ieAuthSes;
+
+  // console.log(ieAuthSesCookie)
+  // console.log(verify)
+  let success = false
 
   if (!ieAuthSesCookie) {
     throw new TRPCError({
@@ -31,7 +37,10 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
   }
 
   if (!verify) {
-    return;
+    console.log("exists, dont need to validate")
+    // exists return
+    success = true;
+    return success;
   }
 
   if (verify) {
@@ -52,9 +61,13 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
         message: objErrSes.SesNotValid,
       });
     } else {
-      return;
+      success = true
+      return success;
     }
   }
+
+  // return success false
+  return success
 };
 
 export const sesGet = async (opts: ctxMain) => {
@@ -87,8 +100,9 @@ export const sesGet = async (opts: ctxMain) => {
       // we should trigger session update
     }
 
-    // todo need type of session
-    const sesJson = sesObj?.sess;
+    // setting type for session object
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+    const sesJson: TSesObj = sesObj?.sess as any;
 
     return {
       isSes: true,
@@ -122,7 +136,7 @@ export const sesCreate = async (sesId: string, expires: Date) => {
   };
 };
 
-export const sesSetCookie = ( opts: ctxMain, sesId: string, expire: Date,) => {
+export const sesSetCookie = (opts: ctxMain, sesId: string, expire: Date) => {
   console.log("setting cookie");
 
   // parse cookies
@@ -137,8 +151,7 @@ export const sesSetCookie = ( opts: ctxMain, sesId: string, expire: Date,) => {
 
     opts.res.setHeader("set-cookie", [sesParsed]);
 
-    return
-
+    return;
   } catch (error) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -147,11 +160,9 @@ export const sesSetCookie = ( opts: ctxMain, sesId: string, expire: Date,) => {
       cause: error,
     });
   }
-
-
 };
 
-export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
+export const sesDelCookie = async (opts: ctxMain, sesId: string) => {
   try {
     const dateNow = dayjs().tz("utc").toDate();
 
@@ -161,9 +172,9 @@ export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
         sid: sesId,
       },
       data: {
-        deleted_on: dateNow
-      }
-    })
+        deleted_on: dateNow,
+      },
+    });
     // parse cookies
     const sesParsed = cookie.serialize("ieAuthSes", sesId, {
       httpOnly: true,
@@ -172,7 +183,6 @@ export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
       secure: false,
       expires: dateNow,
     });
-
 
     opts.res.setHeader("set-cookie", [sesParsed]);
   } catch (error) {
@@ -188,7 +198,11 @@ export const sesDelCookie = async  ( opts: ctxMain, sesId: string) => {
 };
 
 /* -------------------------------------------------------------------------- */
-export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) => {
+export const sesSetDb = async (
+  opts: ctxMain,
+  userId: string,
+  sesId: string
+) => {
   if (!userId || !sesId) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -196,157 +210,158 @@ export const sesSetDb = async ( opts: ctxMain, userId: string, sesId: string) =>
     });
   }
 
-
-    const user = await prisma.user_main.findFirst({
-      where: {
-        user_id: userId,
-      },
-      select: {
-        user_id: true,
-        email_id: true,
-        name_first: true,
-        name_last: true,
-        business_id: true,
-        email_verified: true,
-        // business details
-        rel_bus: {
-          select: {
-            id: true,
-            owner_user_id: true,
-            business_name: true,
-            business_type: true,
-            client_type: true,
-            payment_type: true,
-            currency_id: true,
-            rel_country: {
-              select: {
-                currency_symbol: true,
-                currency_code: true,
-                currency_name: true,
-              },
+  const user = await prisma.user_main.findFirst({
+    where: {
+      user_id: userId,
+    },
+    select: {
+      user_id: true,
+      email_id: true,
+      name_first: true,
+      name_last: true,
+      business_id: true,
+      email_verified: true,
+      // business details
+      rel_bus: {
+        select: {
+          id: true,
+          owner_user_id: true,
+          business_name: true,
+          business_type: true,
+          client_type: true,
+          payment_type: true,
+          currency_id: true,
+          rel_country: {
+            select: {
+              currency_symbol: true,
+              currency_code: true,
+              currency_name: true,
             },
           },
         },
-        // role section
-        role_id: true,
-        rel_role: {
-          select: {
-            id: true,
-            role_name: true,
-            role_info: true,
-          },
+      },
+      // role section
+      role_id: true,
+      rel_role: {
+        select: {
+          id: true,
+          role_name: true,
+          role_info: true,
         },
       },
-    });
+    },
+  });
 
-    // Now lets setup the conditional informaiton for ses
-    // Obj start
-    const bus_id: string | undefined = user?.rel_bus?.id;
-    const bus_type: string | undefined = user?.rel_bus?.business_type;
+  // Now lets setup the conditional informaiton for ses
+  // Obj start
+  const bus_id: string | undefined = user?.rel_bus?.id;
+  const bus_type: string | undefined = user?.rel_bus?.business_type;
 
-    const user_name_full: string | undefined =
-      user?.name_first && user?.name_last
-        ? user.name_first + user.name_last
-        : "Unknown";
+  const user_name_full: string | undefined =
+    user?.name_first && user?.name_last
+      ? user.name_first + user.name_last
+      : "Unknown";
 
-    // user type, sub user type
-    let userType: UserType = null;
+  // user type, sub user type
+  let userType: UserType = null;
 
-    const isManager = await prisma.user_parent_child.findMany({
-      where: {
-        parent_user_id: userId,
-        deleted_on: null,
-      },
-      select: {
-        child_user_id: true,
-        parent_user_id: true,
-      },
-    });
+  const isManager = await prisma.user_parent_child.findMany({
+    where: {
+      parent_user_id: userId,
+      deleted_on: null,
+    },
+    select: {
+      child_user_id: true,
+      parent_user_id: true,
+    },
+  });
 
-    console.log(`isManager, count more than 0 | countIs:  ${isManager.length}`);
+  console.log(`isManager, count more than 0 | countIs:  ${isManager.length}`);
 
-    if (user?.rel_bus?.business_type == "client") {
-      if (user.user_id == user.rel_bus.owner_user_id) {
-        // if passed means is owner
-        userType = "client owner";
+  if (user?.rel_bus?.business_type == "client") {
+    if (user.user_id == user.rel_bus.owner_user_id) {
+      // if passed means is owner
+      userType = "client owner";
+    } else {
+      if (isManager.length > 0) {
+        userType = "client manager";
       } else {
-        if (isManager.length > 0) {
-          userType = "client manager";
-        } else {
-          userType = "client team";
-        }
+        userType = "client team";
       }
     }
+  }
 
-    // Editor check
-    if (user?.rel_bus?.business_type == "editor") {
-      if (user.user_id == user.rel_bus.owner_user_id) {
-        // if passed means is owner
-        userType = "editor owner";
+  // Editor check
+  if (user?.rel_bus?.business_type == "editor") {
+    if (user.user_id == user.rel_bus.owner_user_id) {
+      // if passed means is owner
+      userType = "editor owner";
+    } else {
+      if (isManager.length > 0) {
+        userType = "editor manager";
       } else {
-        if (isManager.length > 0) {
-          userType = "editor manager";
-        } else {
-          userType = "editor team";
-        }
+        userType = "editor team";
       }
     }
+  }
 
-    // ie check
-    if (user?.rel_bus?.business_type == "ie") {
-      if (user.user_id == user.rel_bus.owner_user_id) {
-        // if passed means is owner
-        userType = "ie owner";
-      } else {
-        userType = "ie team";
-      }
+  // ie check
+  if (user?.rel_bus?.business_type == "ie") {
+    if (user.user_id == user.rel_bus.owner_user_id) {
+      // if passed means is owner
+      userType = "ie owner";
+    } else {
+      userType = "ie team";
     }
+  }
 
-    // combine session object:
-    const ses = {
-      sesId,
-      user,
-      bus_id,
-      bus_type,
-      user_name_full,
-      userType,
-    };
+  // combine session object:
+  const ses = {
+    sesId,
+    user,
+    bus_id,
+    bus_type,
+    user_name_full,
+    userType,
+  };
 
-    // console.log(`ses object | ${JSON.stringify(ses, null, " ")}`);
-    // this is just to stop type error in prisma insert
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sesInsert:any = ses
-    // update session
-    if (true) {
-      try {
-        await prisma.sessions.update({
-          where: {
-            sid: sesId,
-          },
-          data: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            sess: sesInsert,
-          },
-        });
-      } catch (error) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message:
-            "Error trying to update session object, maybe cant find the session id",
-          cause: error,
-        });
-      }
+  // console.log(`ses object | ${JSON.stringify(ses, null, " ")}`);
+  // this is just to stop type error in prisma insert
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sesInsert: any = ses;
+  // update session
+  if (true) {
+    try {
+      await prisma.sessions.update({
+        where: {
+          sid: sesId,
+        },
+        data: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          sess: sesInsert,
+        },
+      });
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message:
+          "Error trying to update session object, maybe cant find the session id",
+        cause: error,
+      });
     }
+  }
 
-    // console.log("just before return");
-    return ses;
-
+  // console.log("just before return");
+  return ses;
 };
 
 /* -------------------------------------------------------------------------- */
 /* ---------------------------------- types --------------------------------- */
 
 /* -------------------------------------------------------------------------- */
+
+// Type check object below
+
 // Ses object
 export interface TSesObj {
   sesId: string;
