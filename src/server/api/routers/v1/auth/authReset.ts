@@ -86,10 +86,9 @@ export const authResetRouter = createTRPCRouter({
       });
 
       if (!token) {
-        errMsg = "Reset Password Token Not Valid";
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: errMsg,
+          message: objErrAuth.ResetToken,
         });
       }
 
@@ -105,7 +104,7 @@ export const authResetRouter = createTRPCRouter({
         // check pass match
         // error out
         throw new TRPCError({
-          code: "UNAUTHORIZED",
+          code: "BAD_REQUEST",
           message: objErrAuth.PassDontMatch,
         });
       }
@@ -130,7 +129,7 @@ export const authResetRouter = createTRPCRouter({
       if (!qUser) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: objErrAuth.EmailToken,
+          message: objErrAuth.ResetToken,
         });
       }
 

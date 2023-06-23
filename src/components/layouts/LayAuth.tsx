@@ -29,7 +29,7 @@ export const LayAuth = ({ children }: NextPageLayoutProps) => {
       const isEmailVerify = objUrl.v1.auth.emailVerify.url != urlRemoveEnd(router.route)
 
       // console.log(router.route)
-      console.log(isPassCreate, isPassVerify, isEmailVerify)
+      // console.log(isPassCreate, isPassVerify, isEmailVerify)
 
 
       if (isPassCreate && isPassVerify && isEmailVerify ){

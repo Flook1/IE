@@ -15,6 +15,7 @@ export const objUrl = {
       },
       resetPassVerify: {
         url: "/v1/auth/reset-pass-verify",
+        param: "id"
       },
       resetPassCreate: {
         url: "/v1/auth/reset-pass-create",

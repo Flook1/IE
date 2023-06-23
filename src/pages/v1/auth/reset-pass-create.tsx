@@ -1,6 +1,6 @@
 import { api } from "@/src/utils/api";
 import { LayAuth } from "@/src/components/layouts/LayAuth";
-import type { ReactElement, ReactHTMLElement } from "react";
+import type { ReactElement } from "react";
 import { type NextPageWithLayout } from "../../_app";
 import {
   Card,

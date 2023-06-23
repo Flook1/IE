@@ -19,8 +19,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/router";
 import { objUrl } from "@/src/1/gen/types/urls";
 import { type NextPage } from "next";
-import { useEffect, type ReactElement } from "react";
-import { Smile } from "lucide-react";
+import { useEffect, type ReactElement, useState } from "react";
+import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { type NextPageWithLayout } from "@/src/pages/_app";
@@ -31,10 +31,18 @@ const EmailVerify: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
   const emailToken = router.query.id;
+  const [showRedirect, setShowRedirect] = useState(false);
 
-  const mutateResetPass = api.authMain.emailVerify.useMutation({
+  const mutateEmailVerify = api.authMain.emailVerify.useMutation({
     onError: (error) => {
       let errRun = false;
+      setShowRedirect(true);
+
+      if (!!error.data?.zodError){
+        // means there is a zod error
+        errRun = true
+        toast.toast({variant:"destructive", title: "Input Error", description: "Please Contact Image Edits Team"})
+      }
 
       // error.message as tErrAuth;
       if (error.message == objErrAuth.EmailToken) {
@@ -56,21 +64,26 @@ const EmailVerify: NextPageWithLayout = () => {
 
       if (errRun == false) {
         // Handle other errors
-        console.log(error.message);
-        console.log(error.data?.code);
+        // console.log(error.message);
+        // console.log(error.data?.code);
         toast.toast({
           variant: "destructive",
           title: "Unhandled Error",
           description: "Contact Image Edits Team",
         });
       }
+
     },
     onSuccess: (data) => {
-      console.log(data);
+      setShowRedirect(true);
+      console.log(`showRedirect boolean ${showRedirect.toString()}`)
+
+      // console.log(data);
       toast.toast({
         title: "Thank you",
         description: "Email Has Been Verified. You can now leave this page. ",
       });
+
     },
   });
 
@@ -78,39 +91,47 @@ const EmailVerify: NextPageWithLayout = () => {
 
   useEffect(() => {
     // trigger on page load
-    if (!emailToken) {
+    console.log(emailToken);
+
+    if (!emailToken || emailToken == undefined) {
       toast.toast({
         variant: "destructive",
         title: "No Token In Url",
         description: "Contact Image Edits for help",
       });
+    } else {
+      mutateEmailVerify.mutate({ verifyToken: emailToken as string });
     }
 
-    console.log(emailToken);
-    mutateResetPass.mutate({ verifyToken: emailToken as string });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [emailToken]);
 
   return (
     <div>
+      {false && (
+        <div>
+          <p>Test Section</p>
+          <p>countOfUseAffect</p>
+        </div>
+      )}
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle>
             <div className="mb-2 flex">
-              Verifying Email
-              <Smile size={24} strokeWidth={2} className="ms-2" />
+              Verifying Your Email Address
+              <MailCheck size={24} strokeWidth={2} className="ms-2" />
             </div>
           </CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent>
-        </CardContent>
+        <CardContent></CardContent>
         <CardFooter className="mt-4 flex-col ">
-          {/* go to dashboard if logged in */}
-          <Button>
-            <Link href={objUrl.v1.report.dash.url}>Go to Dashboard</Link>
-          </Button>
+          {!!showRedirect && (
+            // redirect to dashboard
+            <Button>
+              <Link href={objUrl.v1.report.dash.url}>Go to Dashboard</Link>
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>
