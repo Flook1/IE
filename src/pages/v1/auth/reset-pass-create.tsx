@@ -47,7 +47,7 @@ const ResetPass: NextPageWithLayout = () => {
     onError: (error) => {
       let errRun = false;
 
-      error.message as tErrAuth;
+      error.message as unknown as tErrAuth;
       if (error.message == objErrAuth.PassDontMatch) {
         errRun = true;
         if (true) {

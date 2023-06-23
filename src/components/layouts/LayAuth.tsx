@@ -1,5 +1,6 @@
 import { useToast } from "@/components/ui/use-toast";
 import { objUrl } from "@/src/1/gen/types/urls";
+import { urlRemoveEnd } from "@/src/1/gen/utils-client/urlFormat";
 import { api } from "@/src/utils/api";
 import { useRouter } from "next/router";
 
@@ -23,7 +24,20 @@ export const LayAuth = ({ children }: NextPageLayoutProps) => {
       // console.log("redirecting to dashboard")
       // toast({title: "Redirecting to Dashboard"})
 
-      void router.push(objUrl.v1.report.dash.url)
+      const isPassCreate = objUrl.v1.auth.resetPassCreate.url !=  urlRemoveEnd(router.route)
+      const isPassVerify = objUrl.v1.auth.resetPassVerify.url !=  urlRemoveEnd(router.route)
+      const isEmailVerify = objUrl.v1.auth.emailVerify.url != urlRemoveEnd(router.route)
+
+      // console.log(router.route)
+      console.log(isPassCreate, isPassVerify, isEmailVerify)
+
+
+      if (isPassCreate && isPassVerify && isEmailVerify ){
+        // console.log("running redirect")
+        void router.push(objUrl.v1.report.dash.url)
+      }
+
+
     }
   })
 

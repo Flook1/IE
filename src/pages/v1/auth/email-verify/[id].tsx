@@ -19,13 +19,15 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/router";
 import { objUrl } from "@/src/1/gen/types/urls";
 import { type NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, type ReactElement } from "react";
 import { Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { type NextPageWithLayout } from "@/src/pages/_app";
+import LayAuth from "@/src/components/layouts/LayAuth";
 
 /* -------------------------------------------------------------------------- */
-const EmailVerify: NextPage = () => {
+const EmailVerify: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
   const emailToken = router.query.id;
@@ -102,7 +104,8 @@ const EmailVerify: NextPage = () => {
           </CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent></CardContent>
+        <CardContent>
+        </CardContent>
         <CardFooter className="mt-4 flex-col ">
           {/* go to dashboard if logged in */}
           <Button>
@@ -112,6 +115,10 @@ const EmailVerify: NextPage = () => {
       </Card>
     </div>
   );
+};
+
+EmailVerify.getLayout = function getLayout(page: ReactElement) {
+  return <LayAuth>{page}</LayAuth>;
 };
 
 export default EmailVerify;
