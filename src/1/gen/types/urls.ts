@@ -1,13 +1,3 @@
-// this is just object of the possible urls in ie app
-// type tUrl = {
-// url:string,
-// param1?: string,
-// param2?: string,
-// param3?: string,
-// param4?: string,
-// }
-//
-// type tUrlList = tUrl
 
 export const objUrl = {
   v1: {
@@ -31,6 +21,7 @@ export const objUrl = {
       },
       emailVerify: {
         url: "/v1/auth/email-verify",
+        param: "id"
       },
     },
     bus: {
@@ -139,6 +130,9 @@ export const objUrl = {
     },
     ui: {
       url: "/test/v1-ui",
+    },
+    url: {
+      url: "/test/v1-url",
     },
   },
 };

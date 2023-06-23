@@ -162,21 +162,35 @@ export const sesSetCookie = (opts: ctxMain, sesId: string, expire: Date) => {
   }
 };
 
-export const sesDelCookie = async (opts: ctxMain, sesId: string) => {
+export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
+
+  // get cookie id
+  let ses_id: string
+  if(sesId) {
+    ses_id = sesId
+  } else {
+    const allCookies: IeCookie = opts.req.cookies
+    if (!allCookies.ieAuthSes){
+      throw new TRPCError({code:"BAD_REQUEST", message:"cookie doesnt exist"})
+    }
+    ses_id = allCookies.ieAuthSes
+  }
+
+
+  // delete cookie
   try {
     const dateNow = dayjs().tz("utc").toDate();
-
     // delete from prisma
     await prisma.sessions.update({
       where: {
-        sid: sesId,
+        sid: ses_id,
       },
       data: {
         deleted_on: dateNow,
       },
     });
     // parse cookies
-    const sesParsed = cookie.serialize("ieAuthSes", sesId, {
+    const sesParsed = cookie.serialize("ieAuthSes", ses_id, {
       httpOnly: true,
       path: "/",
       sameSite: true,
@@ -189,12 +203,12 @@ export const sesDelCookie = async (opts: ctxMain, sesId: string) => {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:
-        "soemthing went wrong trying to DELETING the ieauthses cookie, likely with the date",
+        "something went wrong trying to DELETING the ieauthses cookie, likely with the date",
       cause: error,
     });
   }
 
-  return;
+  return {success: true};
 };
 
 /* -------------------------------------------------------------------------- */

@@ -27,8 +27,8 @@ import { Smile } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  zLoginForm,
-  type tLoginForm,
+  zResetPassForm,
+  type tResetPassForm,
   type tErrAuth,
   objErrAuth,
 } from "@/src/1/auth/login/types";
@@ -37,26 +37,28 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/router";
 import { objUrl } from "@/src/1/gen/types/urls";
-const Login: NextPageWithLayout = () => {
+
+/* -------------------------------------------------------------------------- */
+const ResetPass: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const mutationLogin = api.authMain.login.useMutation({
+  const mutateResetPass = api.authReset.resetPassCreate.useMutation({
     onError: (error) => {
       let errRun = false;
 
       error.message as tErrAuth;
-      if (error.message == objErrAuth.NoPass) {
+      if (error.message == objErrAuth.PassDontMatch) {
         errRun = true;
         if (true) {
           toast.toast({ variant: "destructive", title: error.message });
         }
       }
 
+      // cant find email error
       if (error.message == objErrAuth.Creds) {
-        // incorrect creds
+        console.log("cant find user in database, contact ie");
         errRun = true;
-
         if (true) {
           toast.toast({ variant: "destructive", title: error.message });
         }
@@ -76,30 +78,28 @@ const Login: NextPageWithLayout = () => {
     onSuccess: (data) => {
       if (true) {
         console.log(data);
-        toast.toast({ title: "Logged In" });
+        toast.toast({ title: "Password Reset Email Sent" });
       }
-      console.log("reset the form");
-      loginForm.reset();
-      // go to dashboard
-      void router.push(objUrl.v1.report.dash.url);
+
+      // reset form
+      resetPassForm.reset();
     },
   });
 
-  const loginForm = useForm<tLoginForm>({
-    resolver: zodResolver(zLoginForm),
+  const resetPassForm = useForm<tResetPassForm>({
+    resolver: zodResolver(zResetPassForm),
     defaultValues: {
-      email: "haydnhinks@outlook.com",
-      password: "",
+      email: "",
     },
   });
 
   /* -------------------------------------------------------------------------- */
-  const onSubmit = (values: tLoginForm) => {
+  const onSubmit = (values: tResetPassForm) => {
     // do something
-    console.log("on submit handler run, for login form");
+    console.log("on submit handler run, for pass reset create form");
     console.log(values);
     // trigger mutation
-    mutationLogin.mutate(values);
+    mutateResetPass.mutate(values);
   };
 
   return (
@@ -107,21 +107,24 @@ const Login: NextPageWithLayout = () => {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle>
-            <div className="flex">
-              Login
-              <Smile size={24} strokeWidth={2} className="ms-2" />
+            <div className="flex mb-2">
+              Request Password Reset Link
+              {/* <Smile size={24} strokeWidth={2} className="ms-2" /> */}
             </div>
           </CardTitle>
-          <CardDescription>Welcome Back!</CardDescription>
+          <CardDescription>
+            This password reset link will be sent to your email. <br />
+            <span className="font-bold">Please Check SPAM</span>
+          </CardDescription>
         </CardHeader>
         <hr />
-        <Form {...loginForm}>
-          <form onSubmit={(e) => void loginForm.handleSubmit(onSubmit)(e)}>
+        <Form {...resetPassForm}>
+          <form onSubmit={(e) => void resetPassForm.handleSubmit(onSubmit)(e)}>
             <CardContent>
               {/* form section */}
               <FormField
                 // EMAIL
-                control={loginForm.control}
+                control={resetPassForm.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -134,51 +137,24 @@ const Login: NextPageWithLayout = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                // PASSSWORD
-                control={loginForm.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    {/* <FormDescription>Place your email above</FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {mutationLogin.error?.message == objErrAuth.Creds && (
-                <div className="mt-4">
-                  <Alert variant={"destructive"}>
-                    <AlertTitle>
-                      <h2>Incorrect Credentials</h2>
-                    </AlertTitle>
-                    {/* <AlertDescription><p>Try again.</p></AlertDescription> */}
-                  </Alert>
-                </div>
-              )}
             </CardContent>
             <hr />
             <CardFooter className="mt-4 flex-col ">
               <div className="flex w-full items-center justify-center gap-10">
                 {/* footer buttons */}
-                <Button variant="outline">
-                  <Link href={objUrl.v1.auth.signUp.url}>Sign Up</Link>
-                </Button>
                 <Button variant="default" type="submit">
-                  Login
+                  Reset Password
                 </Button>
               </div>
               <hr />
-              <div>
-                {/* Forgot password */}
+              <div className="mt-2">
+
+                {/* sec nav */}
                 <Button variant="link">
-                  <Link href={objUrl.v1.auth.resetPassCreate.url}>
-                    Forgot Password
-                  </Link>
+                  <Link href={objUrl.v1.auth.signUp.url}>Sign Up</Link>
+                </Button>
+                <Button variant="link">
+                  <Link href={objUrl.v1.auth.login.url}>Login</Link>
                 </Button>
               </div>
             </CardFooter>
@@ -190,17 +166,17 @@ const Login: NextPageWithLayout = () => {
         <div>
           <p>mutation info</p>
           <br />
-          <p>{JSON.stringify(mutationLogin.data)}</p>
+          <p>{JSON.stringify(mutateResetPass.data)}</p>
           <br />
           {/* error */}
-          <p>{mutationLogin.error?.message}</p>
+          <p>{mutateResetPass.error?.message}</p>
         </div>
       )}
 
       {true && (
         <div>
           <Separator></Separator>
-          <DevTool control={loginForm.control} />
+          <DevTool control={resetPassForm.control} />
         </div>
       )}
     </div>
@@ -208,8 +184,8 @@ const Login: NextPageWithLayout = () => {
 };
 
 // layout
-Login.getLayout = function getLayout(page: ReactElement) {
+ResetPass.getLayout = function getLayout(page: ReactElement) {
   return <LayAuth>{page}</LayAuth>;
 };
 
-export default Login;
+export default ResetPass;

@@ -4,34 +4,63 @@ import DebugView from "@/src/components/test/debug-view";
 import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
 import LayTest from "@/src/components/layouts/LayTest";
+import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const V1TestSes: NextPageWithLayout = () => {
-  const sesCheckExists = api.authCheck.sesCheck.useQuery(
-    { verify: false },
-    {
-      enabled: false,
-    }
-  );
-  const sesCheckVerify = api.authCheck.sesCheck.useQuery(
-    { verify: true },
-    {
-      enabled: false,
-    }
-  );
-  const sesGet = api.authCheck.sesGet.useQuery(undefined, { enabled: true });
+  // const sesCheckExists = api.authCheck.sesCheck.useQuery(
+  // { verify: false },
+  // {
+  // enabled: false,
+  // }
+  // );
+  // const sesCheckVerify = api.authCheck.sesCheck.useQuery(
+  //   { verify: true },
+  //   {
+  //     enabled: false,
+  //   }
+  // );
+  const sesGet = api.authCheck.sesGet.useQuery(undefined, {
+    enabled: true,
+    onError: (error) => {
+      console.log("authSesValid: error");
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log("authSesValid: success");
+      console.log(data);
+    },
+  });
+
+  const sesDel = api.authCheck.sesDel.useMutation({
+    onSuccess: (data) => {
+      // refretch other query for session data see if its gone
+      void sesGet.refetch();
+      console.log(sesGet.data);
+    },
+  });
 
   return (
     <>
       <div className="m-32 p-14">
+        <div>
+          <Button onClick={() => sesDel.mutate()}>
+            {sesDel.isLoading && <Loader2 className="animate-spin"/>}
+            Del session test
+          </Button>
+        </div>
         <DebugView
           visible={true}
           header="sesCheckExists"
-          content={sesCheckExists}
+          content={"disabled"}
+          // content={sesCheckExists}
         ></DebugView>
         <DebugView
           visible={true}
           header="sesCheckVerify"
-          content={sesCheckVerify}
+          content={"disabled"}
+          // content={sesCheckVerify}
         ></DebugView>
         <DebugView
           visible={true}

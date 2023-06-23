@@ -48,6 +48,10 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.ui.url}>Ui Stuff</Link>
           </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.url.url}>Url Params</Link>
+          </Button>
+
         </div>
       </div>
       <div className="bg-base-200 container ">{children}</div>

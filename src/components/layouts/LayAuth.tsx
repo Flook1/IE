@@ -1,3 +1,5 @@
+import { useToast } from "@/components/ui/use-toast";
+import { objUrl } from "@/src/1/gen/types/urls";
 import { api } from "@/src/utils/api";
 import { useRouter } from "next/router";
 
@@ -9,6 +11,22 @@ export type NextPageLayoutProps = {
 
 export const LayAuth = ({ children }: NextPageLayoutProps) => {
   const router = useRouter();
+  const {toast} = useToast()
+
+  const authSesValid = api.authCheck.sesCheck.useQuery({verify:true}, {
+    enabled: true,
+    onError: (error) => {
+      // dont need to do anything
+    },
+    onSuccess: (data) => {
+      // this means valid ses, so cant be on auth pages
+      // console.log("redirecting to dashboard")
+      // toast({title: "Redirecting to Dashboard"})
+
+      void router.push(objUrl.v1.report.dash.url)
+    }
+  })
+
 
   return (
     <>
