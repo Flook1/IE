@@ -6,8 +6,10 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { sesGet } from "@/src/1/auth/utils-server/ses";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import next from "next/types";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
@@ -15,8 +17,8 @@ import { prisma } from "~/server/db";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------- My stuff -------------------------------- */
 // get the main res and req context, but not prisma, but i can just import prisma
-export type ctxMain =  CreateNextContextOptions
-
+// doesnt include session either. 
+export type ctxMain = CreateNextContextOptions;
 
 /* -------------------------------------------------------------------------- */
 
@@ -52,16 +54,15 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext =  (_opts: CreateNextContextOptions) => {
+export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   const innerContext = createInnerTRPCContext({});
 
-  return({
+  return {
     ...innerContext,
     req: _opts.req,
     res: _opts.res,
-  });
+  };
 };
-
 
 /**
  * 2. INITIALIZATION
@@ -107,3 +108,27 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// My stuff added
+export const sesPass = t.middleware(async ({ ctx, next }) => {
+  // lets get the sessions
+  const getSes = await sesGet(ctx);
+
+  if ((getSes == undefined)) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Session is undefined in middleware passing",
+    });
+  }
+
+  return next({
+    ctx: {
+      getSes,
+    },
+  });
+});
+
+export const sesProcedure = t.procedure.use(sesPass);

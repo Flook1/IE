@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@radix-ui/react-context-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Smile } from "lucide-react";
+import { Loader2, Smile } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -37,6 +37,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/router";
 import { objUrl } from "@/src/1/gen/types/urls";
+
+
+
+
+
 const Login: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
@@ -45,7 +50,6 @@ const Login: NextPageWithLayout = () => {
     onError: (error) => {
       let errRun = false;
 
-      error.message as tErrAuth;
       if (error.message == objErrAuth.NoPass) {
         errRun = true;
         if (true) {
@@ -165,17 +169,20 @@ const Login: NextPageWithLayout = () => {
             <CardFooter className="mt-4 flex-col ">
               <div className="flex w-full items-center justify-center gap-10">
                 {/* footer buttons */}
-                <Button variant="outline">
+                <Button variant="outline" disabled={mutationLogin.isLoading}>
                   <Link href={objUrl.v1.auth.signUp.url}>Sign Up</Link>
                 </Button>
-                <Button variant="default" type="submit">
+                <Button variant="default" type="submit" disabled={mutationLogin.isLoading}>
+                  {mutationLogin.isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin"></Loader2>
+                  )}
                   Login
                 </Button>
               </div>
               <hr />
               <div>
                 {/* Forgot password */}
-                <Button variant="link">
+                <Button variant="link" disabled={mutationLogin.isLoading}>
                   <Link href={objUrl.v1.auth.resetPassCreate.url}>
                     Forgot Password
                   </Link>

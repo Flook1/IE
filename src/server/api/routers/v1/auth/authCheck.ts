@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, sesProcedure } from "~/server/api/trpc";
 import { sesGet, sesCheck, sesDelCookie } from "@/src/1/auth/utils-server/ses";
 
 /* -------------------------------------------------------------------------- */
@@ -9,11 +9,12 @@ export const authCheckRouter = createTRPCRouter({
     .input(
       z.object({
         verify: z.boolean(),
+        throwErr: z.boolean(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const sesSuccess = await sesCheck(ctx, input.verify);
-      return sesSuccess;
+      const sesSuccess = await sesCheck(ctx, input.verify, input.throwErr);
+      return {sesSuccess};
     }),
   sesGet: publicProcedure.query(async ({ ctx }) => {
     const sesGetObj = await sesGet(ctx);
@@ -26,5 +27,5 @@ export const authCheckRouter = createTRPCRouter({
     const sesDeleted = await sesDelCookie(ctx)
 
     return sesDeleted;
-  })
+  }),
 });

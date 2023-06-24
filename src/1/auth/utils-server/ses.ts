@@ -11,13 +11,18 @@ import type {
   UserType,
 } from "@/src/utils/general/cookie";
 import { objErrSes } from "../login/types";
+import { boolean } from "zod";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 /* -------------------------------------------------------------------------- */
 
-export const sesCheck = async (opts: ctxMain, verify: boolean) => {
+export const sesCheck = async (
+  opts: ctxMain,
+  verify: boolean,
+  throwErr: boolean
+) => {
   const dateJs = dayjs();
   const dateNow = dateJs.format();
 
@@ -27,17 +32,22 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
 
   // console.log(ieAuthSesCookie)
   // console.log(verify)
-  let success = false
+  let success = false;
 
   if (!ieAuthSesCookie) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: objErrSes.NoCookie,
-    });
+    if (throwErr) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: objErrSes.NoCookie,
+      });
+    } else {
+      success = false;
+      return success;
+    }
   }
 
   if (!verify) {
-    console.log("exists, dont need to validate")
+    // console.log("exists, dont need to validate");
     // exists return
     success = true;
     return success;
@@ -56,18 +66,23 @@ export const sesCheck = async (opts: ctxMain, verify: boolean) => {
     });
 
     if (!sesGetCheck) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: objErrSes.SesNotValid,
-      });
+      if(throwErr) {
+
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: objErrSes.SesNotValid,
+        });
+      } else {
+        success = false
+        return success
+      }
     } else {
-      success = true
+      success = true;
       return success;
     }
   }
 
-  // return success false
-  return success
+  return success;
 };
 
 export const sesGet = async (opts: ctxMain) => {
@@ -163,19 +178,20 @@ export const sesSetCookie = (opts: ctxMain, sesId: string, expire: Date) => {
 };
 
 export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
-
   // get cookie id
-  let ses_id: string
-  if(sesId) {
-    ses_id = sesId
+  let ses_id: string;
+  if (sesId) {
+    ses_id = sesId;
   } else {
-    const allCookies: IeCookie = opts.req.cookies
-    if (!allCookies.ieAuthSes){
-      throw new TRPCError({code:"BAD_REQUEST", message:"cookie doesnt exist"})
+    const allCookies: IeCookie = opts.req.cookies;
+    if (!allCookies.ieAuthSes) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "cookie doesnt exist",
+      });
     }
-    ses_id = allCookies.ieAuthSes
+    ses_id = allCookies.ieAuthSes;
   }
-
 
   // delete cookie
   try {
@@ -208,7 +224,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
     });
   }
 
-  return {success: true};
+  return { success: true };
 };
 
 /* -------------------------------------------------------------------------- */

@@ -14,27 +14,24 @@ export const LayAuth = ({ children }: NextPageLayoutProps) => {
   const router = useRouter();
   const {toast} = useToast()
 
-  const authSesValid = api.authCheck.sesCheck.useQuery({verify:true}, {
+  const authSesValid = api.authCheck.sesCheck.useQuery({verify:true, throwErr: false}, {
     enabled: true,
     onError: (error) => {
       // dont need to do anything
     },
     onSuccess: (data) => {
-      // this means valid ses, so cant be on auth pages
-      // console.log("redirecting to dashboard")
-      // toast({title: "Redirecting to Dashboard"})
+      if (data.sesSuccess) {
+        // this means valid ses, so cant be on auth pages
+        const isPassCreate = objUrl.v1.auth.resetPassCreate.url !=  urlRemoveEnd(router.route)
+        const isPassVerify = objUrl.v1.auth.resetPassVerify.url !=  urlRemoveEnd(router.route)
+        const isEmailVerify = objUrl.v1.auth.emailVerify.url != urlRemoveEnd(router.route)
 
-      const isPassCreate = objUrl.v1.auth.resetPassCreate.url !=  urlRemoveEnd(router.route)
-      const isPassVerify = objUrl.v1.auth.resetPassVerify.url !=  urlRemoveEnd(router.route)
-      const isEmailVerify = objUrl.v1.auth.emailVerify.url != urlRemoveEnd(router.route)
-
-      // console.log(router.route)
-      // console.log(isPassCreate, isPassVerify, isEmailVerify)
-
-
-      if (isPassCreate && isPassVerify && isEmailVerify ){
-        // console.log("running redirect")
-        void router.push(objUrl.v1.report.dash.url)
+        if (isPassCreate && isPassVerify && isEmailVerify ){
+          // console.log("running redirect")
+          void router.push(objUrl.v1.report.dash.url)
+        }
+      } else {
+        // means no ses token, dont need to do anything
       }
 
 

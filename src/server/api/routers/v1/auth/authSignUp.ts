@@ -1,39 +1,16 @@
-import { env } from "@/src/env.mjs";
+import { objErrAuth, zSignUpForm } from "@/src/1/auth/login/types";
 import { prisma } from "@/src/server/db";
-import * as zEnum from "@/src/utils/general/zEnums";
 import { TRPCError } from "@trpc/server";
 import * as argon2id from "argon2";
-import crypto, { randomUUID } from "crypto";
-import { eachMonthOfInterval } from "date-fns";
+import  { randomUUID } from "crypto";
 import dayjs from "dayjs";
-import jwt from "jsonwebtoken";
-import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 export const authSignUpRouter = createTRPCRouter({
   signUp: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email().toLowerCase(),
-        password: z
-          .string()
-          .min(Number(env.NEXT_PUBLIC_PASS_MIN))
-          .max(Number(env.NEXT_PUBLIC_PASS_MAX)),
-        passwordConfirm: z
-          .string()
-          .min(Number(env.NEXT_PUBLIC_PASS_MIN))
-          .max(Number(env.NEXT_PUBLIC_PASS_MAX)),
-        nameFirst: z.string().min(1).max(25).toLowerCase(),
-        nameLast: z.string().min(1).max(25).toLowerCase(),
-        clientType: zEnum.zClientType,
-        busType: zEnum.zBusType,
-        busName: z.string().min(1).max(25).toLowerCase(),
-        payType: zEnum.zPayType,
-        curr: zEnum.zCurrCode,
-      })
-    )
+    .input(zSignUpForm)
     .mutation(async ({ ctx, input }) => {
       const dateNow = dayjs();
 
@@ -50,7 +27,7 @@ export const authSignUpRouter = createTRPCRouter({
       if (qUserEmail) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Email already in use",
+          message: objErrAuth.EmailUsed,
         });
       }
 
@@ -59,7 +36,7 @@ export const authSignUpRouter = createTRPCRouter({
       if (input.password !== input.passwordConfirm) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "passwords dont match",
+          message: objErrAuth.PassDontMatch,
         });
       }
 
@@ -91,7 +68,7 @@ export const authSignUpRouter = createTRPCRouter({
       if (!qRole) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Couldn't find role id, in the qRole",
+          message: objErrAuth.RoleIdMismatch,
         });
       }
 
@@ -124,7 +101,7 @@ export const authSignUpRouter = createTRPCRouter({
       if (!qCurrSel) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "didnt get currency from qCurrSel query",
+          message: objErrAuth.CurrMissing,
         });
       }
 
@@ -191,14 +168,19 @@ export const authSignUpRouter = createTRPCRouter({
       // todo
 
       // trigger login/ses
+      // todo
+
+      // send signup email
+      // todo
 
 
-      // done
       return
 
     }),
+    signUpData: publicProcedure.query((ctx) => {
+      
+
+      return "something"
+    })
 });
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-// Server components below

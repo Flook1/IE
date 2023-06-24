@@ -135,5 +135,8 @@ export const objUrl = {
     url: {
       url: "/test/v1-url",
     },
+    queries: {
+      url: "/test/v1-queries",
+    },
   },
 };
