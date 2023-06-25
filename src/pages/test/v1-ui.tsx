@@ -1,8 +1,10 @@
-import {type  ReactElement, useEffect, useState } from "react";
+import React, {type  ReactElement, useEffect, useState } from "react";
 import LayTest from "@/src/components/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { IconTest } from "@/src/1/gen/components/icon-dynamic-test";
+
 
 
 const V1Ui: NextPageWithLayout = () => {
@@ -17,6 +19,7 @@ const V1Ui: NextPageWithLayout = () => {
   toast({title: "toast something", description: "this is the description"})
  }
 
+ const iconObjTest = ["Smile", "SmilePlus"]
 
   return (
     <>
@@ -27,6 +30,12 @@ const V1Ui: NextPageWithLayout = () => {
           <Button onClick={() => toast({title: "direct function", description:"some information here"})}>
             Toast Direct Function
           </Button>
+          <div>
+            <IconTest icon="Smile"/>
+            <IconTest icon="Smile"/>
+            <IconTest icon="SmilePlus"/>
+            <IconTest icon="Smile"/>
+          </div>
       </div>
     </>
   );

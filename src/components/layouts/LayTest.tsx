@@ -54,6 +54,9 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.queries.url}>Queries</Link>
           </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.genBasics.url}>Gen Basic Func</Link>
+          </Button>
 
 
         </div>

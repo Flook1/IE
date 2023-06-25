@@ -18,6 +18,15 @@ dayjs.extend(timezone);
 
 /* -------------------------------------------------------------------------- */
 
+export const sesQuickCheckThrow = (sesValid: boolean) => {
+  if (!sesValid) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: objErrSes.SesNotValid,
+    });
+  }
+};
+
 export const sesCheck = async (
   opts: ctxMain,
   verify: boolean,
@@ -66,15 +75,14 @@ export const sesCheck = async (
     });
 
     if (!sesGetCheck) {
-      if(throwErr) {
-
+      if (throwErr) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: objErrSes.SesNotValid,
         });
       } else {
-        success = false
-        return success
+        success = false;
+        return success;
       }
     } else {
       success = true;
@@ -85,7 +93,7 @@ export const sesCheck = async (
   return success;
 };
 
-export const sesGet = async (opts: ctxMain) => {
+export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
   const dateJs = dayjs();
   const dateNow = dateJs.format();
 
@@ -107,12 +115,18 @@ export const sesGet = async (opts: ctxMain) => {
     });
 
     if (!sesObj || !sesObj?.sess) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: objErrSes.SesNotValid,
-      });
-
-      // we should trigger session update
+      if (throwErr) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: objErrSes.SesNotValid,
+        });
+        // we should trigger session update
+        // todo
+      } else {
+        return {
+          isSes: false,
+        };
+      }
     }
 
     // setting type for session object

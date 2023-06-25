@@ -138,5 +138,8 @@ export const objUrl = {
     queries: {
       url: "/test/v1-queries",
     },
+    genBasics: {
+      url: "/test/v1-gen-basic",
+    },
   },
 };

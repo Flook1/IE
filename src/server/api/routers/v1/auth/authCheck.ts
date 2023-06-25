@@ -17,7 +17,7 @@ export const authCheckRouter = createTRPCRouter({
       return {sesSuccess};
     }),
   sesGet: publicProcedure.query(async ({ ctx }) => {
-    const sesGetObj = await sesGet(ctx);
+    const sesGetObj = await sesGet(ctx, false);
 
     return sesGetObj;
   }),

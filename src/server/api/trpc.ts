@@ -17,7 +17,7 @@ import { prisma } from "~/server/db";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------- My stuff -------------------------------- */
 // get the main res and req context, but not prisma, but i can just import prisma
-// doesnt include session either. 
+// doesnt include session either.
 export type ctxMain = CreateNextContextOptions;
 
 /* -------------------------------------------------------------------------- */
@@ -115,7 +115,7 @@ export const publicProcedure = t.procedure;
 // My stuff added
 export const sesPass = t.middleware(async ({ ctx, next }) => {
   // lets get the sessions
-  const getSes = await sesGet(ctx);
+  const getSes = await sesGet(ctx, true);
 
   if ((getSes == undefined)) {
     throw new TRPCError({

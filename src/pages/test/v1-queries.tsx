@@ -6,12 +6,14 @@ import { useRouter } from "next/router";
 import { api } from "@/src/utils/api";
 
 const V1TestUrl: NextPageWithLayout = (props) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const commonData = api.genMain.basicContent.useQuery(undefined, {
-    enabled: true
-  })
-
+    enabled: true,
+  });
+  const menuData = api.genMain.menuContent.useQuery(undefined, {
+    enabled: true,
+  });
 
   return (
     <>
@@ -20,6 +22,17 @@ const V1TestUrl: NextPageWithLayout = (props) => {
           visible={true}
           header="common data"
           content={commonData}
+        ></DebugView>
+
+        <DebugView
+          visible={true}
+          header="menu data"
+          content={menuData}
+        ></DebugView>
+                <DebugView
+          visible={true}
+          header="menu first item"
+          content={menuData.data?.menuList[0]}
         ></DebugView>
 
       </div>

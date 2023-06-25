@@ -8,6 +8,7 @@ import { genMainRouter } from "./routers/v1/general/gen-main";
 import { authCheckRouter } from "./routers/v1/auth/authCheck";
 import { authResetRouter } from "./routers/v1/auth/authReset";
 import { authSignUpRouter } from "./routers/v1/auth/authSignUp";
+import { userBasicRouter } from "./routers/v1/user/userBasic";
 
 /**
  * This is the primary router for your server.
@@ -28,6 +29,11 @@ export const appRouter = createTRPCRouter({
   // MAIN
   // MAIN
   genMain: genMainRouter,
+
+  // USER
+  // USER
+  // USER
+  userBasic: userBasicRouter,
 
   // TEST
   // TEST
