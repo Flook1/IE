@@ -45,6 +45,20 @@ export const zRuleNames = z.enum([
 export type  tRuleNames = z.infer<typeof zRuleNames>
 
 /* -------------------------------- userStuff ------------------------------- */
+
+export const zUserType = z.enum([
+  "ie owner",
+  "ie team",
+  "client owner",
+  "client manager",
+  "client team",
+  "editor owner",
+  "editor manager",
+  "editor team",
+]);
+export type  tUserType = z.infer<typeof zUserType>
+
+
 export const zRoles = z.enum([
   "ie_admin",
   "ie_user",

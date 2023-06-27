@@ -30,7 +30,7 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
   const router = useRouter();
   const toast = useToast();
 
-  //todo get basic user content, slow refresh
+  // get basic user content, slow refresh
   const userBasic = api.userBasic.currBasic.useQuery(undefined, {
     enabled: true,
     cacheTime: 20 * 60 * 1000,
@@ -38,6 +38,7 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
+
 
   //todo get basic content for all pages, with alot of caching
 
@@ -76,8 +77,8 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
     refetchOnWindowFocus: false,
   });
 
-  // todo make responsive and add hover effects, create specific menu component for menu nav items
 
+  // todo make responsive and add hover effects, create specific menu component for menu nav items
   return (
     <>
       <div className="flex h-screen w-screen flex-row bg-background">

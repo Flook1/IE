@@ -11,7 +11,7 @@ import type {
   UserType,
 } from "@/src/utils/general/cookie";
 import { objErrSes } from "../login/types";
-import { boolean } from "zod";
+import {type  tPayType, type tBusType, type tCurrCode, type tRoles, type tClientType } from "@/src/utils/general/zEnums";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -25,6 +25,10 @@ export const sesQuickCheckThrow = (sesValid: boolean) => {
       message: objErrSes.SesNotValid,
     });
   }
+
+  // todo
+  // should maybe check the session structure
+  // but this would require Query, so maybe better on the context part
 };
 
 export const sesCheck = async (
@@ -56,8 +60,6 @@ export const sesCheck = async (
   }
 
   if (!verify) {
-    // console.log("exists, dont need to validate");
-    // exists return
     success = true;
     return success;
   }
@@ -131,7 +133,7 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
 
     // setting type for session object
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-    const sesJson: TSesObj = sesObj?.sess as any;
+    const sesJson: tSesObj = sesObj?.sess as any;
 
     return {
       isSes: true,
@@ -148,7 +150,7 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
 };
 
 export const sesCreate = async (sesId: string, expires: Date) => {
-  // we are jsut creating a unique id and creating a session from that
+  // we are just creating a unique id and creating a session from that
   await prisma.sessions.create({
     data: {
       sid: sesId,
@@ -299,7 +301,7 @@ export const sesSetDb = async (
   // Now lets setup the conditional informaiton for ses
   // Obj start
   const bus_id: string | undefined = user?.rel_bus?.id;
-  const bus_type: string | undefined = user?.rel_bus?.business_type;
+  const bus_type: tBusType | undefined = user?.rel_bus?.business_type;
 
   const user_name_full: string | undefined =
     user?.name_first && user?.name_last
@@ -407,13 +409,13 @@ export const sesSetDb = async (
 // Type check object below
 
 // Ses object
-export interface TSesObj {
+export interface tSesObj {
   sesId: string;
   user: User;
   bus_id: string;
-  bus_type: string;
+  bus_type: tBusType;
   user_name_full: string;
-  userType: string;
+  userType: UserType;
 }
 
 export interface User {
@@ -432,20 +434,21 @@ export interface RelBus {
   owner_user_id: string;
   business_name: string;
   business_type: string;
-  client_type: null;
-  payment_type: string;
+  // client_type: null;
+  client_type: tClientType;
+  payment_type: tPayType;
   currency_id: number;
   rel_country: RelCountry;
 }
 
 export interface RelCountry {
   currency_symbol: string;
-  currency_code: string;
+  currency_code: tCurrCode;
   currency_name: string;
 }
 
 export interface RelRole {
   id: number;
-  role_name: string;
+  role_name: tRoles;
   role_info: string;
 }

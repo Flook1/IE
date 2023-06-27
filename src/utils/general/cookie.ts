@@ -9,6 +9,16 @@ export type AuthSesObj = {
   obj: string;
 };
 
+export type tUserType =
+  | "client owner"
+  | "client manager"
+  | "client team"
+  | "editor owner"
+  | "editor manager"
+  | "editor team"
+  | "ie owner"
+  | "ie team"
+  | null;
 export type UserType =
   | "client owner"
   | "client manager"

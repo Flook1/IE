@@ -37,7 +37,7 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
             <Link href={objUrl.testing.cookie.url}>Cookie</Link>
           </Button>
           {/* <Button asChild> */}
-            {/* <Link href={objUrl.testing.auth.url}>auth</Link> */}
+          {/* <Link href={objUrl.testing.auth.url}>auth</Link> */}
           {/* </Button> */}
           <Button asChild>
             <Link href={objUrl.testing.testing.url}>testing</Link>
@@ -57,8 +57,12 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.genBasics.url}>Gen Basic Func</Link>
           </Button>
-
-
+          <Button asChild>
+            <Link href={objUrl.testing.arrObj.url}>Arr Obj</Link>
+          </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.zod.url}>zod</Link>
+          </Button>
         </div>
       </div>
       <div className="bg-base-200 container ">{children}</div>

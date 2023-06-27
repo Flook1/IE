@@ -21,6 +21,7 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
+    // preference added
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
@@ -28,7 +29,8 @@ const config = {
         fixStyle: "inline-type-imports",
       },
     ],
-    "@typescript-eslint/no-unused-vars": ["off", "warn", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unused-vars": ["off", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-non-null-assertion": ["off"],
   },
 };
 

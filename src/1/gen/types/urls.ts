@@ -141,5 +141,12 @@ export const objUrl = {
     genBasics: {
       url: "/test/v1-gen-basic",
     },
+    arrObj: {
+      url: "/test/v1-obj-arr",
+    },
+    zod: {
+      url: "/test/v1-zod",
+    },
+
   },
 };
