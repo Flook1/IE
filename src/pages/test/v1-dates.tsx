@@ -6,10 +6,10 @@ import useRenderCounter from "@/src/components/general/renderCount";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import {type  ReactElement, useEffect, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 import LayTest from "@/src/components/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
-
+import { dateGenUtc } from "@/src/1/gen/utils/genDates";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -31,23 +31,32 @@ const V1Testing: NextPageWithLayout = () => {
   return (
     <>
       <div className="m-32 p-14">
-        {rerenderCount}
         <div>
-          <p>Date information formated with day.js</p>
-          <p>FROM SERVER | STRING | UTC</p>
-          <p>iso: {testDates.data?.dateNowIso}</p>
-          <p>ddmmyyyy: {testDates.data?.dateNowDD}</p>
-          <Separator />
-          <p>String to Day.js</p>
-          {/* <p>TZ Guess: {tzguess}</p> */}
-          <p>iso day.js: {dateNowTz}</p>
+          <DebugView
+            visible={true}
+            header="Date for Utc"
+            content={dateGenUtc}
+          ></DebugView>
         </div>
-        <Separator />
-        <DebugView
-          visible={true}
-          header="test - dates"
-          content={testDates}
-        ></DebugView>
+        <div hidden>
+          {rerenderCount}
+          <div>
+            <p>Date information formated with day.js</p>
+            <p>FROM SERVER | STRING | UTC</p>
+            <p>iso: {testDates.data?.dateNowIso}</p>
+            <p>ddmmyyyy: {testDates.data?.dateNowDD}</p>
+            <Separator />
+            <p>String to Day.js</p>
+            {/* <p>TZ Guess: {tzguess}</p> */}
+            <p>iso day.js: {dateNowTz}</p>
+          </div>
+          <Separator />
+          <DebugView
+            visible={true}
+            header="test - dates"
+            content={testDates}
+          ></DebugView>
+        </div>
       </div>
     </>
   );

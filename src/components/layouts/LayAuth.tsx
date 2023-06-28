@@ -1,6 +1,6 @@
 import { useToast } from "@/components/ui/use-toast";
 import { objUrl } from "@/src/1/gen/types/urls";
-import { urlRemoveEnd } from "@/src/1/gen/utils-client/urlFormat";
+import { urlRemoveEnd } from "@/src/1/gen/utils/urlFormat";
 import { api } from "@/src/utils/api";
 import { useRouter } from "next/router";
 

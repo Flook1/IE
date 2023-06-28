@@ -20,7 +20,7 @@ import {
   type tIconMenu,
 } from "@/src/1/gen/components/icon-dynamic-menu";
 import DebugView from "../test/debug-view";
-import { titleCase } from "@/src/1/gen/utils-client/genBasics";
+import { titleCase } from "@/src/1/gen/utils/genBasics";
 
 export type NextPageLayoutProps = {
   children: React.ReactNode;
@@ -150,7 +150,7 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
             <p>Header section</p>
             <p>
               Welcome Back,{" "}
-              {titleCase(userBasic.data?.name_user as string) as string}
+              {titleCase(userBasic.data?.userContent.name_user as string) as string}
             </p>
           </div>
           <div className="mx-6 flex min-h-full flex-col rounded-3xl bg-muted p-6">

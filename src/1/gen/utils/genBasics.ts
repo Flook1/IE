@@ -24,3 +24,16 @@ export const titleCaseBasic = (string: string) => {
 export const urlRemoveEnd = (url: string) => {
   return url.substring(0, url.lastIndexOf("/"));
 };
+
+
+export const uniqueString = (characterCount: number) => {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+  let  result= ''
+
+  for (let i = 0; i < characterCount; i++) {
+    const randomIndex:number = Math.floor(Math.random()*chars.length)
+    result += chars[randomIndex]
+  }
+
+  return result
+}

@@ -1,8 +1,4 @@
-import { env } from "@/src/env.mjs";
-import { ruleAccess } from "@/src/1/auth/utils-server/access";
 import { isDev, isProd } from "@/src/1/auth/utils-server/isEnv";
-import { getUserAuthFull } from "@/src/1/user/utils-server/getUserAuthFull";
-import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";

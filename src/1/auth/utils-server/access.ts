@@ -1,6 +1,8 @@
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import type * as zEnum from "../../../utils/general/zEnums";
+import { type tSesObj } from "./ses";
+import { z } from "zod";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -44,19 +46,18 @@ type Rule =
   | "projects"
   | "service types";
 
-export const ruleAccess = async (rule: Rule, crud: Crud) => {
+export const ruleAccess = async (ses: tSesObj, rule: Rule, crud: Crud) => {
   if (rule === null || crud === null) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "incorrect values passed to ruleAccess function",
     });
   }
-  // Lets get the rules that the current user has access too:
-  // This should be from cookie
-  //i dont think id is needed
-  // const  user_id = "qfbu8n";
 
-  const role_id = 1;
+  // const  user_id = "qfbu8n";
+  // const role_id = 1;
+
+  const role_id = ses.user.role_id;
 
   try {
     const canAccess = await prisma.auth_rr_role_rule.findFirst({
@@ -88,28 +89,73 @@ export const ruleAccess = async (rule: Rule, crud: Crud) => {
 /* -------------------------------------------------------------------------- */
 // Action checks
 
-export const actionAccess = () => {
+export const zActionType = z.enum([
+  "editor bus service",
+  "editor user service",
+]);
+export type tActionType = z.infer<typeof zActionType>;
+export const actionAccess = async (
+  ses: tSesObj,
+  type: tActionType,
+  editId: string,
+  userId: string
+) => {
   // i dont know if this will be needed
-  // todo
+  let approveId;
+  if (type == "editor user service") {
+    approveId = await prisma.editor_user_service.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        service_id: parseInt(editId),
+        ...(type == "editor user service"
+          ? {
+              rel_editorUser: {
+                user_id: { equals: userId },
+              },
+            }
+          : {}),
+        ...(ses.userType == "client manager"
+          ? {
+              OR: {
+                rel_editorUser: {
+                  user_id: {
+                    equals: userId,
+                  },
+                },
+              },
+            }
+          : {}),
+      },
+    });
+  }
 
-  return "something";
+  if (type == "editor bus service") {
+    approveId = await prisma.editor_bus_service.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        id: { equals: parseInt(editId) },
+        business_id: { equals: ses.bus_id },
+      },
+    });
+  }
+
+  return approveId;
 };
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// order access
 
-export const orderAccess = async (order_id: string) => {
-  // todo
+export const orderAccess = async (ses: tSesObj, order_id: string) => {
+  const curr_user_id = ses.user.user_id;
+  const curr_user_type = ses.userType;
+  const bus_type = ses.bus_type;
+  const bus_id = ses.bus_id;
 
-  // get from session
-  const curr_user_id = "something";
-  const curr_user_type = "editor manager";
-  const bus_type = "ie";
-  const bus_id = "something";
-
-  // this checks if user has access to the order
-  // todo
+  // --test
 
   const qOrd = await prisma.order_main.findMany({
     where: {
@@ -117,41 +163,82 @@ export const orderAccess = async (order_id: string) => {
       rel_OrderState: {
         deleted_on: null,
       },
-      // editor
-      AND: [
-        {
-          editor_business_id: bus_id,
-        },
-
-        // need condition to run below
-        {
-          // editor manager
-          ...(curr_user_type == 'editor manager' && {
-            OR: [
-            {
-              editor_user_id: curr_user_id,
-            },
-            {
-              editor_qc_id: curr_user_id,
-            },
-            {
-              rel_editorUser: {
-                rel_childOf: {
-                  some: {
-                    parent_user_id: curr_user_id,
-                  },
-                },
+      ...(ses.bus_type == "editor"
+        ? {
+            AND: [
+              {
+                editor_business_id: bus_id,
               },
-            },
-          ],
-        })
-      }
 
-        // editor user
+              // editor manager
+              {
+                ...(curr_user_type == "editor manager"
+                  ? {
+                      OR: [
+                        {
+                          editor_user_id: curr_user_id,
+                        },
+                        {
+                          editor_qc_id: curr_user_id,
+                        },
+                        {
+                          //todo dont think condition below will work as i intended
+                          rel_editorUser: {
+                            rel_childOf: {
+                              some: {
+                                parent_user_id: curr_user_id,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }
+                  : {}),
+              },
 
+              // editor user
+              {
+                ...(curr_user_type == "editor team"
+                  ? {
+                      OR: [
+                        {
+                          editor_user_id: curr_user_id,
+                        },
+                        {
+                          editor_qc_id: curr_user_id,
+                        },
+                        {
+                          AND: [
+                            {
+                              rel_OrderState: {
+                                state_name: "quality control",
+                              },
+                              editor_qc_id: curr_user_id,
+                            },
+                          ],
+                        },
+                      ],
+                    }
+                  : {}),
+              },
+            ],
+          }
+        : {}),
 
-      ],
       // client
+      ...(ses.bus_type == "client"
+        ? {
+            AND: [
+              {
+                client_business_id: bus_id,
+              },
+              {
+                client_user_id: curr_user_id,
+              },
+              // todo need to add manager check,
+            ],
+          }
+        : {}),
     },
     select: {
       id: true,
@@ -184,4 +271,6 @@ export const orderAccess = async (order_id: string) => {
       },
     },
   });
+
+  return qOrd;
 };
