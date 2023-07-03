@@ -64,19 +64,12 @@ export const dashFunc = async (ses: tSesObj) => {
     dateGenUtc.lastMonthEnd.toISOString()
   );
 
-  // need total count for this
-  // todo avg per order rev this month
   const avgRevDayThisMonth =
     totalRevThisMonth.grossUsd / dateGenUtc.thisMonthDaysSoFar;
-
   const avgRevDayLastMonth =
     totalRevLastMonth.grossUsd / dateGenUtc.lastMonthDaysTotal;
-
   const avgRevDay6Month =
   revTotal6MonthAgo.grossUsd / dateGenUtc.lastMonthDaysTotal;
-
-
-  // todo avg per order rev last month
 
   const avgOrdDayThisMonth = ordCountThisMonth / dateGenUtc.thisMonthDaysSoFar;
   const avgOrdDayLastMonth = ordCountLastMonth / dateGenUtc.lastMonthDaysTotal;

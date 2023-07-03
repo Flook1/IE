@@ -147,6 +147,9 @@ export const objUrl = {
     zod: {
       url: "/test/v1-zod",
     },
+    theme: {
+      url: "/test/v1-theme",
+    },
 
   },
 };

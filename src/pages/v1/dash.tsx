@@ -33,6 +33,7 @@ const Dash: NextPageWithLayout = () => {
         header="DashStats Testing"
         content={dashStats}
       ></DebugView>
+      {/* todo put in the dashboard section */}
     </>
   );
 };

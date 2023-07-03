@@ -63,6 +63,9 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.zod.url}>zod</Link>
           </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.theme.url}>theme</Link>
+          </Button>
         </div>
       </div>
       <div className="bg-base-200 container ">{children}</div>
