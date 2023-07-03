@@ -31,6 +31,7 @@ const config = {
     ],
     "@typescript-eslint/no-unused-vars": ["off", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/no-non-null-assertion": ["off"],
+    // "eslint-disable-next-line prefer-const": ["off"],
   },
 };
 

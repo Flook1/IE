@@ -21,6 +21,7 @@ import {
 } from "@/src/1/gen/components/icon-dynamic-menu";
 import DebugView from "../test/debug-view";
 import { titleCase } from "@/src/1/gen/utils/genBasics";
+import { cache20Min } from "@/src/1/gen/utils/genQueryCache";
 
 export type NextPageLayoutProps = {
   children: React.ReactNode;
@@ -30,13 +31,11 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
   const router = useRouter();
   const toast = useToast();
 
+
   // get basic user content, slow refresh
   const userBasic = api.userBasic.currBasic.useQuery(undefined, {
     enabled: true,
-    cacheTime: 20 * 60 * 1000,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    ...cache20Min
   });
 
 

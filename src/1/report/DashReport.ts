@@ -11,54 +11,30 @@ import { userCount } from "../user/utils-server/genUser";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 
-const ie_admin = async (ses: tSesObj) => {
+export const dashFunc = async (ses: tSesObj) => {
   // common date stuff
 
-  const totalRev = await ordRev(
+  const totalRevAllTime = await ordRev(
     ses,
-    "netUsd",
-    dateGenUtc.allTime,
-    dateGenUtc.dateNow
+    dateGenUtc.allTimeStart.toISOString(),
+    dateGenUtc.dateNow.toISOString()
   );
 
-  const grossProfitThisMonth = await ordRev(
+  const totalRevThisMonth = await ordRev(
     ses,
-    "profitUsd",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
-  const grossProfitLastMonth = await ordRev(
+  const totalRevLastMonth = await ordRev(
     ses,
-    "profitUsd",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
+    dateGenUtc.lastMonthStart.toISOString(),
+    dateGenUtc.lastMonthEnd.toISOString()
   );
 
-  const grossRevThisMonth = await ordRev(
+  const revTotal6MonthAgo = await ordRev(
     ses,
-    "netUsd",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
-  );
-  const grossRevLastMonth = await ordRev(
-    ses,
-    "netUsd",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
-  );
-
-  const editorBusTotalThisMonth = await ordRev(
-    ses,
-    "editorBusTotal",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
-  );
-
-  const editorBusTotalLastMonth = await ordRev(
-    ses,
-    "editorBusTotal",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
+    dateGenUtc.thisMonthStart.subtract(4, "M").toISOString(),
+    dateGenUtc.thisMonthEnd.subtract(4, "M").toISOString()
   );
 
   const memClient = await userCount(ses, "total members", "client");
@@ -67,8 +43,8 @@ const ie_admin = async (ses: tSesObj) => {
     ses,
     "new members",
     undefined,
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
 
   const memInactive = await userCount(ses, "inactive members");
@@ -77,46 +53,72 @@ const ie_admin = async (ses: tSesObj) => {
   const ordCountThisMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
 
   const ordCountLastMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
+    dateGenUtc.lastMonthStart.toISOString(),
+    dateGenUtc.lastMonthEnd.toISOString()
   );
 
   // need total count for this
   // todo avg per order rev this month
+  const avgRevDayThisMonth =
+    totalRevThisMonth.grossUsd / dateGenUtc.thisMonthDaysSoFar;
+
+  const avgRevDayLastMonth =
+    totalRevLastMonth.grossUsd / dateGenUtc.lastMonthDaysTotal;
+
+  const avgRevDay6Month =
+  revTotal6MonthAgo.grossUsd / dateGenUtc.lastMonthDaysTotal;
+
 
   // todo avg per order rev last month
 
-  //   todo average order per day per month
+  const avgOrdDayThisMonth = ordCountThisMonth / dateGenUtc.thisMonthDaysSoFar;
+  const avgOrdDayLastMonth = ordCountLastMonth / dateGenUtc.lastMonthDaysTotal;
 
-  // todo finish
-  return;
+
+  return {
+    totalRevAllTime,
+    totalRevThisMonth,
+    totalRevLastMonth,
+    revTotal6MonthAgo,
+    memClient,
+    memNew,
+    memInactive,
+    ordCountAll,
+    ordCountThisMonth,
+    ordCountLastMonth,
+    avgRevDayThisMonth,
+    avgRevDayLastMonth,
+    avgOrdDayThisMonth,
+    avgOrdDayLastMonth,
+    avgRevDay6Month,
+  };
 };
 
 const ie_team = async (ses: tSesObj) => {
   const ordCountThisMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
   const ordCountLastMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
+    dateGenUtc.lastMonthStart.toISOString(),
+    dateGenUtc.lastMonthEnd.toISOString()
   );
   const ordCountToday = await ordStatusCount(
     ses,
     "all",
-    dateGenUtc.todayStart,
-    dateGenUtc.todayEnd
+    dateGenUtc.todayStart.toISOString(),
+    dateGenUtc.todayEnd.toISOString()
   );
   const ordCountProcessing = await ordStatusCount(ses, "processing");
 
@@ -135,8 +137,8 @@ const client_owner = async (ses: tSesObj) => {
     ses,
     "new members",
     undefined,
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
 
   const memInactive = await userCount(ses, "inactive members");
@@ -145,21 +147,21 @@ const client_owner = async (ses: tSesObj) => {
   const ordCountThisMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.thisMonthStart,
-    dateGenUtc.thisMonthEnd
+    dateGenUtc.thisMonthStart.toISOString(),
+    dateGenUtc.thisMonthEnd.toISOString()
   );
 
   const ordCountLastMonth = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.lastMonthStart,
-    dateGenUtc.lastMonthEnd
+    dateGenUtc.lastMonthStart.toISOString(),
+    dateGenUtc.lastMonthEnd.toISOString()
   );
   const ordCountThisYear = await ordStatusCount(
     ses,
     "total comp between",
-    dateGenUtc.thisYearStart,
-    dateGenUtc.thisYearEnd
+    dateGenUtc.thisYearStart.toISOString(),
+    dateGenUtc.thisYearEnd.toISOString()
   );
 
   // client team is mostly same as above

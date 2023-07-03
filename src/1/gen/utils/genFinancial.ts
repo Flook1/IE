@@ -10,10 +10,16 @@ import { TRPCError } from "@trpc/server";
 
 export const netProfitMargin = (gross: number, exp: number) => {
   const net = gross - exp;
-  const margin = ((net / gross) * 100).toFixed(2) ?? 0;
+  const margin = marginCalc(net, gross)
 
   return { net, margin };
 };
+
+export const marginCalc = (net: number, gross: number) => {
+  const  margin = ((net / gross) * 100) ?? 0;
+
+  return margin
+}
 
 // latest Rate
 export const currToUsdLatest = async (curr: tCurrCode) => {

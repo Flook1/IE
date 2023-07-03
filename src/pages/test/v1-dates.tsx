@@ -21,6 +21,16 @@ const V1Testing: NextPageWithLayout = () => {
     enabled: true,
   });
 
+  const isoDate = dayjs().toISOString();
+  const isoDate2 = dateGenUtc.lastMonthEnd;
+
+  const stringDate = "1688283922627";
+  const stringDateNew = dayjs(stringDate);
+  const stringToDate = {
+    stringDate,
+    stringDateNew
+  }
+
   // const tzguess = dayjs.tz.guess();
   const [dateNowTz, setDateNowTz] = useState<string>();
 
@@ -34,8 +44,29 @@ const V1Testing: NextPageWithLayout = () => {
         <div>
           <DebugView
             visible={true}
+            header="string date"
+            content={stringToDate}
+          ></DebugView>
+          <DebugView
+            visible={true}
+            header="Iso String"
+            content={isoDate}
+          ></DebugView>
+          <DebugView
+            visible={true}
+            header="Iso String2"
+            content={isoDate2}
+          ></DebugView>
+
+          <DebugView
+            visible={true}
             header="Date for Utc"
             content={dateGenUtc}
+          ></DebugView>
+          <DebugView
+            visible={true}
+            header="Iso Convert"
+            content={dateGenUtc.dateNow}
           ></DebugView>
         </div>
         <div hidden>

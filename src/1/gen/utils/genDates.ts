@@ -7,50 +7,52 @@ dayjs.extend(timezone);
 
 const currDateObj = dayjs();
 
-const dateNow = currDateObj.toString()
+const dateNow = currDateObj
 
-const thisMonthStart = currDateObj.tz("utc").startOf("M").toString();
-const thisMonthEnd = currDateObj.tz("utc").endOf("M").toString();
-const thisMonthDaysSoFar = currDateObj.tz("utc").daysInMonth().toString();
-const thisMonthDaysTotal = currDateObj.tz("utc").date().toString();
+
+const thisMonthStart = currDateObj.tz("utc").startOf("M");
+const thisMonthEnd = currDateObj.tz("utc").endOf("M");
+const thisMonthDaysSoFar = currDateObj.tz("utc").daysInMonth();
+const thisMonthDaysTotal = currDateObj.tz("utc").date();
 
 const lastMonthStart = currDateObj
   .tz("utc")
   .subtract(1, "M")
   .startOf("M")
-  .toString();
+  ;
 const lastMonthEnd = currDateObj
   .tz("utc")
   .date(1)
   .subtract(1, "d")
   .endOf("M")
-  .toString();
+  ;
 const lastMonthDaysTotal = currDateObj
   .tz("utc")
   .subtract(1, "M")
   .daysInMonth()
-  .toString();
+  ;
 
-const thisYearStart = currDateObj.tz("utc").startOf("y").toString();
-const thisYearEnd = currDateObj.tz("utc").endOf("y").toString();
+const thisYearStart = currDateObj.tz("utc").startOf("y");
+const thisYearEnd = currDateObj.tz("utc").endOf("y");
 
 const lastYearStart = currDateObj
   .tz("utc")
   .subtract(1, "y")
   .startOf("y")
-  .toString();
-const lastYearEnd = currDateObj.tz("utc").subtract(1, "y").endOf("y").toString();
+  ;
+const lastYearEnd = currDateObj.tz("utc").subtract(1, "y").endOf("y");
 
-const todayStart = currDateObj.tz("utc").startOf("d").toString();
-const todayEnd = currDateObj.tz("utc").endOf("d").toString();
+const todayStart = currDateObj.tz("utc").startOf("d");
+const todayEnd = currDateObj.tz("utc").endOf("d");
 
-const allTime = currDateObj.tz("utc").subtract(30, "y").toString();
+const allTimeStart = currDateObj.tz("utc").subtract(40, "y");
 
 export const dateGenUtc = {
   currDateObj,
   dateNow,
   thisMonthStart,
   thisMonthEnd,
+  thisMonthDaysSoFar,
   thisMonthDaysTotal,
   lastMonthStart,
   lastMonthEnd,
@@ -61,5 +63,5 @@ export const dateGenUtc = {
   lastYearEnd,
   todayStart,
   todayEnd,
-  allTime,
+  allTimeStart,
 };

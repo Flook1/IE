@@ -31,7 +31,7 @@ const userCount = async (
         } : {}),
         ...( checkType == "inactive members" ? {
             last_login_time: {
-                lte: currentDate.subtract(7,'d').toString()
+                lte: currentDate.subtract(7,'d').toISOString()
             }
         } : {}),
         ...(busType ? {

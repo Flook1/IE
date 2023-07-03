@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { zOrderStatus } from "@/src/utils/general/zEnums";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { marginCalc, netProfitMargin } from "../gen/utils/genFinancial";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -150,7 +151,6 @@ type tRevReport = z.infer<typeof zRevReport>;
 
 const ordRev = async (
   ses: tSesObj,
-  reportType: tRevReport,
   dateStart: string,
   dateEnd: string
 ) => {
@@ -167,6 +167,7 @@ const ordRev = async (
 
   const ord = await prisma.order_main.findMany({
     select: {
+      id: true,
       order_detail: {
         select: {
           usd_rate: true,
@@ -215,9 +216,87 @@ const ordRev = async (
     },
   });
 
-  //todo need to sum the totals
+  // Instead of only calculating some, we are going to calculate all and then just where pick out what we do and dont need.
+  interface tSumObj {
+    netProfitUsd: number;
+    netProfit: number;
+    grossUsd: number;
+    gross: number;
+    // netSaleUsd: number;
+    editorUserTotalUsd: number;
+    editorBusTotalUsd: number;
+    // usdRate:number
+    ieMargin: number;
+  }
 
-  return;
+  const sumObj: tSumObj = {
+    netProfitUsd: 0,
+    netProfit: 0,
+    grossUsd: 0,
+    gross: 0,
+    // netSaleUsd: 0,
+    editorUserTotalUsd: 0,
+    editorBusTotalUsd: 0,
+    // usdRate: 0,
+    ieMargin: 0,
+  };
+  let iCount = 0;
+
+  try {
+    for (let i = 0; i < ord.length; i++) {
+      const forOrd = ord[i]?.order_detail;
+
+      if (forOrd && forOrd.length > 0)
+        for (let iDets = 0; iDets < forOrd.length; iDets++) {
+          const dets = forOrd[iDets];
+          iCount += 1;
+          sumObj.gross += Number(dets?.net_amount);
+          sumObj.grossUsd += Number(dets?.usd_net_amount);
+          sumObj.editorUserTotalUsd += Number(dets?.editor_user_total);
+          sumObj.editorBusTotalUsd += Number(dets?.editor_bus_total);
+          // useless because different order types
+          // sumObj.usdRate += Number(dets?.usd_rate)/iCount;
+        }
+      else {
+        return sumObj;
+      }
+    }
+  } catch (e) {
+    // something went wrong with summing
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Something went wrong with summing on revenues",
+      cause: e,
+    });
+  }
+
+  // calculate margin
+  const profitCalc = netProfitMargin(sumObj.grossUsd, sumObj.editorBusTotalUsd);
+  sumObj.netProfitUsd = profitCalc.net;
+  sumObj.ieMargin = profitCalc.margin;
+
+  //  filter
+  let filterObj = {};
+
+  if (ses.bus_type == "ie") {
+    filterObj  = {
+      ...sumObj
+    }
+  } else if (ses.bus_type == "client") {
+    const {gross} = sumObj
+    filterObj = {
+      gross
+    }
+  } else if (ses.bus_type == "editor") {
+    const {editorBusTotalUsd, editorUserTotalUsd} = sumObj
+    filterObj = {
+      editorBusTotalUsd,
+      editorUserTotalUsd
+    }
+
+  }
+
+  return filterObj as tSumObj;
 };
 
 export { ordRev, ordStatusCount };

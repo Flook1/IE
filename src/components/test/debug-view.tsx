@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { NextPage } from "next";
+import { Children } from "react";
 
 type DebugViewProp = {
   visible: boolean;
@@ -23,6 +24,7 @@ const DebugView: NextPage<DebugViewProp> = ({ visible, header, content }) => {
         </AccordionTrigger>
         <AccordionContent>
           {/* If string */}
+          {typeof content == "undefined" && <p>undefined error</p>}
           {typeof content !== "object" && <p>{content}</p>}
           {typeof content === "object" && (
             <pre>{JSON.stringify(content, null, " ")}</pre>
