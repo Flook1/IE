@@ -13,6 +13,7 @@ import { type NextPageWithLayout } from "@/src/pages/_app";
 import LayMain from "@/src/components/layouts/LayMain";
 import { cache20Min } from "@/src/1/gen/utils/genQueryCache";
 import DebugView from "@/src/components/test/debug-view";
+import { IeCard } from "@/components/ie/ie-card";
 
 /* -------------------------------------------------------------------------- */
 const Dash: NextPageWithLayout = () => {
@@ -27,13 +28,24 @@ const Dash: NextPageWithLayout = () => {
 
   return (
     <>
-      <p className="w-14">testing</p>
-      <DebugView
-        visible={true}
-        header="DashStats Testing"
-        content={dashStats}
-      ></DebugView>
-      {/* todo put in the dashboard section */}
+        {/* todo put in the dashboard section */}
+        <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
+          <IeCard variant={"default"} shadow={"out"} className="p-4">
+              <div className="flex min-h-fit justify-between  align-baseline border-b-2 border-zinc-200">
+                <p className="text-base font-medium ie-line-height-1">Main Header</p>
+                <p className="text-sm font-medium ie-line-height-1">Sub Header</p>
+              </div>
+          </IeCard>
+
+        </div>
+      <div>
+        <p className="w-14">testing</p>
+        <DebugView
+          visible={true}
+          header="DashStats Testing"
+          content={dashStats}
+        ></DebugView>
+      </div>
     </>
   );
 };

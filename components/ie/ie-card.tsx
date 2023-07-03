@@ -7,16 +7,17 @@ const ieCardVariants = cva("", {
     variant: {
       default: "rounded-2xl border bg-card text-card-foreground",
       large: "rounded-2xl border bg-card text-card-foreground",
+      test: "rounded-2xl border border-red-200 border-2 bg-red-100 text-card-foreground",
     },
     shadow: {
-      outset: "shadow-lg",
-      inset: "shadow-inner",
+      out: "shadow-lg",
+      in: "shadow-inner",
       none: "shadow-none"
     }
   },
   defaultVariants: {
     variant: "default",
-    shadow: "outset"
+    shadow: "out"
   },
 });
 

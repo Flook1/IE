@@ -153,11 +153,13 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
             </p>
           </div>
           <div className="mx-6 flex min-h-full flex-col rounded-3xl bg-muted p-6">
-            <div className="container  border border-red-100">{children}</div>
+            {/* children section */}
+            {/* children section */}
+            <div className="container border border-red-100">{children}</div>
             {true && (
               <>
                 <div className="container my-4 rounded-md border border-red-300 bg-red-50 p-2">
-                  <p>Test Data</p>
+                  <p>LAYOUT Test Data</p>
                   <DebugView
                     visible={true}
                     header="User Data"
