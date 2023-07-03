@@ -9,18 +9,18 @@ import { Loader } from "lucide-react";
 import { Loader2 } from "lucide-react";
 
 const V1TestSes: NextPageWithLayout = () => {
-  // const sesCheckExists = api.authCheck.sesCheck.useQuery(
-  // { verify: false },
-  // {
-  // enabled: false,
-  // }
-  // );
-  // const sesCheckVerify = api.authCheck.sesCheck.useQuery(
-  //   { verify: true },
-  //   {
-  //     enabled: false,
-  //   }
-  // );
+  const sesCheckExists = api.authCheck.sesCheck.useQuery(
+    { verify: false, throwErr: false },
+    {
+      enabled: true,
+    }
+  );
+  const sesCheckVerify = api.authCheck.sesCheck.useQuery(
+    { verify: true, throwErr: false },
+    {
+      enabled: true,
+    }
+  );
   const sesGet = api.authCheck.sesGet.useQuery(undefined, {
     enabled: true,
     onError: (error) => {
@@ -46,21 +46,21 @@ const V1TestSes: NextPageWithLayout = () => {
       <div className="m-32 p-14">
         <div>
           <Button onClick={() => sesDel.mutate()}>
-            {sesDel.isLoading && <Loader2 className="animate-spin"/>}
+            {sesDel.isLoading && <Loader2 className="animate-spin" />}
             Del session test
           </Button>
         </div>
         <DebugView
           visible={true}
           header="sesCheckExists"
-          content={"disabled"}
-          // content={sesCheckExists}
+          // content={"disabled"}
+          content={sesCheckExists}
         ></DebugView>
         <DebugView
           visible={true}
           header="sesCheckVerify"
-          content={"disabled"}
-          // content={sesCheckVerify}
+          // content={"disabled"}
+          content={sesCheckVerify}
         ></DebugView>
         <DebugView
           visible={true}
