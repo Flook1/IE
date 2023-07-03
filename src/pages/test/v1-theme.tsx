@@ -43,7 +43,7 @@ const V1Theme: NextPageWithLayout = (props) => {
           </CardContent>
         </IeCard>
         <div className="container">
-          <IeCard variant={"large"} shadow={"inset"}>
+          <IeCard variant={"large"} shadow={"in"}>
             <CardHeader>Something here</CardHeader>
             <CardContent>
               Something

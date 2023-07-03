@@ -18,12 +18,15 @@ export const testGenRouter = createTRPCRouter({
       WorkflowRun: true,
     };
   }),
-  basicRuleCheck: publicProcedure.query(async () => {
+  basicRuleCheck: publicProcedure.query(({ctx}) => {
     isDev("my");
-    const ruleAccessData = await ruleAccess("dashboard", "c");
+
+    // at the moment does nothing
+
+    // const ruleAccessData = await ruleAccess("dashboard", "c");
 
     return {
-      ruleAccessData,
+      // ruleAccessData,
       something: "everything",
     };
   }),
