@@ -103,6 +103,11 @@ export type  tPriceType = z.infer<typeof zPriceType>
 export const zDiscountType = z.enum(["percent", "fixed"]);
 export type  tDiscountType = z.infer<typeof zDiscountType>
 
+// todo should add these to database
+export const zLocale = z.enum(["en-AU", "en-US","en-CA", "en-GB", "th-TH", "en-IN"]);
+export type  tLocale = z.infer<typeof zLocale>
+
+
 
 /* --------------------------------- invoice -------------------------------- */
 export const zInvType = z.enum(["sales", "purchase"]);

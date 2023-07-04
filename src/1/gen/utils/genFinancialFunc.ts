@@ -9,13 +9,19 @@ import { TRPCError } from "@trpc/server";
 
 export const netProfitMargin = (gross: number, exp: number) => {
   const net = gross - exp;
-  const margin = marginCalc(net, gross);
-
+  let margin = marginCalc(net, gross);
+  if (isNaN(margin)) {
+    margin = 0;
+  }
   return { net, margin };
 };
 
 export const marginCalc = (net: number, gross: number) => {
-  const margin = (net / gross) * 100 ?? 0;
+  let  margin = (net / gross) * 100 ?? 0;
+
+  if (isNaN(margin)) {
+    margin = 0;
+  }
 
   return margin;
 };
