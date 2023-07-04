@@ -31,37 +31,51 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
   const router = useRouter();
   const toast = useToast();
 
-
   // get basic user content, slow refresh
   const userBasic = api.userBasic.currBasic.useQuery(undefined, {
     enabled: true,
-    ...cache20Min
+    ...cache20Min,
   });
 
-
-  //todo get basic content for all pages, with alot of caching
-
   const authSesDel = api.authCheck.sesDel.useMutation(undefined);
-  // const authSesValid = api.authCheck.sesCheck.useQuery(
+  const authCheckSes = api.authCheck.sesCheck.useQuery(
+    { verify: true, throwErr: true },
+    {
+      enabled: true,
+      retry: false,
+      onError: (error) => {
+        // redirect to auth
+        authSesDel.mutate(undefined, {
+          onError: (error) => {
+            // needs to show a toast.
+            console.log("error with mutation to del ses");
+            console.log(error.message);
+            toast.toast({
+              title: "Contact Image Edits",
+              description: "Issue deleting session",
+            });
+          },
+          onSuccess: (data) => {
+            // doesnt matter, if did delete or not, as long as cookie setting didnt fail
+            setTimeout(() => {
+              void router.push(objUrl.v1.auth.login.url);
+            }, 1000);
+          },
+        });
+      },
+      onSuccess: (data) => {
+        // Dont need to do anything
+      },
+    }
+  );
+
   const authSesValid = api.authCheck.sesGet.useQuery(undefined, {
     enabled: true,
     retry: false,
+    ...cache20Min,
     onError: (error) => {
       // console.log("authSesValid: error");
       // console.log(error);
-
-      // redirect to auth
-      authSesDel.mutate(undefined, {
-        onError: (error) => {
-          // needs to show a toast.
-          console.log("error with mutation to del ses");
-        },
-        onSuccess: (data) => {
-          setTimeout(() => {
-            void router.push(objUrl.v1.auth.login.url);
-          }, 1000);
-        },
-      });
     },
     onSuccess: (data) => {
       // Dont need to do anything
@@ -70,12 +84,8 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
 
   const menuMain = api.genMain.menuContent.useQuery(undefined, {
     enabled: true,
-    cacheTime: 20 * 60 * 1000,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    ...cache20Min,
   });
-
 
   // todo make responsive and add hover effects, create specific menu component for menu nav items
   return (
@@ -149,7 +159,11 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
             <p>Header section</p>
             <p>
               Welcome Back,{" "}
-              {titleCase(userBasic.data?.userContent.name_user as string) as string}
+              {
+                titleCase(
+                  userBasic.data?.userContent.name_user as string
+                ) as string
+              }
             </p>
           </div>
           <div className="mx-6 flex min-h-full flex-col rounded-3xl bg-muted p-6">

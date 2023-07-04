@@ -22,6 +22,8 @@ export type tErrAuth = typeof objErrAuth;
 export const objErrSes = {
   SesNotValid: "Not Valid Session",
   NoCookie: "No Session Cookie",
+  CookieParse: "Cookie Parsing Error",
+  SesDelIssue: "Issue Deleting Ses From Database",
 };
 export type tErrSes = "Not Valid Session" | "No Session Cookie";
 
