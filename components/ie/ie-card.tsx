@@ -4,15 +4,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 const ieCardVariants = cva("", {
   variants: {
-    variant: {
+    variant:{
       default: "rounded-2xl border bg-card text-card-foreground",
       large: "rounded-2xl border bg-card text-card-foreground",
-      test: "rounded-2xl border border-red-200 border-2 bg-red-100 text-card-foreground",
+      test: "rounded-2xl  border-red-200 border-2 bg-red-50 p-6 my-4 text-card-foreground",
     },
     shadow: {
       out: "shadow-lg",
       in: "shadow-inner",
-      none: "shadow-none"
+      none: "shadow-none",
+      empty: ""
     }
   },
   defaultVariants: {

@@ -22,6 +22,7 @@ import {
 import DebugView from "../test/debug-view";
 import { titleCase } from "@/src/1/gen/utils/genBasics";
 import { cache20Min } from "@/src/1/gen/utils/genQueryCache";
+import { IeCard } from "@/components/ie/ie-card";
 
 export type NextPageLayoutProps = {
   children: React.ReactNode;
@@ -45,6 +46,9 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
       retry: false,
       onError: (error) => {
         // redirect to auth
+
+        // todo check error object when we should do below
+
         authSesDel.mutate(undefined, {
           onError: (error) => {
             // needs to show a toast.
@@ -57,9 +61,16 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
           },
           onSuccess: (data) => {
             // doesnt matter, if did delete or not, as long as cookie setting didnt fail
-            setTimeout(() => {
-              void router.push(objUrl.v1.auth.login.url);
-            }, 1000);
+            if (false) {
+              setTimeout(() => {
+                void router.push(objUrl.v1.auth.login.url);
+              }, 1000);
+            } else {
+              toast.toast({
+                title: "GOING TO LOG OUT",
+                description: "check if something went wrong with auth check",
+              });
+            }
           },
         });
       },
@@ -169,22 +180,24 @@ export const LayMain = ({ children }: NextPageLayoutProps) => {
           <div className="mx-6 flex min-h-full flex-col rounded-3xl bg-muted p-6">
             {/* children section */}
             {/* children section */}
-            <div className="container border border-red-100">{children}</div>
+            <div className="container  border-4 border-orange-300">
+              {children}
+            </div>
             {true && (
               <>
-                <div className="container my-4 rounded-md border border-red-300 bg-red-50 p-2">
-                  <p>LAYOUT Test Data</p>
-                  <DebugView
-                    visible={true}
-                    header="User Data"
-                    content={userBasic.data}
-                  ></DebugView>
-                  <DebugView
-                    visible={true}
-                    header="Session Data"
-                    content={authSesValid.data}
-                  ></DebugView>
-                </div>
+                <IeCard variant={"test"}>
+                    <p>LAYOUT Test Data</p>
+                    <DebugView
+                      visible={true}
+                      header="User Data"
+                      content={userBasic.data}
+                    ></DebugView>
+                    <DebugView
+                      visible={true}
+                      header="Session Data"
+                      content={authSesValid.data}
+                    ></DebugView>
+                </IeCard>
               </>
             )}
           </div>

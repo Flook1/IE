@@ -1,4 +1,3 @@
-import { prisma } from "@/src/server/db";
 import {
   zInvGstType,
   type tInvGstType,
@@ -10,46 +9,39 @@ import { TRPCError } from "@trpc/server";
 
 export const netProfitMargin = (gross: number, exp: number) => {
   const net = gross - exp;
-  const margin = marginCalc(net, gross)
+  const margin = marginCalc(net, gross);
 
   return { net, margin };
 };
 
 export const marginCalc = (net: number, gross: number) => {
-  const  margin = ((net / gross) * 100) ?? 0;
+  const margin = (net / gross) * 100 ?? 0;
 
-  return margin
-}
+  return margin;
+};
 
-// latest Rate
-export const currToUsdLatest = async (curr: tCurrCode) => {
-  const currId = await prisma.country.findFirst({
-    select: {
-      id: true,
-    },
-    where: {
-      currency_code: curr,
-    },
-  });
+export const diffCalc = (
+  string: boolean,
+  newValue: number | undefined,
+  previousValue: number | undefined
+) => {
+  if (newValue == undefined || previousValue == undefined) return;
 
-  if (currId == null) {
-    // do something
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "couldn't find currency",
-    });
+  let calc = ((newValue - previousValue) / previousValue) * 100;
+
+  let difference: string | number = 0;
+
+  if (isNaN(calc)) {
+    calc = 0;
+  }
+  if (string == true) {
+    difference = `${calc.toFixed(2)} %`;
+  } else {
+    // just provide number
+    difference = calc;
   }
 
-  const rate = await prisma.currency_rates.findFirst({
-    select: {
-      rate_per_usd: true,
-    },
-    where: {
-      currency_id: currId.id,
-    },
-  });
-
-  return rate;
+  return difference;
 };
 
 // tax stuff
@@ -80,4 +72,3 @@ export const gstCalc = (type: tInvGstType, net: number, rate: number) => {
 };
 
 // order stuff
-

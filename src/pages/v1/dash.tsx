@@ -14,6 +14,8 @@ import LayMain from "@/src/components/layouts/LayMain";
 import { cache20Min } from "@/src/1/gen/utils/genQueryCache";
 import DebugView from "@/src/components/test/debug-view";
 import { IeCard } from "@/components/ie/ie-card";
+import { DashSec } from "@/src/1/report/component/dashSec";
+import { diffCalc } from "@/src/1/gen/utils/genFinancialFunc";
 
 /* -------------------------------------------------------------------------- */
 const Dash: NextPageWithLayout = () => {
@@ -26,26 +28,160 @@ const Dash: NextPageWithLayout = () => {
     ...cache20Min,
   });
 
+  const {data, isLoading} = dashStats
+
   return (
     <>
-        {/* todo put in the dashboard section */}
-        <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
-          <IeCard variant={"default"} shadow={"out"} className="p-4">
-              <div className="flex min-h-fit justify-between  align-baseline border-b-2 border-zinc-200">
-                <p className="text-base font-medium ie-line-height-1">Main Header</p>
-                <p className="text-sm font-medium ie-line-height-1">Sub Header</p>
-              </div>
-          </IeCard>
+      {/* todo put in the dashboard section */}
+      <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          {/* all time rev */}
+          <DashSec
+            isLoading={isLoading}
+            visible={true}
+            headLeft="Total Rev"
+            headRight="All Time | USD"
+            content={dashStats.data?.totalRevAllTime.gross.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botLeft=""
+            botLeft2=""
+            botRight=""
+          ></DashSec>
+        </IeCard>
 
-        </div>
-      <div>
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <p>Will put small overview here</p>
+        </IeCard>
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <p>will pit sub menu here</p>
+        </IeCard>
+
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <DashSec
+            isLoading={isLoading}
+            visible={true}
+            headLeft="Profit"
+            headRight="This Month | USD"
+            content={dashStats.data?.totalRevThisMonth.netProfitUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botLeft="Last Month: "
+            botLeft2={dashStats.data?.totalRevLastMonth.netProfitUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botRight={
+              diffCalc(
+                true,
+                dashStats.data?.totalRevThisMonth.netProfitUsd,
+                dashStats.data?.totalRevLastMonth.netProfitUsd
+              ) as string
+            }
+          ></DashSec>
+        </IeCard>
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <DashSec
+            isLoading={isLoading}
+            visible={true}
+            headLeft="Revenue"
+            headRight="This Month | USD"
+            content={dashStats.data?.totalRevThisMonth.grossUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botLeft="Last Month:"
+            botLeft2={dashStats.data?.totalRevLastMonth.grossUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botRight={
+              diffCalc(
+                true,
+                dashStats.data?.totalRevThisMonth.grossUsd,
+                dashStats.data?.totalRevLastMonth.grossUsd
+              ) as string
+            }
+          ></DashSec>
+        </IeCard>
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <DashSec
+            isLoading={isLoading}
+            visible={true}
+            headLeft="Expense"
+            headRight="This Month | USD"
+            content={dashStats.data?.totalRevThisMonth.editorBusTotalUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botLeft="Last Month: "
+            botLeft2={dashStats.data?.totalRevLastMonth.editorBusTotalUsd.toLocaleString(
+              "en-CA",
+              {
+                style: "currency",
+                currency: "USD",
+              }
+            )}
+            botRight={
+              diffCalc(
+                true,
+                dashStats.data?.totalRevThisMonth.editorBusTotalUsd,
+                dashStats.data?.totalRevLastMonth.editorBusTotalUsd
+              ) as string
+            }
+          ></DashSec>
+        </IeCard>
+        <IeCard variant={"default"} shadow={"out"} className="p-6">
+          <DashSec
+            isLoading={isLoading}
+            visible={true}
+            headLeft="Margin"
+            headRight="This Month"
+            content={`${
+              dashStats.data?.totalRevThisMonth.ieMargin.toFixed(2) as string
+            } %`}
+            botLeft="Last Month: "
+            botLeft2={`${
+              dashStats.data?.totalRevLastMonth.ieMargin.toFixed(2) as string
+            } %`}
+            botRight={
+              diffCalc(
+                true,
+                dashStats.data?.totalRevThisMonth.ieMargin,
+                dashStats.data?.totalRevLastMonth.ieMargin
+              ) as string
+            }
+          ></DashSec>
+        </IeCard>
+      </div>
+      <IeCard variant={"test"}>
         <p className="w-14">testing</p>
         <DebugView
           visible={true}
           header="DashStats Testing"
           content={dashStats}
         ></DebugView>
-      </div>
+      </IeCard>
     </>
   );
 };

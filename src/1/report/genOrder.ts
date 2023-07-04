@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { zOrderStatus } from "@/src/utils/general/zEnums";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { marginCalc, netProfitMargin } from "../gen/utils/genFinancial";
+import { marginCalc, netProfitMargin } from "../gen/utils/genFinancialFunc";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
