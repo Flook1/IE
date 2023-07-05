@@ -14,8 +14,9 @@ import LayMain from "@/src/components/layouts/LayMain";
 import { cache20Min } from "@/src/1/gen/utils/genQueryCache";
 import DebugView from "@/src/components/test/debug-view";
 import { IeCard } from "@/components/ie/ie-card";
-import { DashSec } from "@/src/1/report/component/dashSec";
+import { DashListSmall, DashSec } from "@/src/1/report/component/dashSec";
 import { diffCalc } from "@/src/1/gen/utils/genFinancialFunc";
+import { IeHeader } from "@/src/1/gen/components/ieHeader";
 
 /* -------------------------------------------------------------------------- */
 const Dash: NextPageWithLayout = () => {
@@ -28,10 +29,16 @@ const Dash: NextPageWithLayout = () => {
     ...cache20Min,
   });
 
-  const {data, isLoading} = dashStats
+  const { data, isLoading } = dashStats;
 
   return (
     <>
+      <div>
+        <IeHeader
+          header="Admin Dashboard"
+          description="Generally reporting information. This is for Admin of Image Edits."
+        ></IeHeader>
+      </div>
       {/* todo put in the dashboard section */}
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
         <IeCard variant={"default"} shadow={"out"} className="p-6">
@@ -55,7 +62,17 @@ const Dash: NextPageWithLayout = () => {
         </IeCard>
 
         <IeCard variant={"default"} shadow={"out"} className="p-6">
-          <p>Will put small overview here</p>
+          <DashListSmall
+          visible
+          headLeft="Order Status"
+          headRight="Current"
+          content1={"something"}
+          content2="Something"
+          content3="Something"
+          content4="Something"
+          isLoading={false}
+          >
+          </DashListSmall>
         </IeCard>
         <IeCard variant={"default"} shadow={"out"} className="p-6">
           <p>will pit sub menu here</p>

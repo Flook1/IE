@@ -24,20 +24,30 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import { IeHeader } from "@/src/1/gen/components/ieHeader";
 
 /* -------------------------------------------------------------------------- */
 const AdminFunc: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
 
+  const [diaOpen, diaOpenSet] = useState(false)
+
   const updateUrls = api.adminFunc.updateUrl.useMutation({
     onSuccess: (date) => {
       // collapse the dialog
+      diaOpenSet(!diaOpen)
     },
   });
 
   return (
     <>
+      <div>
+        <IeHeader
+          header="Admin Function for WebApp"
+          description="These are functions that will change a lot of data on backend for the webapp. these should be used carefully and only by admin generally."
+        ></IeHeader>
+      </div>
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
         {/* run onetime functions */}
         <IeCard>
@@ -52,7 +62,7 @@ const AdminFunc: NextPageWithLayout = () => {
             <IeCard variant={"default"} shadow={"in"} className="p-2">
               <div className="flex flex-col gap-2">
                 <p className="text-center">Updated url to object url values</p>
-                <Dialog>
+                <Dialog open={diaOpen} onOpenChange={diaOpenSet}>
                   <Button asChild size={"sm"} className="mx-8">
                     <DialogTrigger>Update</DialogTrigger>
                   </Button>
@@ -62,9 +72,9 @@ const AdminFunc: NextPageWithLayout = () => {
                       Are you sure you want to process this request?
                     </DialogDescription>
                     <DialogFooter>
-                    <Button asChild className="mx-8">
-                    <DialogTrigger>Close</DialogTrigger>
-                  </Button>
+                      <Button asChild className="mx-8">
+                        <DialogTrigger>Close</DialogTrigger>
+                      </Button>
                       <Button
                         variant={"destructive"}
                         type="button"
