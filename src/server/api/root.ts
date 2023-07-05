@@ -10,6 +10,7 @@ import { authResetRouter } from "./routers/v1/auth/authReset";
 import { authSignUpRouter } from "./routers/v1/auth/authSignUp";
 import { userBasicRouter } from "./routers/v1/user/userBasic";
 import { genDashRouter } from "./routers/v1/general/gen-dash";
+import { adminFuncRouter } from "./routers/v1/webapp/adminFunc";
 
 /**
  * This is the primary router for your server.
@@ -36,6 +37,13 @@ export const appRouter = createTRPCRouter({
   // USER
   // USER
   userBasic: userBasicRouter,
+
+  // WEBAPP
+  // WEBAPP
+  // WEBAPP
+  adminFunc: adminFuncRouter,
+
+
 
   // TEST
   // TEST
