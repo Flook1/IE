@@ -447,8 +447,8 @@ export const sesSetDb = async (
 // ses full object
 export interface tSesFull {
   isSes: boolean;
-  sesJson: tSesJson;
-  sesObj: tSesObj;
+  sesJson?: tSesJson;
+  sesObj?: tSesObj;
 }
 
 export interface tSesObj {

@@ -8,6 +8,7 @@ Copy Stuff Ignore
 
 - [] Client Login
 - [] general auth func checks
+- [x] serverSide Props fixed
 
     ## Admin Login Any User System
 

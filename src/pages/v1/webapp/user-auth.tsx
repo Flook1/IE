@@ -26,33 +26,28 @@ import {
 import { Loader2 } from "lucide-react";
 import { IeHeader } from "@/src/1/gen/components/ieHeader";
 import { type NextApiResponse } from "next";
-import { roleCheck } from "@/src/1/auth/utils-server/access";
-import { type ctxSes } from "@/src/server/api/trpc";
+import { roleCheck, serPropsRoleCheck } from "@/src/1/auth/utils-server/access";
+import { type ctxMain, type ctxSes } from "@/src/server/api/trpc";
+import {
+  sesGet,
+  type tSesFull,
+  type tSesJson,
+} from "@/src/1/auth/utils-server/ses";
+import { TRPCError } from "@trpc/server";
 
 /* -------------------------------------------------------------------------- */
 // server side props
 
-export async function getServerSideProps(ctx:ctxSes) {
+export async function getServerSideProps(ctx: ctxMain) {
   if (true) {
-    const roleVerified = await roleCheck(
-      ctx,
-      ctx.ses.sesJson,
-      true,
-      "ie_admin",
-      "redirect"
-    );
+    const func = await serPropsRoleCheck(ctx, "ie_admin");
 
-    if (roleVerified.redirect?.destination) {
-      return roleVerified;
-    } else if (!roleVerified.success) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: true,
-        },
-      };
+    if (func?.redirect) {
+      return func;
     }
   }
+
+  return { props: {} };
 }
 
 /* -------------------------------------------------------------------------- */

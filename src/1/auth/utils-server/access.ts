@@ -6,13 +6,39 @@ import {
   type tRoles,
   type tApiErrorHandle,
 } from "../../../utils/general/zEnums";
-import { sesCheck, type tSesJson } from "./ses";
+import { sesCheck, sesGet, type tSesFull, type tSesJson } from "./ses";
 import { z } from "zod";
 import { objUrl } from "../../gen/types/urls";
-import { type ctxMain } from "@/src/server/api/trpc";
+import { type ctxSes, type ctxMain } from "@/src/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
 // general role check
+export const serPropsRoleCheck = async (ctx: ctxMain, role: tRoles) => {
+  const sesGetObj = await sesGet(ctx, false);
+
+  if (sesGetObj?.isSes == false) {
+    return { redirect: { destination: "/", permanent: false } };
+  }
+
+  const roleVerified = await roleCheck(
+    ctx,
+    sesGetObj?.sesJson as tSesJson,
+    true,
+    role,
+    "redirect"
+  );
+
+  if (roleVerified.redirect?.destination) {
+    return roleVerified;
+  } else if (!roleVerified.success) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+};
 
 export const roleCheck = async (
   ctx: ctxMain,
@@ -23,6 +49,7 @@ export const roleCheck = async (
 ) => {
   let success = false;
   // check role
+  // if (ctx.ses.sesJson.user.user.rel_role.role_name !== role) {
   if (ses.user.rel_role.role_name !== role) {
     success = false;
     if (type == "throw") {
