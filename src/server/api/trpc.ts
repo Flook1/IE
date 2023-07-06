@@ -6,7 +6,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { sesGet } from "@/src/1/auth/utils-server/ses";
+import { type tSesJson, sesGet,type  tSesFull } from "@/src/1/auth/utils-server/ses";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import next from "next/types";
@@ -16,10 +16,11 @@ import { prisma } from "~/server/db";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------- My stuff -------------------------------- */
-// get the main res and req context, but not prisma, but i can just import prisma
-// doesnt include session either.
 export type ctxMain = CreateNextContextOptions;
 
+export interface ctxSes extends ctxMain {
+  ses: tSesFull
+}
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -130,5 +131,6 @@ export const sesPass = t.middleware(async ({ ctx, next }) => {
     },
   });
 });
+
 
 export const sesProcedure = t.procedure.use(sesPass);

@@ -1,6 +1,6 @@
 import { prisma } from "@/src/server/db";
 import { z } from "zod";
-import { type tSesObj } from "../../auth/utils-server/ses";
+import { type tSesJson } from "../../auth/utils-server/ses";
 import { type tBusType, } from "@/src/utils/general/zEnums";
 import dayjs from "dayjs";
 
@@ -15,7 +15,7 @@ const zUserGenType = z.enum([
 type tUserGenType = z.infer<typeof zUserGenType>;
 
 const userCount = async (
-  ses: tSesObj,
+  ses: tSesJson,
   checkType: tUserGenType,
   busType?:tBusType ,
   dateStart?: string,

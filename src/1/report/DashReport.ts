@@ -1,5 +1,5 @@
 import { prisma } from "@/src/server/db";
-import { type tSesObj } from "../auth/utils-server/ses";
+import { type tSesJson } from "../auth/utils-server/ses";
 import dayjs from "dayjs";
 import { zOrderStatus } from "@/src/utils/general/zEnums";
 import { z } from "zod";
@@ -11,8 +11,9 @@ import { userCount } from "../user/utils-server/genUser";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 
-export const dashFunc = async (ses: tSesObj) => {
-  // common date stuff
+export const dashFunc = async (ses: tSesJson) => {
+  // Working
+  /* ------------------------------------------------------------------------ */
 
   const totalRevAllTime = await ordRev(
     ses,
@@ -37,53 +38,40 @@ export const dashFunc = async (ses: tSesObj) => {
     dateGenUtc.thisMonthEnd.subtract(4, "M").toISOString()
   );
 
-  const memClient = await userCount(ses, "total members", "client");
-
-  const memNew = await userCount(
-    ses,
-    "new members",
-    undefined,
-    dateGenUtc.thisMonthStart.toISOString(),
-    dateGenUtc.thisMonthEnd.toISOString()
-  );
-
-  const memInactive = await userCount(ses, "inactive members");
-
-  const ordCountAll = await ordStatusCount(ses, "total comp all");
-  const ordCountThisMonth = await ordStatusCount(
-    ses,
-    "total comp between",
-    dateGenUtc.thisMonthStart.toISOString(),
-    dateGenUtc.thisMonthEnd.toISOString()
-  );
-
-  const ordCountLastMonth = await ordStatusCount(
-    ses,
-    "total comp between",
-    dateGenUtc.lastMonthStart.toISOString(),
-    dateGenUtc.lastMonthEnd.toISOString()
-  );
-
   const avgRevDayThisMonth =
     totalRevThisMonth.grossUsd / dateGenUtc.thisMonthDaysSoFar;
   const avgRevDayLastMonth =
     totalRevLastMonth.grossUsd / dateGenUtc.lastMonthDaysTotal;
   const avgRevDay6Month =
-  revTotal6MonthAgo.grossUsd / dateGenUtc.lastMonthDaysTotal;
+    revTotal6MonthAgo.grossUsd / dateGenUtc.lastMonthDaysTotal;
 
-  const avgOrdDayThisMonth = ordCountThisMonth / dateGenUtc.thisMonthDaysSoFar;
-  const avgOrdDayLastMonth = ordCountLastMonth / dateGenUtc.lastMonthDaysTotal;
+  /* ------------------------------------------------------------------------ */
+  // outstanding order stuff
 
+  const {
+    ordCountLastMonth,
+    ordCountNotAssigned,
+    ordCountProcessing,
+    ordCountThisMonth,
+    ordCountToday,
+    ordCountAll,
+    avgOrdDayLastMonth,
+    avgOrdDayThisMonth,
+  } = await ordTotals(ses);
+
+  const { memClient, memInactive, memNew } = await userTotals(ses);
+  /* ------------------------------------------------------------------------ */
+  // stuff
 
   return {
     totalRevAllTime,
     totalRevThisMonth,
     totalRevLastMonth,
     revTotal6MonthAgo,
-    memClient,
-    memNew,
-    memInactive,
     ordCountAll,
+    ordCountToday,
+    ordCountNotAssigned,
+    ordCountProcessing,
     ordCountThisMonth,
     ordCountLastMonth,
     avgRevDayThisMonth,
@@ -91,10 +79,20 @@ export const dashFunc = async (ses: tSesObj) => {
     avgOrdDayThisMonth,
     avgOrdDayLastMonth,
     avgRevDay6Month,
+    memClient,
+    memNew,
+    memInactive,
   };
 };
 
-const ie_team = async (ses: tSesObj) => {
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
+const ordTotals = async (ses: tSesJson) => {
+  const ordCountAll = await ordStatusCount(ses, "total comp all");
+
   const ordCountThisMonth = await ordStatusCount(
     ses,
     "total comp between",
@@ -116,14 +114,23 @@ const ie_team = async (ses: tSesObj) => {
   const ordCountProcessing = await ordStatusCount(ses, "processing");
 
   const ordCountNotAssigned = await ordStatusCount(ses, "not assigned");
-  // todo
-  return;
+
+  const avgOrdDayThisMonth = ordCountThisMonth / dateGenUtc.thisMonthDaysSoFar;
+  const avgOrdDayLastMonth = ordCountLastMonth / dateGenUtc.lastMonthDaysTotal;
+
+  return {
+    ordCountThisMonth,
+    ordCountLastMonth,
+    ordCountToday,
+    ordCountProcessing,
+    ordCountNotAssigned,
+    ordCountAll,
+    avgOrdDayThisMonth,
+    avgOrdDayLastMonth,
+  };
 };
 
-const client_owner = async (ses: tSesObj) => {
-  // todo over due jobs
-  // todo processing  this month
-
+const userTotals = async (ses: tSesJson) => {
   const memClient = await userCount(ses, "total members", "client");
 
   const memNew = await userCount(
@@ -136,31 +143,6 @@ const client_owner = async (ses: tSesObj) => {
 
   const memInactive = await userCount(ses, "inactive members");
 
-  const ordCountAll = await ordStatusCount(ses, "total comp all");
-  const ordCountThisMonth = await ordStatusCount(
-    ses,
-    "total comp between",
-    dateGenUtc.thisMonthStart.toISOString(),
-    dateGenUtc.thisMonthEnd.toISOString()
-  );
-
-  const ordCountLastMonth = await ordStatusCount(
-    ses,
-    "total comp between",
-    dateGenUtc.lastMonthStart.toISOString(),
-    dateGenUtc.lastMonthEnd.toISOString()
-  );
-  const ordCountThisYear = await ordStatusCount(
-    ses,
-    "total comp between",
-    dateGenUtc.thisYearStart.toISOString(),
-    dateGenUtc.thisYearEnd.toISOString()
-  );
-
-  // client team is mostly same as above
-  // todo finish
-  return;
+  return { memClient, memNew, memInactive };
 };
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */

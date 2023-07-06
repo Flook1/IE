@@ -18,9 +18,13 @@ import {
   type tRoles,
   type tClientType,
 } from "@/src/utils/general/zEnums";
+import { type UnwrapPromise } from "next/dist/lib/coalesced-function";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+/* -------------------------------------------------------------------------- */
+// types
 
 /* -------------------------------------------------------------------------- */
 
@@ -138,8 +142,9 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
     }
 
     // setting type for session object
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-    const sesJson: tSesObj = sesObj?.sess as any;
+    const sesJson: tSesJson = sesObj?.sess as any;
 
     return {
       isSes: true,
@@ -430,11 +435,31 @@ export const sesSetDb = async (
 /* ---------------------------------- types --------------------------------- */
 
 /* -------------------------------------------------------------------------- */
-
 // Type check object below
+// Returned Type
+// type tSesObj23 = UnwrapPromise<ReturnType<typeof sesGet>>;
 
+// MANUAL
+// MANUAL
+// MANUAL
 // Ses object
+
+// ses full object
+export interface tSesFull {
+  isSes: boolean;
+  sesJson: tSesJson;
+  sesObj: tSesObj;
+}
+
 export interface tSesObj {
+  sid: string;
+  sess: tSesJson;
+  expires_on: Date;
+}
+
+
+// session json
+export interface tSesJson {
   sesId: string;
   user: User;
   bus_id: string;

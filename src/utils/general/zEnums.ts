@@ -5,6 +5,10 @@ import z from "zod";
 /* ------------------------------- auth stuff ------------------------------- */
 export const zRuleGroup = z.enum(["page", "page-detail", "function"]);
 export type  tRuleGroup = z.infer<typeof zRuleGroup>
+export const zCrud = z.enum(["c", "r", "u", "d", "e" ]);
+export type  tCrud = z.infer<typeof zCrud>
+
+
 export const zRuleNames = z.enum([
   "new order",
   "dashboard",
@@ -179,3 +183,6 @@ export type  tContentImgProcessStatus = z.infer<typeof zContentImgProcessStatus>
 
 
 /* ---------------------------------- other --------------------------------- */
+// api error handling
+export const zApiErrorHandle = z.enum(["none", "throw", "redirect"]);
+export type  tApiErrorHandle = z.infer<typeof zApiErrorHandle>

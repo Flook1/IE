@@ -1,52 +1,61 @@
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
-import type * as zEnum from "../../../utils/general/zEnums";
-import { type tSesObj } from "./ses";
+import {
+  type tRuleNames,
+  type tCrud,
+  type tRoles,
+  type tApiErrorHandle,
+} from "../../../utils/general/zEnums";
+import { sesCheck, type tSesJson } from "./ses";
 import { z } from "zod";
+import { objUrl } from "../../gen/types/urls";
+import { type ctxMain } from "@/src/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
+// general role check
+
+export const roleCheck = async (
+  ctx: ctxMain,
+  ses: tSesJson,
+  sesVerify: boolean,
+  role: tRoles,
+  type: tApiErrorHandle
+) => {
+  let success = false;
+  // check role
+  if (ses.user.rel_role.role_name !== role) {
+    success = false;
+    if (type == "throw") {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Your dont have required permissions for this.",
+      });
+    }
+    if (type == "redirect") {
+      return {
+        redirect: {
+          destination: objUrl.v1.report.dash.url,
+          permanent: true,
+        },
+      };
+    }
+  } else if (sesVerify) {
+    // verify session now
+    const sesCheckVerify = await sesCheck(ctx, true, false);
+    success = sesCheckVerify;
+  }
+
+  return { success };
+};
+
 /* -------------------------------------------------------------------------- */
 // Rule checks
 
-type Crud = "c" | "r" | "u" | "d" | "e";
-type Rule =
-  | "support"
-  | "job posts"
-  | "revert order state"
-  | "users"
-  | "edit price"
-  | "client services"
-  | "services"
-  | "add adjustment invoice"
-  | "approve editor services"
-  | "invoices"
-  | "portfolio"
-  | "business info"
-  | "editor user services"
-  | "wallet details"
-  | "discounts"
-  | "roles"
-  | "dashboard"
-  | "order details"
-  | "new order"
-  | "project details"
-  | "orders"
-  | "invoice details"
-  | "quality control"
-  | "service categories"
-  | "business details"
-  | "delivery"
-  | "business overview"
-  | "approve editor user services"
-  | "project overview"
-  | "user overview"
-  | "profile"
-  | "editor bus services"
-  | "user details"
-  | "projects"
-  | "service types";
-
-export const ruleAccess = async (ses: tSesObj, rule: Rule, crud: Crud) => {
+export const ruleAccess = async (
+  ses: tSesJson,
+  rule: tRuleNames,
+  crud: tCrud
+) => {
   if (rule === null || crud === null) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -95,7 +104,7 @@ export const zActionType = z.enum([
 ]);
 export type tActionType = z.infer<typeof zActionType>;
 export const actionAccess = async (
-  ses: tSesObj,
+  ses: tSesJson,
   type: tActionType,
   editId: string,
   userId: string
@@ -149,7 +158,7 @@ export const actionAccess = async (
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 
-export const orderAccess = async (ses: tSesObj, order_id: string) => {
+export const orderAccess = async (ses: tSesJson, order_id: string) => {
   const curr_user_id = ses.user.user_id;
   const curr_user_type = ses.userType;
   const bus_type = ses.bus_type;

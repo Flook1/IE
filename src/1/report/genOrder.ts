@@ -1,5 +1,5 @@
 import { prisma } from "@/src/server/db";
-import { type tSesObj } from "../auth/utils-server/ses";
+import { type tSesJson } from "../auth/utils-server/ses";
 import dayjs from "dayjs";
 import { zOrderStatus } from "@/src/utils/general/zEnums";
 import { z } from "zod";
@@ -22,7 +22,7 @@ const zOrdCountType = z.enum([
 type tOrdCountType = z.infer<typeof zOrdCountType>;
 
 const ordStatusCount = async (
-  ses: tSesObj,
+  ses: tSesJson,
   checkType: tOrdCountType,
   dateStart?: string,
   dateEnd?: string
@@ -150,7 +150,7 @@ const zRevReport = z.enum([
 type tRevReport = z.infer<typeof zRevReport>;
 
 const ordRev = async (
-  ses: tSesObj,
+  ses: tSesJson,
   dateStart: string,
   dateEnd: string
 ) => {

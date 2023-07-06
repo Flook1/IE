@@ -290,5 +290,8 @@ export const objUrl = {
     theme: {
       url: "/test/v1-theme",
     },
+    redirect: {
+      url: "/test/v1-redirect",
+    },
   },
 };

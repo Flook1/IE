@@ -7,6 +7,7 @@ Copy Stuff Ignore
 ## Auth
 
 - [] Client Login
+- [] general auth func checks
 
     ## Admin Login Any User System
 
@@ -19,8 +20,8 @@ Copy Stuff Ignore
 
 ## Dashboard Stuff
 
-- [] Rest of Report
-- [] Consider Breakdown Massive Query
+- [x] Rest of Report
+- [x] Consider Breakdown Massive Query
 - [] Work with client and Editor Check
 
 
