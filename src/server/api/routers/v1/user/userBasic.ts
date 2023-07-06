@@ -1,5 +1,6 @@
-import { sesQuickCheckThrow } from "@/src/1/auth/utils-server/ses";
-import { createTRPCRouter, sesProcedure } from "~/server/api/trpc";
+import { sesQuickCheckThrow, type tSesFull } from "@/src/1/auth/utils-server/ses";
+import { userList } from "@/src/1/user/utils-server/genUser";
+import { createTRPCRouter, type ctxSes, sesProcedure } from "~/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -205,9 +206,9 @@ export const userBasicRouter = createTRPCRouter({
           deleted_on: { equals: null },
         },
         orderBy: {
-          updated_on: "desc"
+          updated_on: "desc",
         },
-        take: 25
+        take: 25,
       });
     }
 
@@ -231,12 +232,17 @@ export const userBasicRouter = createTRPCRouter({
           deleted_on: { equals: null },
         },
         orderBy: {
-          updated_on: "desc"
+          updated_on: "desc",
         },
-        take: 25
+        take: 25,
       });
     }
 
     return { userContent, serviceAccess, qBusAll, qProjAll };
+  }),
+  userList: sesProcedure.query(async ({ ctx }) => {
+    const list = await userList(ctx, ctx.getSes);
+
+    return list
   }),
 });

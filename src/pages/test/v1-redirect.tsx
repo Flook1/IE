@@ -27,7 +27,7 @@ export function getServerSideProps({res}:{res:NextApiResponse}) {
     return {
       redirect: {
         destination: "/",
-        permanent: true,
+        permanent: false,
       },
     };
   }

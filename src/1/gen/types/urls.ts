@@ -293,5 +293,8 @@ export const objUrl = {
     redirect: {
       url: "/test/v1-redirect",
     },
+    spread: {
+      url: "/test/v1-spread",
+    },
   },
 };

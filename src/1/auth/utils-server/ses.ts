@@ -18,13 +18,9 @@ import {
   type tRoles,
   type tClientType,
 } from "@/src/utils/general/zEnums";
-import { type UnwrapPromise } from "next/dist/lib/coalesced-function";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-/* -------------------------------------------------------------------------- */
-// types
 
 /* -------------------------------------------------------------------------- */
 
@@ -113,7 +109,7 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
   const ieAuthSesCookie = allCookies.ieAuthSes;
 
   if (ieAuthSesCookie) {
-    const sesObj = await prisma.sessions.findFirst({
+    const sesObjData = await prisma.sessions.findFirst({
       where: {
         sid: ieAuthSesCookie,
         expires_on: { gte: dateNow },
@@ -126,7 +122,7 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
       },
     });
 
-    if (!sesObj || !sesObj?.sess) {
+    if (!sesObjData || !sesObjData?.sess) {
       if (throwErr) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -144,7 +140,9 @@ export const sesGet = async (opts: ctxMain, throwErr: boolean) => {
     // setting type for session object
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-    const sesJson: tSesJson = sesObj?.sess as any;
+    const sesJson: tSesJson = sesObjData?.sess as any;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+    const sesObj: tSesObj = sesObjData as any;
 
     return {
       isSes: true,
@@ -328,7 +326,7 @@ export const sesSetDb = async (
     },
   });
 
-  // Now lets setup the conditional informaiton for ses
+  // Now lets setup the conditional information for ses
   // Obj start
   const bus_id: string | undefined = user?.rel_bus?.id;
   const bus_type: tBusType | undefined = user?.rel_bus?.business_type;
@@ -445,30 +443,35 @@ export const sesSetDb = async (
 // Ses object
 
 // ses full object
-export interface tSesFull {
-  isSes: boolean;
-  sesJson?: tSesJson;
-  sesObj?: tSesObj;
-}
+export type tSesFull =
+  | {
+      isSes: boolean;
+      sesJson?: tSesJson;
+      sesObj?: tSesObj;
+    }
+  | {
+      isSes: boolean;
+      sesJson: undefined;
+      sesObj: undefined;
+    };
 
-export interface tSesObj {
+export type tSesObj = {
   sid: string;
   sess: tSesJson;
   expires_on: Date;
-}
-
+};
 
 // session json
-export interface tSesJson {
+export type tSesJson = {
   sesId: string;
   user: User;
   bus_id: string;
   bus_type: tBusType;
   user_name_full: string;
   userType: UserType;
-}
+};
 
-export interface User {
+export type User = {
   user_id: string;
   email_id: string;
   name_first: string;
@@ -477,9 +480,9 @@ export interface User {
   rel_bus: RelBus;
   role_id: number;
   rel_role: RelRole;
-}
+};
 
-export interface RelBus {
+export type RelBus = {
   id: string;
   owner_user_id: string;
   business_name: string;
@@ -489,16 +492,16 @@ export interface RelBus {
   payment_type: tPayType;
   currency_id: number;
   rel_country: RelCountry;
-}
+};
 
-export interface RelCountry {
+export type RelCountry = {
   currency_symbol: string;
   currency_code: tCurrCode;
   currency_name: string;
-}
+};
 
-export interface RelRole {
+export type RelRole = {
   id: number;
   role_name: tRoles;
   role_info: string;
-}
+};

@@ -51,7 +51,7 @@ export async function getServerSideProps(ctx: ctxMain) {
 }
 
 /* -------------------------------------------------------------------------- */
-const UserAuth: NextPageWithLayout = () => {
+const UserAuth: NextPageWithLayout =  () => {
   // this is used to log into other accounts
   // todo
 
@@ -59,6 +59,11 @@ const UserAuth: NextPageWithLayout = () => {
   const toast = useToast();
 
   const [diaOpen, diaOpenSet] = useState(false);
+
+  const userList = api.userBasic.userList.useQuery(undefined, {
+    enabled: true,
+  })
+
 
   return (
     <>
@@ -72,9 +77,9 @@ const UserAuth: NextPageWithLayout = () => {
       <IeCard variant={"test"}>
         <p className="w-14">Testing</p>
         <DebugView
-          visible={false}
+          visible={true}
           header="userDataTable"
-          content={"something"}
+          content={userList.data}
         ></DebugView>
       </IeCard>
     </>
