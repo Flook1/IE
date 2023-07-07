@@ -34,6 +34,7 @@ import {
   type tSesJson,
 } from "@/src/1/auth/utils-server/ses";
 import { TRPCError } from "@trpc/server";
+import { UserAuthList } from "@/src/1/user/components/userAuthList";
 
 /* -------------------------------------------------------------------------- */
 // server side props
@@ -79,7 +80,10 @@ const UserAuth: NextPageWithLayout = () => {
           description="This section is to allow only Image Edits Admin to log into other accounts, make sure they are okay and help out in any way."
         ></IeHeader>
       </div>
-      <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3"></div>
+      <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
+        {/* table will go hear */}
+        <UserAuthList></UserAuthList>
+      </div>
       <IeCard variant={"test"}>
         <p className="w-14">Testing</p>
         <DebugView

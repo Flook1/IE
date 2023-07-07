@@ -296,5 +296,8 @@ export const objUrl = {
     spread: {
       url: "/test/v1-spread",
     },
+    typeInfer: {
+      url: "/test/v1-type-infer",
+    },
   },
 };

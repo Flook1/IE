@@ -1,14 +1,9 @@
-Copy Stuff Ignore
-- [x]
-- []
----
-
 
 ## General
 
 - [] Auth Error Filtering Layout Main (specific codes)
-- [] Pagination Function
-- [] Pagination && Filter Object
+- [x] infering types from trpc
+- [] dark mode test
 
 ## Auth
 
