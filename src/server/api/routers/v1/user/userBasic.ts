@@ -1,5 +1,10 @@
-import { sesQuickCheckThrow, type tSesFull } from "@/src/1/auth/utils-server/ses";
+import {
+  sesQuickCheckThrow,
+  type tSesFull,
+} from "@/src/1/auth/utils-server/ses";
+import { zFilterGen } from "@/src/1/gen/utils/genFilter";
 import { userList } from "@/src/1/user/utils-server/genUser";
+import { z } from "zod";
 import { createTRPCRouter, type ctxSes, sesProcedure } from "~/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
@@ -240,9 +245,15 @@ export const userBasicRouter = createTRPCRouter({
 
     return { userContent, serviceAccess, qBusAll, qProjAll };
   }),
-  userList: sesProcedure.query(async ({ ctx }) => {
-    const list = await userList(ctx, ctx.getSes);
+  userList: sesProcedure.input(zFilterGen).query(async ({ ctx, input }) => {
+    const list = await userList(
+      ctx,
+      ctx.getSes,
+      input.take,
+      input.page,
+      input.search
+    );
 
-    return list
+    return list;
   }),
 });

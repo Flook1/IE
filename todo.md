@@ -4,6 +4,12 @@ Copy Stuff Ignore
 ---
 
 
+## General
+
+- [] Auth Error Filtering Layout Main (specific codes)
+- [] Pagination Function
+- [] Pagination && Filter Object
+
 ## Auth
 
 - [] Client Login

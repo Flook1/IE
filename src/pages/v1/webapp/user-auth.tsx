@@ -1,7 +1,7 @@
 import { api } from "@/src/utils/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
-import { useEffect, type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import { type NextPageWithLayout } from "@/src/pages/_app";
 import LayMain from "@/src/components/layouts/LayMain";
 import DebugView from "@/src/components/test/debug-view";
@@ -51,19 +51,25 @@ export async function getServerSideProps(ctx: ctxMain) {
 }
 
 /* -------------------------------------------------------------------------- */
-const UserAuth: NextPageWithLayout =  () => {
-  // this is used to log into other accounts
-  // todo
-
+const UserAuth: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
 
+  // this is used to log into other accounts
+  // todo
+
+  const [search, setSearch] = useState("haydn");
+  const [take, setTake] = useState(25);
+  const [page, setPage] = useState(0);
+
   const [diaOpen, diaOpenSet] = useState(false);
 
-  const userList = api.userBasic.userList.useQuery(undefined, {
-    enabled: true,
-  })
-
+  const userList = api.userBasic.userList.useQuery(
+    { search: search, take: take, page: page },
+    {
+      enabled: true,
+    }
+  );
 
   return (
     <>

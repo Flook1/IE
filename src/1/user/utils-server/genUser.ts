@@ -60,12 +60,19 @@ export const userCount = async (
   return userCount;
 };
 
-export const userList = async (ctx: ctxMain, ses: tSesFull) => {
-  const currUserId = ses.sesJson?.user.user_id;
-  const currUserRole = ses.sesJson?.user.rel_role.role_name;
-  const busId = ses.sesJson?.bus_id;
+export const userList = async (
+  ctx: ctxMain,
+  ses: tSesFull,
+  take: number,
+  page: number,
+  search: string | null
+) => {
+  const pageOffset = page * take;
 
-  const isIe = currUserRole == "ie_admin" || currUserRole == "editor_user";
+  const sesUserObj = ses.sesJson?.user;
+  const sesRoleName = ses.sesJson?.user.rel_role.role_name;
+
+  const busId = ses.sesJson?.bus_id;
 
   const list = await prisma.user_main.findMany({
     select: {
@@ -87,17 +94,43 @@ export const userList = async (ctx: ctxMain, ses: tSesFull) => {
       },
     },
     where: {
-      OR: [
-        {...(isIe == false ? { user_id: currUserId } : {})},
-        {...(isIe == true ? { updated_on: {not: null} } : {})},
+      AND: [
+        {
+          ...(search
+            ? {
+                OR: [
+                  { user_id: search },
+                  { name_first: search },
+                  { name_last: search },
+                  {rel_bus: {business_name: search}},
+                  {rel_bus: {id: search}},
+                ],
+              }
+            : {}),
+        },
+        {
+          OR: [
+            {
+              ...(sesRoleName !== "ie_admin" && sesRoleName !== "ie_user"
+                ? { user_id: sesUserObj?.user_id }
+                : {}),
+            },
+            {
+              ...(sesRoleName == "ie_admin" || sesRoleName == "ie_user"
+                ? { updated_on: { not: null } }
+                : {}),
+            },
+          ],
+        },
       ],
     },
     orderBy: {
       name_first: "asc",
     },
-    take: 25,
-    skip: 0,
+    take: take,
+    skip: pageOffset,
   });
 
-  return list;
+  return { list };
 };
+
