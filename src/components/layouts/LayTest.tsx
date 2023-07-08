@@ -78,6 +78,16 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           <Button asChild>
             <Link href={objUrl.testing.typeInfer.url}>Type Infer</Link>
           </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.stateBasic.url}>State Basic</Link>
+          </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.stateQuery.url}>State Query</Link>
+          </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.queryParams.url}>Query Params</Link>
+          </Button>
+
         </div>
       </div>
       <div className="bg-base-200 container ">{children}</div>

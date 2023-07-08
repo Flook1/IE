@@ -18,7 +18,7 @@ export const testGenRouter = createTRPCRouter({
       WorkflowRun: true,
     };
   }),
-  basicRuleCheck: publicProcedure.query(({ctx}) => {
+  basicRuleCheck: publicProcedure.query(({ ctx }) => {
     isDev("my");
 
     // at the moment does nothing
@@ -107,5 +107,14 @@ export const testGenRouter = createTRPCRouter({
     )
     .query(({ ctx }) => {
       return "something";
+    }),
+  filterState: publicProcedure
+    .input(
+      z.object({
+        stringValue: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return input.stringValue;
     }),
 });

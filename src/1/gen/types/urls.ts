@@ -299,5 +299,14 @@ export const objUrl = {
     typeInfer: {
       url: "/test/v1-type-infer",
     },
+    stateBasic: {
+      url: "/test/v1-state-basic",
+    },
+    stateQuery: {
+      url: "/test/v1-state-query",
+    },
+    queryParams: {
+      url: "/test/v1-query-params",
+    },
   },
 };

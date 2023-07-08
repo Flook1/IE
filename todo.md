@@ -5,6 +5,10 @@
 - [x] infering types from trpc
 - [] dark mode test
 
+## State
+
+- [] zustand for query options
+
 ## Auth
 
 - [] Client Login
