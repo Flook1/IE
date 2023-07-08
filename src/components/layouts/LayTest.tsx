@@ -29,7 +29,7 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
     <>
       <div>
         Test navigation
-        <div className="flex gap-x-4 border-slate-200 ">
+        <div className="grid grid-cols-8  gap-4 border-slate-200 ">
           <Button asChild>
             <Link href={objUrl.testing.dates.url}>Dates</Link>
           </Button>
@@ -86,6 +86,9 @@ export const LayTest = ({ children }: NextPageLayoutProps) => {
           </Button>
           <Button asChild>
             <Link href={objUrl.testing.queryParams.url}>Query Params</Link>
+          </Button>
+          <Button asChild>
+            <Link href={objUrl.testing.stateZust.url}>State Zust</Link>
           </Button>
 
         </div>

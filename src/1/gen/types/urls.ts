@@ -308,5 +308,8 @@ export const objUrl = {
     queryParams: {
       url: "/test/v1-query-params",
     },
+    stateZust: {
+      url: "/test/v1-state-zust",
+    },
   },
 };

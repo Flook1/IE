@@ -87,7 +87,6 @@ export const serviceAddon = async (opts: ctxMain) => {
 };
 /* -------------------------------------------------------------------------- */
 
-// todo pass session stuff
 export const currBusBasic = async (opts: ctxMain, busId: string) => {
   // we will assume the id is checked already
   const currBus = await prisma.business.findFirst({
@@ -108,5 +107,3 @@ export const currBusBasic = async (opts: ctxMain, busId: string) => {
   return currBus;
 };
 
-/* -------------------------------------------------------------------------- */
-// Menu stuff
