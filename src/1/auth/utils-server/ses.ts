@@ -9,7 +9,7 @@ import type {
   IeCookie,
   AuthSesObj,
   UserType,
-} from "@/src/utils/general/cookie";
+} from "@/src/1/gen/types/cookie";
 import { objErrSes } from "../login/types";
 import {
   type tPayType,
@@ -17,7 +17,7 @@ import {
   type tCurrCode,
   type tRoles,
   type tClientType,
-} from "@/src/utils/general/zEnums";
+} from "@/src/1/gen/utils/zEnums";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

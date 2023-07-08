@@ -1,4 +1,4 @@
-import { type tCurrCode, type tLocale } from "@/src/utils/general/zEnums";
+import { type tCurrCode, type tLocale } from "@/src/1/gen/utils/zEnums";
 import { z } from "zod";
 
 export const titleCase = (string: string) => {

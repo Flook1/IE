@@ -1,7 +1,7 @@
 import { prisma } from "@/src/server/db";
 import { z } from "zod";
 import { type tSesFull, type tSesJson } from "../../auth/utils-server/ses";
-import { type tBusType } from "@/src/utils/general/zEnums";
+import { type tBusType } from "@/src/1/gen/utils/zEnums";
 import dayjs from "dayjs";
 import { type ctxMain, type ctxSes } from "@/src/server/api/trpc";
 

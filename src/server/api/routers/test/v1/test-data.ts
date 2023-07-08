@@ -1,7 +1,7 @@
 import { env } from "@/src/env.mjs";
 import { ruleAccess } from "@/src/1/auth/utils-server/access";
 import { isDev, isProd } from "@/src/1/auth/utils-server/isEnv";
-import { zRuleGroup } from "@/src/utils/general/zEnums";
+import { zRuleGroup } from "@/src/1/gen/utils/zEnums";
 import { getUserAuthFull } from "@/src/1/user/utils-server/getUserAuthFull";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";

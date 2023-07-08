@@ -5,7 +5,7 @@ import {
   type tCrud,
   type tRoles,
   type tApiErrorHandle,
-} from "../../../utils/general/zEnums";
+} from "../../gen/utils/zEnums";
 import { sesCheck, sesGet, type tSesFull, type tSesJson } from "./ses";
 import { z } from "zod";
 import { objUrl } from "../../gen/types/urls";

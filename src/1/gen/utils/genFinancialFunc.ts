@@ -2,7 +2,7 @@ import {
   zInvGstType,
   type tInvGstType,
   type tCurrCode,
-} from "@/src/utils/general/zEnums";
+} from "@/src/1/gen/utils/zEnums";
 import { TRPCError } from "@trpc/server";
 
 // net profit calculator

@@ -1,7 +1,7 @@
 import { prisma } from "@/src/server/db";
 import { type tSesJson } from "../auth/utils-server/ses";
 import dayjs from "dayjs";
-import { zOrderStatus } from "@/src/utils/general/zEnums";
+import { zOrderStatus } from "@/src/1/gen/utils/zEnums";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { ordRev, ordStatusCount } from "./genOrder";

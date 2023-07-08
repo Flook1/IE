@@ -1,7 +1,7 @@
 import { prisma } from "@/src/server/db";
 import {
   type tCurrCode,
-} from "@/src/utils/general/zEnums";
+} from "@/src/1/gen/utils/zEnums";
 import { TRPCError } from "@trpc/server";
 
 

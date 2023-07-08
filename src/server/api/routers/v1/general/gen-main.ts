@@ -8,7 +8,7 @@ import {
   serviceAddon,
   serviceCategories,
   serviceTypes,
-} from "@/src/utils/com-queries/common-queries";
+} from "@/src/1/gen/utils-server/common-queries";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {

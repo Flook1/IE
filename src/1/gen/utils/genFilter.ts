@@ -1,4 +1,4 @@
-import * as zEnum from "@/src/utils/general/zEnums";
+import * as zEnum from "@/src/1/gen/utils/zEnums";
 import { z } from "zod";
 // This is just for anything to do with filtering pagination and so on
 

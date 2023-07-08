@@ -11,7 +11,7 @@ import type {
   IeCookie,
   AuthSesObj,
   UserType,
-} from "@/src/utils/general/cookie";
+} from "@/src/1/gen/types/cookie";
 import { objErrSes } from "../login/types";
 import * as argon2id from "argon2";
 
