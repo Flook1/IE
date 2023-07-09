@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { type ReactElement, useEffect, useState } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
 import { useToast } from "@/components/ui/use-toast";
-import { redirectTest } from "@/src/components/test/test-redirect";
+import { redirectTest } from "@/src/1/test/test-redirect";
 import { redirect } from "next/dist/server/api-utils";
 import { type NextResponse } from "next/server";
 import { type NextApiResponse } from "next";

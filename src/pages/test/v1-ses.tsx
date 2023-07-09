@@ -1,9 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import DebugView from "@/src/components/test/debug-view";
+import DebugView from "@/src/1/test/debug-view";
 import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { Loader2 } from "lucide-react";

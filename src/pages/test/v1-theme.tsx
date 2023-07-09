@@ -1,7 +1,7 @@
 import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
-import DebugView from "@/src/components/test/debug-view";
+import LayTest from "@/src/1/gen/layouts/LayTest";
+import DebugView from "@/src/1/test/debug-view";
 import {
   IeCard,
   CardContent,

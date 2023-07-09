@@ -1,10 +1,10 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import DebugView from "@/src/components/test/debug-view";
+import DebugView from "@/src/1/test/debug-view";
 import { Card } from "@/components/ui/card";
 import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 
 
 const V1Testing: NextPageWithLayout = () => {

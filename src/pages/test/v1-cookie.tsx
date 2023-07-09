@@ -1,9 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import DebugView from "@/src/components/test/debug-view";
+import DebugView from "@/src/1/test/debug-view";
 import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 
 const V1TestCookie: NextPageWithLayout = () => {
   const cookieConsoleLog = api.testCookie.cookieLog.useQuery(undefined, {

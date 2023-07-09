@@ -1,7 +1,7 @@
 import { type ReactElement, useEffect, useState } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
-import { TestStateZust } from "@/src/components/test/state-test-comp-zust";
+import { TestStateZust } from "@/src/1/test/state-test-comp-zust";
 
 const V1StateQuery: NextPageWithLayout = () => {
   return (

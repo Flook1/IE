@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import { SkeletonCard } from "../../gen/components/skeleton";
 import { IeCard } from "@/components/ie/ie-card";
 import { api } from "@/src/utils/api";
-import DebugView from "@/src/components/test/debug-view";
+import DebugView from "@/src/1/test/debug-view";
 
 export const UserAuthList: NextPage = () => {
   const userList = api.userBasic.userList.useQuery(

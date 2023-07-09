@@ -24,7 +24,7 @@ import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { type NextPageWithLayout } from "@/src/pages/_app";
-import LayAuth from "@/src/components/layouts/LayAuth";
+import LayAuth from "@/src/1/gen/layouts/LayAuth";
 
 /* -------------------------------------------------------------------------- */
 const EmailVerify: NextPageWithLayout = () => {

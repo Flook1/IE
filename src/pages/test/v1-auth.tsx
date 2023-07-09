@@ -1,6 +1,6 @@
 import { api } from "@/src/utils/api";
-import DebugView from "@/src/components/test/debug-view";
-import LayTest from "@/src/components/layouts/LayTest";
+import DebugView from "@/src/1/test/debug-view";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
 import { useRouter } from "next/router";

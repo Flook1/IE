@@ -32,7 +32,7 @@ import { Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { type NextPageWithLayout } from "@/src/pages/_app";
-import LayAuth from "@/src/components/layouts/LayAuth";
+import LayAuth from "@/src/1/gen/layouts/LayAuth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";

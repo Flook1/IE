@@ -3,8 +3,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 import { type ReactElement, useState } from "react";
 import { type NextPageWithLayout } from "@/src/pages/_app";
-import LayMain from "@/src/components/layouts/LayMain";
-import DebugView from "@/src/components/test/debug-view";
+import LayMain from "@/src/1/gen/layouts/LayMain";
+import DebugView from "@/src/1/test/debug-view";
 import {
   IeCard,
   CardContent,

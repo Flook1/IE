@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import DebugView from "@/src/components/test/debug-view";
+import DebugView from "@/src/1/test/debug-view";
 import { api } from "@/src/utils/api";
 import { Separator } from "@/components/ui/separator";
 

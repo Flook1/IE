@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { type ReactElement, useEffect, useState } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
-import { TestStateComp } from "@/src/components/test/state-test-comp";
+import { TestStateComp } from "@/src/1/test/state-test-comp";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

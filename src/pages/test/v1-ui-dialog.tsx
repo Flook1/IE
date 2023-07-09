@@ -1,5 +1,5 @@
 import React, { type ReactElement, useEffect, useState } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
 import { useToast } from "@/components/ui/use-toast";
 import {

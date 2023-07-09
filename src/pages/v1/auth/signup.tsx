@@ -1,5 +1,5 @@
 import { api } from "@/src/utils/api";
-import { LayAuth } from "@/src/components/layouts/LayAuth";
+import { LayAuth } from "@/src/1/gen/layouts/LayAuth";
 import type { ReactElement, ReactHTMLElement } from "react";
 import { type NextPageWithLayout } from "../../_app";
 import {

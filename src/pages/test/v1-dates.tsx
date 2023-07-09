@@ -1,13 +1,13 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
 import type { NextPage } from "next";
-import DebugView from "@/src/components/test/debug-view";
-import useRenderCounter from "@/src/components/general/renderCount";
+import DebugView from "@/src/1/test/debug-view";
+import useRenderCounter from "@/src/1/gen/components/renderCount";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { type ReactElement, useEffect, useState } from "react";
-import LayTest from "@/src/components/layouts/LayTest";
+import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
 import { dateGenUtc } from "@/src/1/gen/utils/genDates";
 
