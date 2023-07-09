@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "../components/general/toaster";
+import { Toaster } from "../1/gen/components/toaster";
 
 
 
