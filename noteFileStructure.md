@@ -13,3 +13,6 @@ With this project, we will just keep using pages for now, so we get react query 
 
 Other folders, styles | utils | z_temp | z_test
 These are just more generic folders, shouldnt be used much. more for top level and temporary testing stuff.
+
+
+Top level components & lib, this is specifically for shadcn, we wont be using it specifically, we will be sticking to src file.

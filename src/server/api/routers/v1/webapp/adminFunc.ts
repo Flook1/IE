@@ -7,14 +7,19 @@ import {
 import { sesGet, sesCheck, sesDelCookie } from "@/src/1/auth/utils-server/ses";
 import { prisma } from "@/src/server/db";
 import { objUrl } from "@/src/1/gen/types/urls";
+import { TRPCError } from "@trpc/server";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 export const adminFuncRouter = createTRPCRouter({
   updateUrl: sesProcedure.mutation(async ({ ctx, input }) => {
+
+
     const sesSuccess = await sesCheck(ctx, true, true);
 
-
+    if (ctx.getSes.sesJson?.user.rel_role.role_name !== "ie_admin"){
+      throw new TRPCError({code:"FORBIDDEN", message:"only admin can use this api"})
+    }
 
     const dash = objUrl.v1.report
     await updateUrlRow(dash.dash.ruleName, dash.dash.url);
@@ -27,7 +32,6 @@ export const adminFuncRouter = createTRPCRouter({
     const inv = objUrl.v1.invoice
     await updateUrlRow(inv.discount.ruleName, inv.discount.url);
     await updateUrlRow(inv.inv.ruleName, inv.inv.url);
-    // await updateUrlRow(inv.invCreate.ruleName, inv.invCreate.url);
     await updateUrlRow(inv.invList.ruleName, inv.invList.url);
 
 
