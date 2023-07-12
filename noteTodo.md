@@ -7,6 +7,7 @@
 ## State
 
 <!-- question Is it confirmed that we will be using Zustand? -->
+<!-- answer im still testing it, i quite like it, but not certainity. but im thinking it will be but havent decided yet.  -->
 
 - [] zustand for query options
 

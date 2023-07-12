@@ -107,6 +107,7 @@ const AdminFunc: NextPageWithLayout = () => {
 };
 
 // question What does this do?
+// answer function below youll find this on most pages, just allows us to pick a layout for this page. 
 AdminFunc.getLayout = function getLayout(page: ReactElement) {
   return <LayMain>{page}</LayMain>;
 };

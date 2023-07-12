@@ -45,6 +45,7 @@ export const userBasicRouter = createTRPCRouter({
                   },
                 },
                 // question What are all these letters for?
+                // answer create, read, update, delete, export
                 c: true,
                 r: true,
                 u: true,

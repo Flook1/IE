@@ -1,1 +1,2 @@
 // question Is this a todo?
+// answer this has been me still in thinking phase of how im going to store some state, if its going to be global or just passed with props, i havent decided yet. can basically ignore this for now

@@ -1,4 +1,5 @@
 // question What is this file for?
+//  answer i named hte file with back meaning, backup. not needed it just something i use to compare when im a bit confused on section so i keep two versions going for easier comparison for myself. 
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
