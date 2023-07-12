@@ -12,6 +12,9 @@ export const env = createEnv({
     DATABASE_URL: z.string().url().min(1),
     JWT_SECRET: z.string().min(1),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
+
+    // Stripe
+    STRIPE_SECRET_KEY: z.string().min(1),
   },
 
   /**
@@ -27,6 +30,8 @@ export const env = createEnv({
     NEXT_PUBLIC_PASS_SYMBOL: z.string().min(1),
     NEXT_PUBLIC_PASS_NUMBER: z.string().min(1),
     NEXT_PUBLIC_PASS_CAPITAL: z.string().min(1),
+    // stripe
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
 
   },
 
@@ -40,12 +45,14 @@ export const env = createEnv({
     NEXT_PUBLIC_MY_ENV: process.env.MY_ENV,
     NODE_ENV: process.env.NODE_ENV,
     JWT_SECRET: process.env.JWT_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     // Pass info:
     NEXT_PUBLIC_PASS_MIN: process.env.NEXT_PUBLIC_PASS_MIN,
     NEXT_PUBLIC_PASS_MAX: process.env.NEXT_PUBLIC_PASS_MAX,
     NEXT_PUBLIC_PASS_SYMBOL: process.env.NEXT_PUBLIC_PASS_SYMBOL,
     NEXT_PUBLIC_PASS_NUMBER: process.env.NEXT_PUBLIC_PASS_NUMBER,
     NEXT_PUBLIC_PASS_CAPITAL: process.env.NEXT_PUBLIC_PASS_CAPITAL,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

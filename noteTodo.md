@@ -4,6 +4,7 @@
 - [] Auth Error Filtering Layout Main (specific codes)
 - [x] infering types from trpc
 - [] dark mode test
+- [] prisma 5
 
 ## State
 
