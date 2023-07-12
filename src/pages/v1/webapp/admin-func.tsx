@@ -31,12 +31,12 @@ const AdminFunc: NextPageWithLayout = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const [diaOpen, diaOpenSet] = useState(false)
+  const [diaOpen, diaOpenSet] = useState(false);
 
   const updateUrls = api.adminFunc.updateUrl.useMutation({
     onSuccess: (date) => {
       // collapse the dialog
-      diaOpenSet(!diaOpen)
+      diaOpenSet(!diaOpen);
     },
   });
 
@@ -106,6 +106,7 @@ const AdminFunc: NextPageWithLayout = () => {
   );
 };
 
+// question What does this do?
 AdminFunc.getLayout = function getLayout(page: ReactElement) {
   return <LayMain>{page}</LayMain>;
 };

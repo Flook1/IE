@@ -1,4 +1,3 @@
-
 ## General
 
 - [] Auth Error Filtering Layout Main (specific codes)
@@ -6,6 +5,8 @@
 - [] dark mode test
 
 ## State
+
+<!-- question Is it confirmed that we will be using Zustand? -->
 
 - [] zustand for query options
 
@@ -15,14 +16,12 @@
 - [] general auth func checks
 - [x] serverSide Props fixed
 
-    ## Admin Login Any User System
+  ## Admin Login Any User System
 
-    - [] User Table
-    - [] Header/Cookie Management Idea
-    - [] Make it a shot session
-    - [] Server Side Props Protect
-
-
+  - [] User Table
+  - [] Header/Cookie Management Idea
+  - [] Make it a shot session
+  - [] Server Side Props Protect
 
 ## Dashboard Stuff
 
@@ -30,11 +29,9 @@
 - [x] Consider Breakdown Massive Query
 - [] Work with client and Editor Check
 
-
 ## Order List
 
 - [] Order List Start
-
 
 ## Services
 

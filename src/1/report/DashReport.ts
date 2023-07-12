@@ -11,6 +11,7 @@ import { userCount } from "../user/utils-server/genUser";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 
+// question What exactly is a dash? Is it a shortcut to refer to Dashboard?
 export const dashFunc = async (ses: tSesJson) => {
   // Working
   /* ------------------------------------------------------------------------ */
@@ -145,4 +146,3 @@ const userTotals = async (ses: tSesJson) => {
 
   return { memClient, memNew, memInactive };
 };
-

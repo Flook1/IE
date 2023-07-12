@@ -44,6 +44,7 @@ export const userBasicRouter = createTRPCRouter({
                     rule_group: true,
                   },
                 },
+                // question What are all these letters for?
                 c: true,
                 r: true,
                 u: true,

@@ -1,3 +1,4 @@
+// question What is this file for?
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
