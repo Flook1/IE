@@ -1,14 +1,14 @@
-
 import { objErrAuth, zSignUpForm } from "@/src/1/auth/login/types";
 import { prisma } from "@/src/server/db";
 import { TRPCError } from "@trpc/server";
 import * as argon2id from "argon2";
-import  { randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 import dayjs from "dayjs";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
+// question Why can't you put this signUp to the authMain.ts?
 export const authSignUpRouter = createTRPCRouter({
   signUp: publicProcedure
     .input(zSignUpForm)
@@ -161,8 +161,8 @@ export const authSignUpRouter = createTRPCRouter({
           user_id: iUser.user_id,
         },
         data: {
-          business_id: iBus.id
-        }
+          business_id: iBus.id,
+        },
       });
 
       //trigger send email verification
@@ -174,14 +174,9 @@ export const authSignUpRouter = createTRPCRouter({
       // send signup email
       // todo
 
-
-      return
-
+      return;
     }),
-    signUpData: publicProcedure.query((ctx) => {
-
-
-      return "something"
-    })
+  signUpData: publicProcedure.query((ctx) => {
+    return "something";
+  }),
 });
-

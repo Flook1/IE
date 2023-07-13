@@ -16,6 +16,7 @@ import {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
+// question I don't really get the purpose of this, could you elaborate on what exactly on this router?
 export const authResetRouter = createTRPCRouter({
   resetPassCreate: publicProcedure
     .input(zResetPassForm)
@@ -157,6 +158,7 @@ export const authResetRouter = createTRPCRouter({
 
       // Send email maybe?
       //todo send email above the recent password change
+      // question Regarding sending an email, will we use a service to send emails or planning to in the future?
 
       return;
     }),

@@ -5,11 +5,7 @@ import { type ctxMain } from "@/src/server/api/trpc";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import type {
-  IeCookie,
-  AuthSesObj,
-  UserType,
-} from "@/src/1/gen/types/cookie";
+import type { IeCookie, AuthSesObj, UserType } from "@/src/1/gen/types/cookie";
 import { objErrSes } from "../login/types";
 import {
   type tPayType,
@@ -35,10 +31,12 @@ export const sesQuickCheckThrow = (sesValid: boolean) => {
   // todo
   // should maybe check the session structure
   // but this would require Query, so maybe better on the context part
+  // question On your statement above, are you using Query as React Query or are you saying you would need to do a query?
 };
 
 export const sesCheck = async (
   opts: ctxMain,
+  // question Is verify here like user email verified or?
   verify: boolean,
   throwErr: boolean
 ) => {
@@ -201,6 +199,7 @@ export const sesSetCookie = (opts: ctxMain, sesId: string, expire: Date) => {
   }
 };
 
+// question Could you simplify on how this deletes the session cookie? I don't understand it very well
 export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
   // get cookie ses id
   let ses_id: string;
@@ -209,6 +208,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
   } else {
     const allCookies: IeCookie = opts.req.cookies;
     if (!allCookies.ieAuthSes) {
+      // question Should this still be here since VSCode is saying it's unreachable code?
       if (false) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -272,6 +272,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
 };
 
 /* -------------------------------------------------------------------------- */
+// question What is  used for?
 export const sesSetDb = async (
   opts: ctxMain,
   userId: string,
@@ -437,6 +438,7 @@ export const sesSetDb = async (
 // Returned Type
 // type tSesObj23 = UnwrapPromise<ReturnType<typeof sesGet>>;
 
+// question what is the use of these triple manuals?
 // MANUAL
 // MANUAL
 // MANUAL
@@ -462,6 +464,8 @@ export type tSesObj = {
 };
 
 // session json
+// question In this types, does bus mean business?
+// question Why are some of the naming conventions here camel case and snake case?
 export type tSesJson = {
   sesId: string;
   user: User;
