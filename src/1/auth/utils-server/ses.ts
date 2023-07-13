@@ -37,6 +37,9 @@ export const sesQuickCheckThrow = (sesValid: boolean) => {
   // but this would require Query, so maybe better on the context part
 };
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
 export const sesCheck = async (
   opts: ctxMain,
   verify: boolean,
