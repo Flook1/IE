@@ -14,12 +14,9 @@ type inferredOutputItem = inferredOutputList["list"][0];
 export const columns: ColumnDef<inferredOutputItem>[] = [
   {
     accessorKey: "name_first",
+    id: "Name",
     header: ({ column }) => (
-      <TableHeader
-        column={column}
-        title={"User Name"}
-        sort={false}
-      ></TableHeader>
+      <TableHeader column={column} title={column.id} sort={false}></TableHeader>
     ),
     cell: ({ row }) => {
       // get value
@@ -34,17 +31,19 @@ export const columns: ColumnDef<inferredOutputItem>[] = [
         );
       }
       if (true) {
-        <TableCellTwo
-          main={"something"}
-          second={"something"}
-        ></TableCellTwo>;
+        return (
+          <TableCellTwo main={<div className="border border-red-400">insdie jsx</div>}>
+            <p>something here</p>
+          </TableCellTwo>
+        );
       }
     },
   },
   {
     accessorKey: "email_id",
+    id: "email",
     header: ({ column }) => (
-      <TableHeader column={column} title={"Email"} sort={false}></TableHeader>
+      <TableHeader column={column} title={column.id} sort={false}></TableHeader>
     ),
   },
   {
@@ -71,13 +70,13 @@ export const UserAuthList: NextPage<UserAuthListProps> = ({
   return (
     <>
       <div>
-        <IeCard variant={"table"} className="">
-          {!isLoading ? (
-            <DataTable columns={columns} data={data?.list ?? []}></DataTable>
-          ) : (
+        {!isLoading ? (
+          <DataTable columns={columns} data={data?.list ?? []}></DataTable>
+        ) : (
+          <IeCard variant={"table"} className="">
             <SkeletonTableFull></SkeletonTableFull>
-          )}
-        </IeCard>
+          </IeCard>
+        )}
       </div>
       <div hidden>
         <p>Testing</p>

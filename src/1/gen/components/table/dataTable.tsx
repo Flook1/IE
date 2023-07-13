@@ -14,6 +14,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import NoResults from "./noResults";
+import { TableViewOptions } from "./viewOption";
+import { IeCard } from "@/components/ie/ie-card";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -21,12 +23,12 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
 }
 
-// todo possible add loading state for the table directly, but not important at the moment
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  //
   const table = useReactTable({
     data,
     columns,
@@ -34,45 +36,53 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
+    <>
+      <div className="m-4">
+        <TableViewOptions table={table}></TableViewOptions>
+      </div>
+      <IeCard variant="table">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <NoResults colLength={columns.length}></NoResults>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <NoResults colLength={columns.length}></NoResults>
+              )}
+            </TableBody>
+          </Table>
+      </IeCard>
+    </>
   );
 }

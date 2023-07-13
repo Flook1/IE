@@ -6,7 +6,7 @@ const ieCardVariants = cva("", {
   variants: {
     variant:{
       default: "rounded-2xl border bg-card text-card-foreground",
-      table: "rounded-lg border bg-card text-card-foreground",
+      table: "rounded-2xl border bg-card text-card-foreground",
       large: "rounded-2xl border bg-card text-card-foreground",
       test: "rounded-2xl  border-red-200 border-2 bg-red-50 p-6 my-4 text-card-foreground",
     },

@@ -18,7 +18,7 @@ import {
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
-  title: string;
+  title?: string;
   sort: boolean;
 }
 
@@ -28,9 +28,14 @@ export function TableHeader<TData, TValue>({
   sort,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
+  let titleName = column.id;
+  if (title) {
+    titleName = title;
+  }
+
   if (!column.getCanSort() && false) {
     // using conditions below to handle dropdown, so we can always hide column
-    return <div className={cn(className)}>{title}</div>;
+    return <div className={cn(className)}>{titleName}</div>;
   }
 
   return (
@@ -42,7 +47,7 @@ export function TableHeader<TData, TValue>({
             size="sm"
             className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
-            <span>{title}</span>
+            <span>{titleName}</span>
             {column.getIsSorted() === "desc" ? (
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "asc" ? (
@@ -70,9 +75,7 @@ export function TableHeader<TData, TValue>({
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => column.toggleVisibility(false)}
-          >
+          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Hide
           </DropdownMenuItem>

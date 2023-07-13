@@ -6,6 +6,11 @@
 - [] dark mode test
 - [] prisma 5
 
+
+## Table Stuff
+- [] icon copy component
+- [] cellSingle cva variants (small, mediaum, descriptiuon and so on)
+
 ## State
 
 - [] zustand for query options
