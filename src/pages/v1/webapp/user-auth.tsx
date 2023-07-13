@@ -59,7 +59,7 @@ const UserAuth: NextPageWithLayout = () => {
   // this is used to log into other accounts
   // todo
 
-  const [search, setSearch] = useState("haydn");
+  const [search, setSearch] = useState("");
   const [take, setTake] = useState(25);
   const [page, setPage] = useState(0);
 
@@ -90,7 +90,7 @@ const UserAuth: NextPageWithLayout = () => {
       </div>
       <div className="">
         {/* table will go hear */}
-        <UserAuthList></UserAuthList>
+        <UserAuthList data={userList.data!} isLoading={userList.isLoading}></UserAuthList>
       </div>
       <IeCard variant={"test"}>
         <p className="w-14">Testing</p>

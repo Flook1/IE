@@ -92,7 +92,7 @@ const Login: NextPageWithLayout = () => {
   const loginForm = useForm<tLoginForm>({
     resolver: zodResolver(zLoginForm),
     defaultValues: {
-      email: "admin@admin.net",
+      email: "admin@admin.com",
       password: "",
     },
   });

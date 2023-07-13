@@ -9,6 +9,7 @@ import {
   SkeletonImg,
   SkeletonListRow,
   SkeletonParagraph,
+  SkeletonTableFull,
   SkeletonTableRow,
   SkeletonVideo,
   SkeletonWidget,
@@ -46,7 +47,7 @@ const V1Ui: NextPageWithLayout = () => {
           >
           </DashListSmall>
         </IeCard>
-        <div hidden>
+        <div >
           <Button onClick={(e) => handleToast(e)}>
             Toast Handler Function
           </Button>
@@ -68,13 +69,14 @@ const V1Ui: NextPageWithLayout = () => {
           </div>
           <div className="grid grid-cols-1  gap-10">
             {/* skeletons */}
-            <SkeletonCard></SkeletonCard>
-            <SkeletonImg></SkeletonImg>
-            <SkeletonWidget></SkeletonWidget>
-            <SkeletonListRow></SkeletonListRow>
-            <SkeletonTableRow></SkeletonTableRow>
-            <SkeletonVideo></SkeletonVideo>
-            <SkeletonParagraph></SkeletonParagraph>
+            {/* <SkeletonCard></SkeletonCard> */}
+            {/* <SkeletonImg></SkeletonImg> */}
+            {/* <SkeletonWidget></SkeletonWidget> */}
+            {/* <SkeletonListRow></SkeletonListRow> */}
+            {/* <SkeletonTableRow></SkeletonTableRow> */}
+            <SkeletonTableFull></SkeletonTableFull>
+            {/* <SkeletonVideo></SkeletonVideo> */}
+            {/* <SkeletonParagraph></SkeletonParagraph> */}
           </div>
         </div>
       </div>

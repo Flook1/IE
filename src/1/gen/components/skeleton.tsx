@@ -203,6 +203,91 @@ const SkeletonTableRow: NextPage<tSkeletonTableRowProps> = ({ type }) => {
 };
 
 
+
+/* -------------------------------------------------------------------------- */
+type tSkeletonTableFullProps = {
+  type?: string;
+};
+
+const SkeletonTableFull: NextPage<tSkeletonTableFullProps> = ({ type }) => {
+  return (
+    <>
+      <div
+        role="status"
+        className="w-full animate-pulse space-y-4 divide-y divide-gray-200 rounded border border-gray-200 p-4 shadow dark:divide-gray-700 dark:border-gray-700 "
+      >
+        <div className="flex items-center justify-between">
+          <div className="w-4/12">
+            <div className="h-2.5 w-5/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+          </div>
+          <div className="w-3/12">
+            <div className="h-2.5 w-3/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+          </div>
+          <div className="w-5/12">
+            <div className=" h-2.5 w-2/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+          </div>
+          <div className="h-2.5 w-2/12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+        </div>
+        <span className="sr-only">Loading...</span>
+      </div>
+      <div
+        role="status"
+        className="w-full animate-pulse space-y-4 divide-y divide-gray-200 rounded border border-gray-200 p-4 shadow dark:divide-gray-700 dark:border-gray-700"
+      >
+        {/* row 1 */}
+        <div className="flex items-center justify-between ">
+          <div className="w-4/12">
+            <div className="mb-2.5 h-2.5 w-5/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-3/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-3/12">
+            <div className="mb-2.5 h-2.5 w-3/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-2/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-5/12">
+            <div className="mb-2.5 h-2.5 w-2/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-5/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="h-2.5 w-2/12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+        </div>
+        {/* row 2 */}
+        <div className="flex items-center justify-between pt-4">
+          <div className="w-4/12">
+            <div className="mb-2.5 h-2.5 w-5/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-3/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-3/12">
+            <div className="mb-2.5 h-2.5 w-3/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-2/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-5/12">
+            <div className="mb-2.5 h-2.5 w-2/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-5/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="h-2.5 w-2/12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+        </div>
+        {/* row 3 */}
+        <div className="flex items-center justify-between pt-4">
+          <div className="w-4/12">
+            <div className="mb-2.5 h-2.5 w-5/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-3/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-3/12">
+            <div className="mb-2.5 h-2.5 w-3/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-2/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="w-5/12">
+            <div className="mb-2.5 h-2.5 w-2/6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            <div className="h-2 w-5/6 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          <div className="h-2.5 w-2/12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+        </div>
+        <span className="sr-only">Loading...</span>
+      </div>
+    </>
+  );
+};
+
 export {
   SkeletonCard,
   SkeletonImg,
@@ -211,4 +296,5 @@ export {
   SkeletonWidget,
   SkeletonListRow,
   SkeletonTableRow,
+  SkeletonTableFull,
 };
