@@ -6,7 +6,11 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { type tSesJson, sesGet,type  tSesFull } from "@/src/1/auth/utils-server/ses";
+import {
+  type tSesJson,
+  sesGet,
+  type tSesFull,
+} from "@/src/1/auth/utils-server/ses";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import next from "next/types";
@@ -19,7 +23,7 @@ import { prisma } from "~/server/db";
 export type ctxMain = CreateNextContextOptions;
 
 export interface ctxSes extends ctxMain {
-  ses: tSesFull
+  ses: tSesFull;
 }
 /* -------------------------------------------------------------------------- */
 
@@ -118,7 +122,7 @@ export const sesPass = t.middleware(async ({ ctx, next }) => {
   // lets get the sessions
   const getSes = await sesGet(ctx, true);
 
-  if ((getSes == undefined)) {
+  if (getSes == undefined) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Session is undefined in middleware passing",
@@ -131,6 +135,5 @@ export const sesPass = t.middleware(async ({ ctx, next }) => {
     },
   });
 });
-
 
 export const sesProcedure = t.procedure.use(sesPass);
