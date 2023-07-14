@@ -32,11 +32,13 @@ export const sesQuickCheckThrow = (sesValid: boolean) => {
   // should maybe check the session structure
   // but this would require Query, so maybe better on the context part
   // question On your statement above, are you using Query as React Query or are you saying you would need to do a query?
+  // answer in this case, since this is used server side, nto client side.  query would mean prisma query to get session, and we could check structure of json, thats mainly to check if something went wrong, not too important yet
 };
 
 export const sesCheck = async (
   opts: ctxMain,
   // question Is verify here like user email verified or?
+  // answer verify here means, to not just check the session using a prisma query to actually make sure it exists in database, otherwise we are just cehcking the session cookie is there. (verify would take much longer, and this generally wouldnt need to be done if this was already checked on trpc procedure that already checks session.)
   verify: boolean,
   throwErr: boolean
 ) => {
@@ -200,15 +202,23 @@ export const sesSetCookie = (opts: ctxMain, sesId: string, expire: Date) => {
 };
 
 // question Could you simplify on how this deletes the session cookie? I don't understand it very well
+// answer okay, ive added extra comments below
 export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
+  // sesId optional, this is for when admin wants to sign out specific users. otherwise just get current user session id
+
   // get cookie ses id
   let ses_id: string;
   if (sesId) {
+    // if ses id passed, set that to the ses_id var above
     ses_id = sesId;
   } else {
+    // if ses not passed, we need to get the ses_id from cookies
+
     const allCookies: IeCookie = opts.req.cookies;
+
     if (!allCookies.ieAuthSes) {
       // question Should this still be here since VSCode is saying it's unreachable code?
+      // answer we can likely delete this, i just havent yet. i was throwing error initally but if there is no auth cookie, then there is no signed in user anyway, so dont really need to throw error, we can just return earlier.
       if (false) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -224,6 +234,9 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
     ses_id = allCookies.ieAuthSes;
   }
 
+  //we now has ses_id of what we want to delete.
+  // first make sure ses_id is in database
+
   // delete cookie
   const dateNow = dayjs().tz("utc");
   // check if ses exists on database
@@ -236,6 +249,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
     },
   });
 
+  // if its in database, we are going to update it, and change deleted date to now, so any futher queries for active session id, this one wont be included, because its deleted.
   if (sesExists?.sid) {
     // delete from prisma
     const updateSes = await prisma.sessions.update({
@@ -248,6 +262,8 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
     });
   }
 
+  // we have deleted from database, now we need to adjust client side to remove the cookie
+  // to do this, we response with a cookie of same name, and just exire date of now, so when client gets it, it will be removed from the client browser because it expired.
   try {
     // need to adjust cookie anyway, because we checked if cookie exists above
     // parse cookies
@@ -261,6 +277,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
 
     opts.res.setHeader("set-cookie", [sesParsed]);
   } catch (error) {
+    // hopefully this error will never happen but idk
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: objErrSes.CookieParse,
@@ -273,6 +290,7 @@ export const sesDelCookie = async (opts: ctxMain, sesId?: string) => {
 
 /* -------------------------------------------------------------------------- */
 // question What is  used for?
+// answer not used yet, but the idea is we will need to update the session json/obj in database, if the user data changes, example if someone changes role/any of data in ses json changes, we need to update it.
 export const sesSetDb = async (
   opts: ctxMain,
   userId: string,
@@ -439,6 +457,8 @@ export const sesSetDb = async (
 // type tSesObj23 = UnwrapPromise<ReturnType<typeof sesGet>>;
 
 // question what is the use of these triple manuals?
+// answer when you see me do comments like that, its just point out something obvious to me that i should recognise quickly. in this case, below the types are manully typed out, but ideally id like to move this to inferred types, but haven't been able to figure it out yet.
+
 // MANUAL
 // MANUAL
 // MANUAL
@@ -465,7 +485,10 @@ export type tSesObj = {
 
 // session json
 // question In this types, does bus mean business?
+// answer bus means business yes. Ill try to get a list together of commonly named abbreviations i use. If you prefer i am happy to move away from abbreviations, i rather be verbose if its more clear
+
 // question Why are some of the naming conventions here camel case and snake case?
+// answer error from me, i just named a variable in functions above with camelcase, however everything else in the type is from database, which uses snake_case. So my error.
 export type tSesJson = {
   sesId: string;
   user: User;

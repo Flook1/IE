@@ -9,6 +9,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // question Why can't you put this signUp to the authMain.ts?
+// answer simply for me, just too long of a function, and i know it will get longer, thats only reason i separated it. 
 export const authSignUpRouter = createTRPCRouter({
   signUp: publicProcedure
     .input(zSignUpForm)

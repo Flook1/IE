@@ -13,5 +13,9 @@
     - authSignUp.ts
   - [x] see how session are stored and used and verified.
   - [x] understand how session is passed in context for sesProcedure using middleware.
+
+
+
   <!-- question Not 100% sure about this, -->
+  <!-- answer do you understand how we get the session type? and then getting that session type and passing it to the context of the sesProcedure? -->
   - [x] understand how we get the context types and pass it to functions, (when these functions are specifically used in trpc router)
