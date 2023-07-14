@@ -8,7 +8,7 @@
 
 
 ## Table Stuff
-- [] icon copy component
+- [x] icon copy component
 - [] cellSingle cva variants (small, mediaum, descriptiuon and so on)
 
 ## State

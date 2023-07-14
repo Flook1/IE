@@ -4,14 +4,16 @@ import { Copy } from "lucide-react";
 import { type NextPage } from "next";
 
 interface CopyIconProps {
-  throwToast: boolean;
   copyValue: string;
+  size?: number;
+  throwToast?: boolean;
   children?: React.ReactNode;
 }
 
 export const CopyIcon: NextPage<CopyIconProps> = ({
   children,
-  throwToast,
+  throwToast = true,
+  size = 16,
   copyValue,
 }) => {
   const { toast } = useToast();
@@ -36,20 +38,21 @@ export const CopyIcon: NextPage<CopyIconProps> = ({
   };
 
   return (
-    <Button variant={"ghost"} size={"sm"} onClick={(e) => handleCopy(e)}>
-      <Copy size={16} />
+    <Button variant={"ghost"} size={"icon_sm"} onClick={(e) => handleCopy(e)}>
+      <Copy size={size} />
       {children}
     </Button>
   );
 };
 
+
 interface CopyTextProps {
-  throwToast: boolean;
+  throwToast?: boolean;
   copyValue: string;
 }
 
 export const CopyText: NextPage<CopyTextProps> = ({
-  throwToast,
+  throwToast = true,
   copyValue,
 }) => {
   const { toast } = useToast();

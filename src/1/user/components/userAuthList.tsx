@@ -7,6 +7,8 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../../gen/components/table/dataTable";
 import { TableHeader } from "../../gen/components/table/tableHeader";
 import { TableCellTwo } from "../../gen/components/table/tableCell";
+import { Button } from "@/components/ui/button";
+import { CopyIcon } from "../../gen/components/copy-comps";
 
 type inferredOutputList = RouterOutputs["userBasic"]["userList"];
 type inferredOutputItem = inferredOutputList["list"][0];
@@ -19,24 +21,22 @@ export const columns: ColumnDef<inferredOutputItem>[] = [
       <TableHeader column={column} title={column.id} sort={false}></TableHeader>
     ),
     cell: ({ row }) => {
-      // get value
       const rowData = row.original;
 
-      if (false) {
-        return (
-          <div className="">
-            <h3>{`${rowData.name_first}  ${rowData.name_last!}`}</h3>
-            <h3> userId: {rowData.user_id}</h3>
+      return (
+        <TableCellTwo
+          main={
+            <div className="">
+              {`${rowData.name_first} ${rowData.name_last!}`}
+            </div>
+          }
+        >
+          <div>
+            <CopyIcon copyValue={rowData.user_id} size={10}></CopyIcon> userId:{" "}
+            {rowData.user_id}
           </div>
-        );
-      }
-      if (true) {
-        return (
-          <TableCellTwo main={<div className="border border-red-400">insdie jsx</div>}>
-            <p>something here</p>
-          </TableCellTwo>
-        );
-      }
+        </TableCellTwo>
+      );
     },
   },
   {
@@ -45,16 +45,53 @@ export const columns: ColumnDef<inferredOutputItem>[] = [
     header: ({ column }) => (
       <TableHeader column={column} title={column.id} sort={false}></TableHeader>
     ),
+    cell: ({ row }) => {
+      return (
+        <div>
+          <CopyIcon copyValue={row.original.email_id} size={10}></CopyIcon>{" "}
+          {row.original.email_id}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "rel_bus.business_name",
-    header: ({ column }) => (
-      <TableHeader
-        column={column}
-        title={"Business Name"}
-        sort={false}
-      ></TableHeader>
-    ),
+    id: "Business Name",
+    header: ({ column }) => {
+      return (
+        <TableHeader
+          column={column}
+          title={column.id}
+          sort={false}
+        ></TableHeader>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div>
+          <CopyIcon
+            copyValue={row.original.rel_bus?.business_name ?? ""}
+            size={10}
+          ></CopyIcon>{" "}
+          {row.original.rel_bus?.business_name}
+        </div>
+      );
+    },
+  },
+  {
+    id: "action",
+    header: ({ column }) => {
+      return (
+        <TableHeader
+          column={column}
+          title={column.id}
+          sort={false}
+        ></TableHeader>
+      );
+    },
+    cell: ({ row }) => {
+      return <Button size={"sm"}>Login As</Button>;
+    },
   },
 ];
 
