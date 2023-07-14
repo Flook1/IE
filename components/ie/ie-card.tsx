@@ -2,6 +2,15 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
+// ie adj been adjusted for ie use
+// ie adj
+// ie adj
+// ie adj
+// ie adj
+// ie adj
+
+
+
 const ieCardVariants = cva("", {
   variants: {
     variant:{

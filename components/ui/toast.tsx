@@ -5,6 +5,13 @@ import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+// ie adj been adjusted for ie use
+// ie adj
+// ie adj
+// ie adj
+// ie adj
+// ie adj
+
 const ToastProvider = ToastPrimitives.Provider;
 
 const ToastViewport = React.forwardRef<
