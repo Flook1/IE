@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import {
   IconMenu,
   type tIconMenu,
-} from "@/src/1/gen/components/icon-dynamic-menu";
+} from "@/src/1/gen/components/icons/icon-dynamic-menu";
 import DebugView from "../../test/debug-view";
 import { titleCase } from "@/src/1/gen/utils/genBasics";
 import { cache20Min } from "@/src/1/gen/utils/genQueryCache";

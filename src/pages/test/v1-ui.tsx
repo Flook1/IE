@@ -3,7 +3,6 @@ import LayTest from "@/src/1/gen/layouts/LayTest";
 import type { NextPageWithLayout } from "@/src/pages/_app";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { IconTest } from "@/src/1/gen/components/icon-dynamic-test";
 import {
   SkeletonCard,
   SkeletonImg,
@@ -16,6 +15,8 @@ import {
 } from "@/src/1/gen/components/skeleton";
 import { IeCard } from "@/components/ie/ie-card";
 import { DashListSmall } from "@/src/1/report/component/dashSec";
+import { IconTest } from "@/src/1/gen/components/icons/icon-dynamic-test";
+import { CopyIcon, CopyText } from "@/src/1/gen/components/copy-comps";
 
 const V1Ui: NextPageWithLayout = () => {
   const { toast } = useToast();
@@ -34,20 +35,30 @@ const V1Ui: NextPageWithLayout = () => {
   return (
     <>
       <div className="m-32 flex flex-col gap-6 p-14">
-        <IeCard className="p-6">
+        <div>
+          <p>testing copy componenet</p>
+          <CopyIcon copyValue="somethingcopied" throwToast={true}></CopyIcon>
+          <CopyIcon copyValue="somethingcopied" throwToast={true}></CopyIcon>
+          <CopyIcon copyValue="somethingcopied" throwToast={true}></CopyIcon>
+          <CopyIcon copyValue="somethingcopied" throwToast={true}></CopyIcon>
+          <CopyIcon copyValue="somethingcopied" throwToast={true}></CopyIcon>
+          <CopyText copyValue="somethingcopied" throwToast={true}></CopyText>
+          <CopyText copyValue="somethingcopied" throwToast={true}></CopyText>
+          <CopyText copyValue="somethingcopied" throwToast={true}></CopyText>
+        </div>
+        <IeCard hidden className="p-6">
           <DashListSmall
-          visible
-          headLeft="Something"
-          headRight="Something"
-          content1="Something: Something"
-          content2="Something: Something"
-          content3="Something: Something"
-          content4="Something: Something"
-          isLoading={false}
-          >
-          </DashListSmall>
+            visible
+            headLeft="Something"
+            headRight="Something"
+            content1="Something: Something"
+            content2="Something: Something"
+            content3="Something: Something"
+            content4="Something: Something"
+            isLoading={false}
+          ></DashListSmall>
         </IeCard>
-        <div >
+        <div hidden>
           <Button onClick={(e) => handleToast(e)}>
             Toast Handler Function
           </Button>
@@ -61,7 +72,7 @@ const V1Ui: NextPageWithLayout = () => {
           >
             Toast Direct Function
           </Button>
-          <div>
+          <div hidden>
             <IconTest icon="Smile" />
             <IconTest icon="Smile" />
             <IconTest icon="SmilePlus" />

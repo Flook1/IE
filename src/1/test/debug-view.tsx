@@ -5,7 +5,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { NextPage } from "next";
-import { Children } from "react";
 
 type DebugViewProp = {
   visible: boolean;
