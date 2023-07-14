@@ -15,75 +15,35 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  plugins: [
-    require("tailwindcss-animate"),
-    // require("daisyui"),
-    // space commentF
-  ],
-  // Daisy stuff
-  // daisyui: {
-  //   styled: true,
-  //   base: true,
-  //   utils: true,
-  //   logs: true,
-  //   rtl: false,
-  //   prefix: "d-",
-  //   darkTheme: "dark",
-  //   themes: [
-  //     "light",
-  //     "dark",
-  //     "cupcake",
-  //     "bumblebee",
-  //     "emerald",
-  //     "corporate",
-  //     "synthwave",
-  //     "retro",
-  //     "cyberpunk",
-  //     "valentine",
-  //     "halloween",
-  //     "garden",
-  //     "forest",
-  //     "aqua",
-  //     "lofi",
-  //     "pastel",
-  //     "fantasy",
-  //     "wireframe",
-  //     "black",
-  //     "luxury",
-  //     "dracula",
-  //     "cmyk",
-  //     "autumn",
-  //     "business",
-  //     "acid",
-  //     "lemonade",
-  //     "night",
-  //     "coffee",
-  //     "winter",
-  //   ],
-  // },
-  // content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
-  // content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  // content: ["src/**/*.{ts,tsx}"],
+  plugins: [require("tailwindcss-animate")],
   content: [
     "src/**/*.{ts,tsx}",
     "components/**/*.{ts,tsx}",
-    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
+    "./pages/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    // not really needed
+    // tremor module
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      }
-    },
     // fontFamily: {
     //  // at the moment not working
     //   sans: ["ui-sans-serif", "system-ui"],
     //   serif: ["ui-serif", "Georgia"],
     //   mono: ["ui-monospace", "SFMono-Regular"],
     // },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
+      fontFamily: {
+        mono: ["var(--font-mono)", ...fontFamily.mono],
+        // sans: ["var(--font-sans)", ...fontFamily.sans],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -123,10 +83,6 @@ module.exports = {
         lg: `var(--radius)`,
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        mono: ["var(--font-mono)", ...fontFamily.mono],
-        // sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
